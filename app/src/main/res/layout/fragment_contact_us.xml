@@ -1,0 +1,294 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:fillViewport="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:isScrollContainer="true"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_26sdp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:src="@drawable/forgot_logo" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_contactUs_enterEmailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_marginBottom="@dimen/_36sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/_4sdp"
+            android:text="@string/contact_us_text"
+            android:textColor="@color/contact_us_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_light" />
+
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/et_contactUs_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_contactUs_enterEmailText"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/ic_contact"
+            android:drawablePadding="@dimen/_10sdp"
+            android:gravity="start"
+            android:paddingLeft="@dimen/_20sdp"
+            android:singleLine="true"
+            android:text="@string/phone"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator1"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_below="@id/et_contactUs_phone"
+            android:background="@color/color_seperator_forgot" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_contactUs_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/seperator1"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="@dimen/_10sdp"
+            android:gravity="start"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="@dimen/_20sdp"
+            android:singleLine="true"
+            android:text="@string/dummy_email"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_below="@id/tv_contactUs_email"
+            android:background="@color/color_seperator_forgot" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_contactUs_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/seperator2"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/ic_feedback"
+            android:drawablePadding="@dimen/_10sdp"
+            android:gravity="start"
+            android:paddingLeft="@dimen/_20sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:singleLine="true"
+            android:text="@string/feedback_and_suggestions"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_light" />
+
+        <com.ingic.waterapp.ui.views.AnyEditTextView
+            android:id="@+id/et_contactUs_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tv_contactUs_feedback"
+            android:background="@drawable/stroke_grey"
+            android:cursorVisible="true"
+            android:gravity="start"
+            android:layout_marginLeft="@dimen/_14sdp"
+            android:layout_marginRight="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:minLines="5"
+            android:maxLines="5"
+            android:padding="@dimen/_6sdp"
+            android:singleLine="true"
+            android:hint="@string/enter_your_message"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/stroke_grey"
+            android:textSize="12sp"
+            app:typeface="@string/typeface_regular" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/et_contactUs_feedback"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@drawable/login_btn"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            />
+    </RelativeLayout>
+
+    <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_12sdp"
+            android:paddingRight="@dimen/_12sdp">
+
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seperator2"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="left"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/_4sdp"
+                android:paddingRight="@dimen/_4sdp"
+                android:paddingTop="@dimen/_4sdp"
+                android:text="@string/phone"
+                android:textColor="@color/login_email_grey"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:typeface="@string/typeface_bold" />
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/tv_contactUs_phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seperator2"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="left"
+                android:paddingLeft="@dimen/_4sdp"
+                android:paddingRight="@dimen/_4sdp"
+                android:text="+917 4 3466888"
+                android:textColor="@color/contact_sub_text"
+                android:textSize="14sp"
+                app:typeface="@string/typeface_regular" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_settings_changePassword"
+                android:background="@color/color_seperator" />
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seperator2"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="left"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/_4sdp"
+                android:paddingRight="@dimen/_4sdp"
+                android:paddingTop="@dimen/_4sdp"
+                android:text="@string/fax"
+                android:textColor="@color/contact_us_dark_grey"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:typeface="@string/typeface_bold" />
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/tv_contactUs_fax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seperator2"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="left"
+                android:paddingLeft="@dimen/_4sdp"
+                android:paddingRight="@dimen/_4sdp"
+                android:text="+917 4 3466888"
+                android:textColor="@color/contact_sub_text"
+                android:textSize="14sp"
+                app:typeface="@string/typeface_regular" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_settings_changePassword"
+                android:background="@color/color_seperator" />
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seperator2"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="left"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/_4sdp"
+                android:paddingRight="@dimen/_4sdp"
+                android:paddingTop="@dimen/_4sdp"
+                android:text="@string/contactus_email"
+                android:textColor="@color/contact_us_dark_grey"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:typeface="@string/typeface_bold" />
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/tv_contactUs_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seperator2"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="left"
+                android:paddingLeft="@dimen/_4sdp"
+                android:paddingRight="@dimen/_4sdp"
+                android:text="@string/email_address"
+                android:textColor="@color/contact_sub_text"
+                android:textSize="14sp"
+                app:typeface="@string/typeface_regular" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/tv_settings_changePassword"
+                android:background="@color/color_seperator" />
+        </LinearLayout>
+    -->
+
+
+
+</ScrollView>

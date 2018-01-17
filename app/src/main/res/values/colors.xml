@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Default Colors -->
+    <color name="colorSemiTranparent">#78000000</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorOffWhite">#E9E9EA</color>
+    <color name="colorRecyclerViewDividerColor">#D0D0D0</color>
+    <color name="colorPrimary">#7F7F7F</color>
+    <color name="colorPrimaryDark">#7F7F7F</color>
+    <color name="colorAccent">#7F7F7F</color>
+    <color name="login_text_grey">#8D8D8D</color>
+    <color name="transparent">#00000000</color>
+    <color name="login_email_grey">#3F3F3F</color>
+    <color name="contact_us_grey">#474747</color>
+    <color name="color_seperator">#E2E2E2</color>
+    <color name="color_seperator2">#A6A6A6</color>
+    <color name="color_seperator_forgot">#3F3F3F</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue_theme">#2DAFEC</color>
+    <color name="forgot_grey">#797979</color>
+    <color name="login_grey">#808080</color>
+    <color name="color_titlebar">#5B80B6</color>
+    <color name="stroke_grey">#DADADA</color>
+    <color name="color_seperator_profile">#BCBCBC</color>
+    <color name="rating_grey">#4A4A4A</color>
+    <color name="home_dark_blue">#115DA8</color>
+    <color name="forgot_dark_grey">#2D2D2D</color>
+
+
+</resources>

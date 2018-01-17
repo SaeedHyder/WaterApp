@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_sideMenu"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/top"
+        android:layout_width="@dimen/_122sdp"
+        android:layout_height="@dimen/_122sdp"
+        android:layout_margin="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_sideMenu_profileImage"
+            android:layout_width="@dimen/_118sdp"
+            android:layout_height="@dimen/_118sdp"
+            android:src="@drawable/dummy_image" />
+
+        <ImageView
+            android:layout_width="@dimen/_118sdp"
+            android:layout_height="@dimen/_118sdp"
+            android:src="@drawable/stroke_circle_blue"
+            />
+    </FrameLayout>
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_sideMenu_profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        android:text="James Cameron"
+        android:textSize="@dimen/_20sdp"
+        android:textColor="@color/login_email_grey"
+        app:typeface="@string/typeface_bold"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_sideMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_sideMenu_profileName"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:scrollbars="vertical">
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

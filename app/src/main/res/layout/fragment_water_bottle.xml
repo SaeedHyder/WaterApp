@@ -1,0 +1,189 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ingic.waterapp.fragments.WaterBottleFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_24sdp"
+        android:layout_marginRight="@dimen/_24sdp">
+
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_bottle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/_2sdp"
+            android:text="@string/bottle_text"
+            android:textColor="@color/forgot_grey"
+            android:textSize="20sp"
+            app:typeface="@string/typeface_regular" />
+
+        <RelativeLayout
+            android:id="@+id/rl_bottle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bottle_text"
+            android:layout_marginBottom="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_18sdp">
+
+            <ImageView
+                android:id="@+id/img_bottle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/bottle" />
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/tv_bottle_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/_176sdp"
+                android:text="02"
+                android:textColor="@color/blue_theme"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:typeface="@string/typeface_bold" />
+
+            <ImageView
+                android:id="@+id/img_bottle_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_add" />
+
+            <ImageView
+                android:id="@+id/img_bottle_minus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_minus" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_bottle"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            >
+
+            <LinearLayout
+                android:id="@+id/ll_bottle_cost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal">
+
+                <com.ingic.waterapp.ui.views.AnyTextView
+                    android:id="@+id/tv_bottle_cost_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="@string/cost"
+                    android:textColor="@color/forgot_grey"
+                    android:textSize="16sp"
+                    app:typeface="@string/typeface_regular" />
+
+                <com.ingic.waterapp.ui.views.AnyTextView
+                    android:id="@+id/tv_bottle_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_50sdp"
+                    android:background="@color/transparent"
+                    android:text="20.00 AED"
+                    android:textColor="@color/forgot_grey"
+                    android:textColorHint="@color/forgot_grey"
+                    android:textSize="16sp"
+                    app:typeface="@string/typeface_regular" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:layout_marginBottom="@dimen/_14sdp"
+                android:background="@color/color_seperator" />
+
+            <LinearLayout
+                android:id="@+id/ll_bottle_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <com.ingic.waterapp.ui.views.AnyTextView
+                    android:id="@+id/tv_bottle_total_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="@string/total"
+                    android:textSize="16sp"
+                    android:textColor="@color/blue_theme"
+                    android:textStyle="bold"
+                    app:typeface="@string/typeface_bold" />
+
+                <com.ingic.waterapp.ui.views.AnyTextView
+                    android:id="@+id/tv_bottle_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_50sdp"
+                    android:background="@color/transparent"
+                    android:text="40.00 AED"
+                    android:textSize="16sp"
+                    android:textColor="@color/blue_theme"
+                    android:textStyle="bold"
+                    app:typeface="@string/typeface_bold"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:background="@color/color_seperator2" />
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/tv_bottle_delivery_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_2sdp"
+                android:paddingRight="@dimen/_2sdp"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/_2sdp"
+                android:text="@string/delivery_text"
+                android:textColor="@color/forgot_grey"
+                android:textSize="16sp"
+                app:typeface="@string/typeface_regular" />
+
+            <Button
+                android:id="@+id/btn_bottle_addToCart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="19dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/login_btn"
+                android:gravity="center"
+                android:text="@string/add_to_cart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

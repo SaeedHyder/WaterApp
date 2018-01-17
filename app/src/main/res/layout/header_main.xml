@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="?actionBarSize"
+    android:background="@drawable/header">
+
+    <ImageView
+        android:id="@+id/btnLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/_8sdp"
+        android:scaleType="center"
+        android:src="@drawable/ic_back"
+        android:visibility="visible" />
+
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/txt_subHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="@color/color_titlebar"
+        android:textSize="20sp"
+        app:typeface="@string/typeface_regular"
+        tools:text="Template"
+        tools:visibility="gone" />
+
+
+    <ImageView
+        android:id="@+id/btnRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/notification"
+        android:visibility="visible" />
+
+<!--
+    <ImageView
+        android:id="@+id/btnCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/btnRight"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/cart"
+        android:visibility="visible" />-->
+</RelativeLayout>

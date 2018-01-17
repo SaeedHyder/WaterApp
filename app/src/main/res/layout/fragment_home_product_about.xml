@@ -1,0 +1,27 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.ingic.waterapp.fragments.HomeProductAboutFragment">
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_about_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginRight="@dimen/_14sdp"
+        android:lineSpacingExtra="@dimen/_2sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:text="@string/lorem_ipsum"
+        android:textColor="@color/forgot_grey"
+        android:textSize="12sp"
+        app:typeface="@string/typeface_light" />
+
+
+</ScrollView>

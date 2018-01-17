@@ -1,0 +1,225 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:focusableInTouchMode="true"
+    android:isScrollContainer="true"
+    android:scrollbars="none"
+    tools:context="com.ingic.waterapp.fragments.SignUpFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg"
+        android:paddingLeft="@dimen/_40sdp"
+        android:paddingRight="@dimen/_40sdp"
+        >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_26sdp"
+            android:layout_marginStart="@dimen/_54sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:src="@drawable/splash_logo" />
+
+        <com.ingic.waterapp.ui.views.AnyEditTextView
+            android:id="@+id/et_signup_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo"
+            android:layout_marginBottom="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/ic_name"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start"
+            android:hint="@string/name"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:testType="personName"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator1"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/et_signup_name"
+            android:background="@color/color_seperator" />
+
+        <com.ingic.waterapp.ui.views.AnyEditTextView
+            android:id="@+id/et_signup_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seperator1"
+            android:layout_marginBottom="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start"
+            android:hint="@string/email"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:testErrorString="@string/error_email_address_not_valid"
+            app:testType="email"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/et_signup_email"
+            android:background="@color/color_seperator" />
+
+        <com.ingic.waterapp.ui.views.AnyEditTextView
+            android:id="@+id/et_signup_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/seperator2"
+            android:layout_marginTop="19dp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/ic_pwd"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start"
+            android:hint="@string/password"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+
+        <View
+            android:id="@+id/seperator3"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/et_signup_password"
+            android:background="@color/color_seperator" />
+
+
+        <com.ingic.waterapp.ui.views.AnyEditTextView
+            android:id="@+id/et_signup_confirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/seperator3"
+            android:layout_marginTop="19dp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/ic_pwd"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start"
+            android:hint="@string/confirm_pass"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+
+        <View
+            android:id="@+id/seperator4"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/et_signup_confirmPassword"
+            android:background="@color/color_seperator" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/et_signup_selectSupplier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/seperator4"
+            android:layout_marginTop="19dp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/ic_supplier"
+            android:drawableRight="@drawable/ic_down_arrow"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start"
+            android:text="@string/select_supplier"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator5"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/et_signup_selectSupplier"
+            android:background="@color/color_seperator" />
+
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignStart="@+id/view"
+            android:layout_below="@+id/seperator5"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/login_btn"
+            android:gravity="center"
+            android:text="@string/signup"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_signup_termsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_signup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_20sdp"
+            android:text="By registering you agree to\nTerms &amp; Conditions"
+            android:textColor="@color/login_email_grey"
+            android:textSize="13sp"
+            app:typeface="@string/typeface_light" />
+    </RelativeLayout>
+
+</ScrollView>

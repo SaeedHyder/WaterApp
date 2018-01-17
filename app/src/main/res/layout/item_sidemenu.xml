@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_sideMenu_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:layout_below="@+id/top"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/_2sdp"
+        android:text="Home"
+        android:textColor="@color/login_email_grey"
+        android:textSize="20sp"
+        app:typeface="@string/typeface_regular" />
+</LinearLayout>

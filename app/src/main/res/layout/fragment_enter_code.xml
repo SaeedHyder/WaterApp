@@ -1,0 +1,109 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:fillViewport="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:isScrollContainer="true"
+    android:scrollbars="none"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_16sdp"
+        android:paddingLeft="@dimen/_30sdp"
+        android:paddingRight="@dimen/_30sdp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:src="@drawable/forgot_logo" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_enterPin_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/enter_code"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            app:typeface="@string/typeface_bold" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_enterPin_enterEmailText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_enterPin_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/enter_your_4_digit_code_here"
+            android:textColor="@color/login_text_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+
+        <com.alimuzaffar.lib.pin.PinEntryEditText
+            android:id="@+id/et_enterPin_pinEntryEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_enterPin_enterEmailText"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:cursorVisible="false"
+            android:digits="0123456789"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textColor="@color/login_email_grey"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:pinCharacterSpacing="28dp"
+            app:pinLineColors="@color/color_seperator2"
+            app:pinLineStroke="@dimen/_2sdp"
+            tools:text="95301" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_enterPin_didnotGetCodeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_enterPin_pinEntryEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center_horizontal"
+            android:text="@string/didnot_get_the_code_yet"
+            android:textColor="@color/login_email_grey"
+            android:textSize="12sp"
+            app:typeface="@string/font_thin" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_enterPin_didnotGetCodeText"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@drawable/login_btn"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_4sdp"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
+</ScrollView>

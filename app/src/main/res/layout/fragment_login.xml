@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollview_bigdaddy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:focusableInTouchMode="true"
+    android:isScrollContainer="true"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg"
+        android:paddingBottom="@dimen/_16sdp">
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_login_forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/forgotpassword"
+            android:textColor="@color/login_text_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_regular" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/_40sdp"
+            android:paddingRight="@dimen/_40sdp">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_26sdp"
+                android:layout_marginStart="@dimen/_54sdp"
+                android:layout_marginTop="@dimen/_60sdp"
+                android:src="@drawable/splash_logo" />
+
+
+            <com.ingic.waterapp.ui.views.AnyEditTextView
+                android:id="@+id/et_login_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/logo"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@color/transparent"
+                android:cursorVisible="true"
+                android:drawableLeft="@drawable/ic_email"
+                android:drawablePadding="@dimen/_8sdp"
+                android:gravity="start"
+                android:hint="@string/email"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingLeft="@dimen/_4sdp"
+                android:paddingRight="@dimen/_4sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:singleLine="true"
+                android:textColor="@color/login_email_grey"
+                android:textColorHint="@color/login_email_grey"
+                android:textSize="14sp"
+                app:testErrorString="@string/error_email_address_not_valid"
+                app:testType="email"
+                app:typeface="@string/typeface_light" />
+
+            <View
+                android:id="@+id/seperator1"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/et_login_email"
+                android:background="@color/color_seperator" />
+
+            <com.ingic.waterapp.ui.views.AnyEditTextView
+                android:id="@+id/et_login_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/seperator1"
+                android:layout_marginTop="19dp"
+                android:background="@color/transparent"
+                android:cursorVisible="true"
+                android:drawableLeft="@drawable/ic_pwd"
+                android:drawablePadding="@dimen/_8sdp"
+                android:gravity="start"
+                android:hint="@string/password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingLeft="@dimen/_4sdp"
+                android:paddingRight="@dimen/_4sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:singleLine="true"
+                android:textColor="@color/login_email_grey"
+                android:textColorHint="@color/login_email_grey"
+                android:textSize="14sp"
+                app:typeface="@string/typeface_light" />
+
+
+            <View
+                android:id="@+id/seperator2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/et_login_password"
+                android:background="@color/color_seperator" />
+
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_below="@+id/view"
+                android:layout_marginTop="19dp"
+                android:background="@drawable/login_btn"
+                android:gravity="center"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_login_signup"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_below="@+id/btn_login"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/signupbtn"
+                android:gravity="center"
+                android:text="@string/signup"
+                android:textAllCaps="false"
+                android:textColor="@color/blue_theme"
+                android:textSize="16sp" />
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/tv_login_connectVia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_login_signup"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/_4sdp"
+                android:text="@string/connect_via"
+                android:textColor="@color/login_grey"
+                android:textSize="12sp"
+                app:typeface="@string/typeface_light" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="@dimen/_64sdp"
+                android:layout_height="0.8dp"
+                android:layout_alignTop="@+id/view2"
+                android:layout_toStartOf="@+id/tv_login_connectVia"
+                android:background="@color/login_grey" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="@dimen/_64sdp"
+                android:layout_height="0.8dp"
+                android:layout_below="@id/btn_login_signup"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_toEndOf="@+id/tv_login_connectVia"
+                android:background="@color/login_grey" />
+
+            <LinearLayout
+                android:id="@+id/ll_socialBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/tv_login_connectVia"
+                android:weightSum="1"
+                >
+
+                <Button
+                    android:id="@+id/btn_login_fb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@drawable/fbbtn"
+                    android:gravity="center"
+                    android:text="@string/facebook"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_login_google"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_marginLeft="-1dp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@drawable/googlebtn"
+                    android:gravity="center"
+                    android:text="@string/google"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/tv_login_guest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_socialBtn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/_4sdp"
+                android:text="@string/guest_login"
+                android:textColor="@color/login_email_grey"
+                android:textSize="12sp"
+                app:typeface="@string/typeface_light" />
+
+            <View
+                android:layout_width="@dimen/_64sdp"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/tv_login_guest"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-5dp"
+                android:background="@color/login_grey" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

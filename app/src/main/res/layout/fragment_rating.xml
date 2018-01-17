@@ -1,0 +1,104 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    tools:context="com.ingic.waterapp.fragments.RatingFragment">
+
+    <LinearLayout
+        android:id="@+id/rl_bottle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_18sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_bottle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bottle" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_rating_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@color/transparent"
+            android:lineSpacingExtra="@dimen/_20sdp"
+            android:text="Aquafina"
+            android:textColor="@color/rating_grey"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:typeface="@string/typeface_bold" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_rating_serviceRatingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@color/transparent"
+            android:text="@string/service_rating"
+            android:textColor="@color/forgot_grey"
+            android:textSize="20sp"
+            app:typeface="@string/typeface_regular" />
+
+        <com.ingic.waterapp.ui.views.CustomRatingBar
+            android:id="@+id/rb_serviceRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_2sdp"
+            app:maxStars="5"
+            app:starOff="@drawable/star_unselected"
+            app:starOn="@drawable/star_selected"
+            app:starPadding="4dp"
+            app:stars="3"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_rating_companyRatingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:text="@string/company_rating"
+            android:textColor="@color/forgot_grey"
+            android:textSize="20sp"
+            app:typeface="@string/typeface_regular"
+            />
+
+        <com.ingic.waterapp.ui.views.CustomRatingBar
+            android:id="@+id/rb_companyRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_2sdp"
+            app:maxStars="5"
+            app:starOff="@drawable/star_unselected"
+            app:starOn="@drawable/star_selected"
+            app:starPadding="4dp"
+            app:stars="3"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_36sdp"
+            android:layout_marginBottom="@dimen/_36sdp"
+            android:background="@drawable/login_btn"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+</ScrollView>
