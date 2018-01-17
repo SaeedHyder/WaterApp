@@ -127,7 +127,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
     public void onItemClick(View view, int position) {
         //sideMenu click events for non registered user
         if (Util.doubleClickCheck()) {
-//            getDockActivity().closeResideMenu();
+            getDockActivity().closeResideMenu();
 
             switch (position) {
                 case 0:

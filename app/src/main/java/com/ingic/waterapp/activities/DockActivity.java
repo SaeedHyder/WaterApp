@@ -16,7 +16,6 @@ import com.ingic.waterapp.fragments.HomeFragment;
 import com.ingic.waterapp.fragments.SideMenuFragment;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.helpers.BasePreferenceHelper;
-import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.LoadingListener;
 import com.ingic.waterapp.residemenu.ResideMenu;
 import com.ingic.waterapp.ui.dialogs.DialogFactory;
@@ -49,8 +48,6 @@ public abstract class DockActivity extends AppCompatActivity implements
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
         public void openMenu() {
-            UIHelper.showShortToastInCenter(DockActivity.this, "openmenu");
-
         }
 
         @Override
