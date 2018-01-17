@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.HomeFragment;
 import com.ingic.waterapp.fragments.LoginFragment;
@@ -159,6 +160,8 @@ public class MainActivity extends DockActivity implements OnClickListener {
 
     public void initFragment() {
         getSupportFragmentManager().addOnBackStackChangedListener(getListener());
+//        replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
+
         if (prefHelper.isLogin()) {
             replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
         } else {
