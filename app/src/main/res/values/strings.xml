@@ -133,6 +133,8 @@
     <string name="products">Products</string>
     <string name="review">Review</string>
 
+    <string name="please_wait">Please Wait...</string>
+
     <!--Logout-->
     <string name="message_logout">Are you sure you want\nto logout?</string>
     <string name="yes">Yes</string>

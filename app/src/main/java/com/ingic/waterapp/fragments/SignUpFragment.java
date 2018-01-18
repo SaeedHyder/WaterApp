@@ -10,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
@@ -75,6 +78,10 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         setListeners();
+
+        serviceHelper.enqueueCall(webService.getCompany(),
+                WebServiceConstants.getCompanies);
+
     }
 
     @Override
@@ -92,6 +99,19 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 //                    login(etEmail.getText().toString(),
 //                            etPassword.getText().toString());
                     launchHomeFragment(AppConstants.REGISTERED_USER);
+
+                    //String token = FirebaseInstanceId.getInstance().getToken();
+                    String token = "sadad";
+
+                    serviceHelper.enqueueCall(webService.signUp(etName.getText().toString(),
+                            etEmail.getText().toString(),
+                            etPassword.getText().toString(),
+                            etConfirmPassword.getText().toString(),
+                            "",
+                            AppConstants.Device_Type,
+                            token),
+                            WebServiceConstants.signUp);
+
                 }
                 break;
             case R.id.tv_profile_selectSupplier:
@@ -102,6 +122,21 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 break;
         }
     }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag){
+
+            case WebServiceConstants.signUp:
+
+                break;
+
+            case WebServiceConstants.getCompanies:
+
+                break;
+        }
+    }
+
 
     private void openDialog() {
         final CharSequence[] items = {

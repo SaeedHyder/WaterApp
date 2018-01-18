@@ -97,8 +97,8 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
 						.getWindow().getDecorView() );
 		
 	}
-	
-	protected void loadingStarted() {
+
+	public void loadingStarted() {
 		
 		if ( getParentFragment() != null )
 			((LoadingListener) getParentFragment()).onLoadingStarted();
@@ -108,7 +108,7 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
 		isLoading = true;
 	}
 	
-	protected void loadingFinished() {
+	public void loadingFinished() {
 		
 		if ( getParentFragment() != null )
 			((LoadingListener) getParentFragment()).onLoadingFinished();
