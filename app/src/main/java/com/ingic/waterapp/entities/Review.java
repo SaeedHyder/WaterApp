@@ -14,16 +14,19 @@ public class Review {
     private int companyId;
     @SerializedName("service_rate")
     @Expose
-    private String serviceRate;
+    private int serviceRate;
     @SerializedName("company_rate")
     @Expose
-    private String companyRate;
+    private int companyRate;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("company_detail")
+    @Expose
+    private CompanyDetail companyDetail;
 
     public int getId() {
         return id;
@@ -41,19 +44,19 @@ public class Review {
         this.companyId = companyId;
     }
 
-    public String getServiceRate() {
+    public int getServiceRate() {
         return serviceRate;
     }
 
-    public void setServiceRate(String serviceRate) {
+    public void setServiceRate(int serviceRate) {
         this.serviceRate = serviceRate;
     }
 
-    public String getCompanyRate() {
+    public int getCompanyRate() {
         return companyRate;
     }
 
-    public void setCompanyRate(String companyRate) {
+    public void setCompanyRate(int companyRate) {
         this.companyRate = companyRate;
     }
 
@@ -71,6 +74,14 @@ public class Review {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public CompanyDetail getCompanyDetail() {
+        return companyDetail;
+    }
+
+    public void setCompanyDetail(CompanyDetail companyDetail) {
+        this.companyDetail = companyDetail;
     }
 
 }

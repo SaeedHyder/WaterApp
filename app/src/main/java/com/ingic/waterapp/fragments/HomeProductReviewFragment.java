@@ -71,19 +71,17 @@ public class HomeProductReviewFragment extends BaseFragment {
 
         if (companyDetails != null && companyDetails.getProduct().size() > 0) {
 
-            if (companyDetails.getProduct().get(0) != null && companyDetails.getProduct().get(0).getProductPicture().length() > 0) {
+            if (companyDetails.getReview().getCompanyDetail().getProfileImage() != null && companyDetails.getReview().getCompanyDetail().getProfileImage().length() > 0) {
                 Picasso.with(getDockActivity())
-                        .load(companyDetails.getProduct().get(0).getProductPicture())
+                        .load(companyDetails.getReview().getCompanyDetail().getProfileImage())
                         .into(imgBottle);
             }
 
             tvRatingTitle.setText(companyDetails.getName());
 
-            if (companyDetails.getReview().getServiceRate() != null && companyDetails.getReview().getServiceRate().length() > 0)
-                rbServiceRating.setScore(Float.parseFloat(companyDetails.getReview().getServiceRate()));
+            rbServiceRating.setScore(companyDetails.getReview().getServiceRate());
 
-            if (companyDetails.getReview().getCompanyRate() != null && companyDetails.getReview().getCompanyRate().length() > 0)
-                rbCompanyRating.setScore(Float.parseFloat(companyDetails.getReview().getCompanyRate()));
+            rbCompanyRating.setScore(companyDetails.getReview().getCompanyRate());
 
         }
 

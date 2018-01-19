@@ -54,9 +54,9 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
                 crossLine.setVisibility(View.GONE);
             }
 
-            if(item.getProductPicture()!= null && item.getProductPicture().length() > 0) {
+            if(item.getProductImage()!= null && item.getProductImage().length() > 0) {
                 Picasso.with(context)
-                        .load(item.getProductPicture())
+                        .load(item.getProductImage())
                         .into(img_bottle);
             }
 

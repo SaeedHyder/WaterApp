@@ -39,6 +39,9 @@ public class Product {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("product_image")
+    @Expose
+    private String productImage;
 
     public int getId() {
         return id;
@@ -126,6 +129,14 @@ public class Product {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
 }
