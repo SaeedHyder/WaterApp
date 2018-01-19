@@ -1,5 +1,6 @@
 package com.ingic.waterapp.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.DialogHelper;
 import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.SideMenuAdapter;
@@ -22,6 +25,7 @@ import com.ingic.waterapp.ui.dialogs.DialogFactory;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,6 +125,18 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
         Collections.addAll(sideMenuList, userMenuList);
         adapter.addAll(sideMenuList);
 
+
+        if(prefHelper.getUser() != null) {
+
+            tvProfileName.setText(prefHelper.getUser().getFullName());
+
+            if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
+                Picasso.with(getDockActivity())
+                        .load(prefHelper.getUser().getProfileImage())
+                        .into(imgProfile);
+            }
+        }
+
     }
 
     @Override
@@ -148,15 +164,45 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
                     getDockActivity().replaceDockableFragment(ContactUsFragment.newInstance(), ContactUsFragment.class.getSimpleName());
                     break;
                 case 5:
-                    DialogFactory.createCustomDialog(getDockActivity(), new View.OnClickListener() {
+
+                    /*final Dialog dialog = DialogFactory.createCustomDialog(getDockActivity(), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            prefHelper.setLoginStatus(false);
-                            getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
-                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
+                            dialog.dismiss();
+
+                            serviceHelper.enqueueCall(webService.logout(prefHelper.getUser().getToken()),
+                                    WebServiceConstants.logOut);
+
 
                         }
-                    }, getResources().getString(R.string.logout), getResources().getString(R.string.message_logout)).show();
+                    }, getResources().getString(R.string.logout), getResources().getString(R.string.message_logout));
+
+                    dialog.show();*/
+
+                    final DialogHelper logoutdialog = new DialogHelper(getDockActivity());
+                    logoutdialog.initlogout(R.layout.logout_dialog,getResources().getString(R.string.logout), getResources().getString(R.string.message_logout) ,new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            logoutdialog.hideDialog();
+
+                            serviceHelper.enqueueCall(webService.logout(prefHelper.getUser().getToken()),
+                                    WebServiceConstants.logOut);
+
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getMainActivity().getResideMenu().closeMenu();
+                            logoutdialog.hideDialog();
+                        }
+                    });
+                    logoutdialog.setCancelable(false);
+                    logoutdialog.showDialog();
+
+
+
                     break;
                 default:
                     break;
@@ -164,6 +210,21 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
         }
 
     }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+
+            case WebServiceConstants.logOut:
+                getMainActivity().getResideMenu().closeMenu();
+                prefHelper.setLoginStatus(false);
+                prefHelper.putUser(null);
+                getDockActivity().popBackStackTillEntry(0);
+                getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
+                break;
+        }
+    }
+
 
     public class SideMenuModel {
         private int icon;

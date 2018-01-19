@@ -9,6 +9,8 @@ import android.widget.Button;
 
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
@@ -53,7 +55,6 @@ public class SetNewPasswordFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (checkPassword()) {
-                    getDockActivity().popBackStackTillEntry(1);
                     changePassword(etNewPassword.getText().toString(),
                             etConfirmNewPassword.getText().toString());
                 }
@@ -64,6 +65,20 @@ public class SetNewPasswordFragment extends BaseFragment {
 
     private void changePassword(String newPwd, String confirmNewPwd) {
 
+        serviceHelper.enqueueCall(webService.ForgotChangePassword(newPwd.toString(),confirmNewPwd,prefHelper.getUser().getToken()),
+                WebServiceConstants.forgotPassword);
+
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag){
+
+            case WebServiceConstants.forgotPassword:
+                UIHelper.showLongToastInCenter(getDockActivity(),getString(R.string.pasword_change_sucess));
+                getDockActivity().popBackStackTillEntry(1);
+                break;
+        }
     }
 
     private boolean checkPassword() {

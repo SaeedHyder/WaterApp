@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.ingic.waterapp.entities.UserEnt;
+import com.ingic.waterapp.retrofit.GsonFactory;
+
 
 public class BasePreferenceHelper extends PreferenceHelper {
 
     private static final String KEY_LOGIN_TYPE = "keyLoginType";
     private Context context;
+
+    private static final String KEY_USER = "key_user";
 
     protected static final String KEY_LOGIN_STATUS = "islogin";
 
@@ -57,6 +62,16 @@ public class BasePreferenceHelper extends PreferenceHelper {
 
     public void setNotificationCount(int count) {
         putIntegerPreference(context, FILENAME, NotificationCount, count);
+    }
+
+    public UserEnt getUser() {
+        return GsonFactory.getConfiguredGson().fromJson(
+                getStringPreference(context, FILENAME, KEY_USER), UserEnt.class);
+    }
+
+    public void putUser(UserEnt user) {
+        putStringPreference(context, FILENAME, KEY_USER, GsonFactory
+                .getConfiguredGson().toJson(user));
     }
 
 

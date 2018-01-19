@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "428616761570",
-    "firebase_url": "https://thirdeye-c0ecd.firebaseio.com",
-    "project_id": "thirdeye-c0ecd",
-    "storage_bucket": "thirdeye-c0ecd.appspot.com"
+    "project_number": "120831459252",
+    "firebase_url": "https://water-app-1516025446140.firebaseio.com",
+    "project_id": "water-app-1516025446140",
+    "storage_bucket": "water-app-1516025446140.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:428616761570:android:43b5608f6a574472",
+        "mobilesdk_app_id": "1:120831459252:android:5f3c386e802bcefa",
         "android_client_info": {
-          "package_name": "com.app.thirdeye"
+          "package_name": "com.ingic.waterapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "428616761570-445srleh0ag530hd2s1n5g29hr2fote8.apps.googleusercontent.com",
+          "client_id": "120831459252-cot5js19opqf8id3j97i6jmjv47n9maj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ingic.waterapp",
+            "certificate_hash": "68e91fbdaa381c3899c2a14e1969e3ad1465d71f"
+          }
+        },
+        {
+          "client_id": "120831459252-cg6193qslmm24rdtkpobl00l1vv3252l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD2svVcQ7E4PbvYti8ebwdY3EzgBr8JvQU"
+          "current_key": "AIzaSyD8vJMBd-h3E5FSOFOQ5kBFJ-cyPrGkHNo"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120831459252-cg6193qslmm24rdtkpobl00l1vv3252l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

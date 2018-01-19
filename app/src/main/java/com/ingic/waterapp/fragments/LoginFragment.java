@@ -7,21 +7,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.facebook.CallbackManager;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
 import com.ingic.waterapp.annotation.RestAPI;
+import com.ingic.waterapp.entities.CompanyEnt;
+import com.ingic.waterapp.entities.FacebookLoginEnt;
+import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.FacebookLoginHelper;
+import com.ingic.waterapp.helpers.GoogleHelper;
+import com.ingic.waterapp.helpers.InternetHelper;
+import com.ingic.waterapp.interfaces.FacebookLoginListener;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class LoginFragment extends BaseFragment implements View.OnClickListener {
+public class LoginFragment extends BaseFragment implements View.OnClickListener, GoogleHelper.GoogleHelperInterfce, FacebookLoginListener {
+
+    private static final int RC_SIGN_IN = 007;
 
     Unbinder unbinder;
     @BindView(R.id.tv_login_forgotPassword)
@@ -41,6 +56,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     @BindView(R.id.tv_login_guest)
     AnyTextView btnGuest;
 
+    private FacebookLoginHelper facebookLoginHelper;
+    private CallbackManager callbackManager;
+    private GoogleHelper googleHelper;
+    private String mSocialMediaPlatform = "";
+    private String mSocialMediaID = "";
 
     public LoginFragment() {
         // Required empty public constructor
@@ -80,6 +100,22 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         setListeners();
+
+        setupGoogleSignup();
+        setupFacebookLogin();
+    }
+
+    private void setupGoogleSignup() {
+        googleHelper = GoogleHelper.getInstance();
+        googleHelper.setGoogleHelperInterface(this);
+        googleHelper.configGoogleApiClient(this);
+    }
+
+    private void setupFacebookLogin() {
+        callbackManager = CallbackManager.Factory.create();
+        // btnfbLogin.setFragment(this);
+        facebookLoginHelper = new FacebookLoginHelper(getDockActivity(), this, this);
+        LoginManager.getInstance().registerCallback(callbackManager, facebookLoginHelper);
     }
 
     @Override
@@ -87,18 +123,27 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btn_login:
                 if (isValidate()) {
-                    login(etEmail.getText().toString(),
-                            etPassword.getText().toString());
-                    launchMainActivity(AppConstants.REGISTERED_USER);
+
+                    //String token = FirebaseInstanceId.getInstance().getToken();
+                    String token = "sadad";
+
+                    serviceHelper.enqueueCall(webService.login(
+                            etEmail.getText().toString(),
+                            etPassword.getText().toString(),
+                            AppConstants.Device_Type,
+                            token),
+                            WebServiceConstants.signIn);
 
                 }
                 break;
             case R.id.tv_login_guest:
                 launchMainActivity(AppConstants.GUEST_USER);
+                break;
             case R.id.btn_login_fb:
-                launchMainActivity(AppConstants.REGISTERED_USER);
+                LoginManager.getInstance().logInWithReadPermissions(LoginFragment.this, facebookLoginHelper.getPermissionNeeds());
+                break;
             case R.id.btn_login_google:
-                launchMainActivity(AppConstants.REGISTERED_USER);
+                googleHelper.intentGoogleSign();
                 break;
             case R.id.tv_login_forgotPassword:
                 getDockActivity().replaceDockableFragment(EmailForgotPasswordFragment.newInstance(), EmailForgotPasswordFragment.class.getSimpleName());
@@ -107,6 +152,18 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 getDockActivity().replaceDockableFragment(SignUpFragment.newInstance(), SignUpFragment.class.getSimpleName());
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+
+            case WebServiceConstants.signIn:
+                UserEnt userEnt = (UserEnt)result;
+                prefHelper.putUser(userEnt);
+                launchMainActivity(AppConstants.REGISTERED_USER);
                 break;
         }
     }
@@ -142,5 +199,82 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         super.onResume();
         if (getDockActivity().getResideMenu() != null)
             getDockActivity().closeResideMenu();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            googleHelper.handleGoogleResult(requestCode, resultCode, data);
+        } else
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        googleHelper.ConnectGoogleAPi();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        googleHelper.DisconnectGoogleApi();
+    }
+
+    private void clearViews() {
+        etEmail.setText("");
+        etPassword.setText("");
+    }
+
+    @Override
+    public void onGoogleSignInResult(GoogleSignInAccount result) {
+        clearViews();
+        String Name = result.getDisplayName();
+        String Email = result.getEmail();
+
+        String Image = "";
+        if(result.getPhotoUrl()!= null)
+            Image = result.getPhotoUrl().toString();
+
+        mSocialMediaPlatform = WebServiceConstants.PLATFORM_GOOGLE;
+        mSocialMediaID = result.getId();
+
+        if (mSocialMediaID != null && mSocialMediaID.length() > 0) {
+            if (InternetHelper.CheckInternetConectivityandShowToast(getDockActivity()))
+                socialMediaSignIn(mSocialMediaID, mSocialMediaPlatform, Name, Email, Image);
+        }
+
+    }
+
+    @Override
+    public void onSuccessfulFacebookLogin(FacebookLoginEnt LoginEnt) {
+        clearViews();
+        String Name = LoginEnt.getFacebookFullName();
+        String Email = LoginEnt.getFacebookEmail() == null ? "" : LoginEnt.getFacebookEmail();
+        String Image = LoginEnt.getFacebookUProfilePicture();
+        mSocialMediaPlatform = WebServiceConstants.PLATFORM_FACEBOOK;
+        mSocialMediaID = LoginEnt.getFacebookUID();
+
+        if (mSocialMediaID != null && mSocialMediaID.length() > 0) {
+            if (InternetHelper.CheckInternetConectivityandShowToast(getDockActivity()))
+                socialMediaSignIn(mSocialMediaID, mSocialMediaPlatform, Name, Email, Image);
+        }
+    }
+
+    private void socialMediaSignIn(final String SocialMediaId, final String SocialMediaPlatform, final String Name, final String Email, final String Image) {
+
+        //String token = FirebaseInstanceId.getInstance().getToken();
+        String token = "sadad";
+
+        serviceHelper.enqueueCall(webService.userFacebookLogin(
+                mSocialMediaID,
+                mSocialMediaPlatform,
+                Name,
+                Email,
+                AppConstants.Device_Type,
+                token),
+                WebServiceConstants.signIn);
     }
 }

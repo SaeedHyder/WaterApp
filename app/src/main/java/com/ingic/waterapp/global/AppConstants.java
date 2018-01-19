@@ -23,5 +23,14 @@ public class AppConstants {
     public static String DateFormat_HM = "HH:mm";
     public static String DateFormat_YMDHMS = "yyyy-MM-dd HH:mm:ss";
 
+// <<<<<<< HEAD
     public static String fragment = "myFrag";
+// =======
+
+    public static String select_product = "select_product";
+    public static String all_product = "all_product";
+
+    public static String CompanyDetails = "CompanyDetails";
+
+// >>>>>>> c03a76523bb6e679e4ab8de70ec1d4c6299f85c7
 }

@@ -10,12 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.CompanyEnt;
+import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +47,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     AnyTextView tvSelectSupplier;
     @BindView(R.id.btn_signup)
     Button btnSignUp;
+
+    List<CompanyEnt> companyEnts;
+    int companyId = -1;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -75,6 +86,10 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         setListeners();
+
+        serviceHelper.enqueueCall(webService.getCompany(),
+                WebServiceConstants.getCompanies);
+
     }
 
     @Override
@@ -89,41 +104,89 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.btn_signup:
                 if (isValidate()) {
-//                    login(etEmail.getText().toString(),
-//                            etPassword.getText().toString());
-                    launchHomeFragment(AppConstants.REGISTERED_USER);
+                    //String token = FirebaseInstanceId.getInstance().getToken();
+                    String token = "sadad";
+
+                    serviceHelper.enqueueCall(webService.signUp(etName.getText().toString(),
+                            etEmail.getText().toString(),
+                            etPassword.getText().toString(),
+                            etConfirmPassword.getText().toString(),
+                            companyId+"",
+                            AppConstants.Device_Type,
+                            token),
+                            WebServiceConstants.signUp);
+
                 }
                 break;
-            case R.id.tv_signup_selectSupplier:
+// <<<<<<< HEAD
+//             case R.id.tv_signup_selectSupplier:
+// =======
+            case R.id.et_signup_selectSupplier:
+// >>>>>>> c03a76523bb6e679e4ab8de70ec1d4c6299f85c7
                 openDialog();
-
                 break;
             default:
                 break;
         }
     }
 
-    private void openDialog() {
-        final CharSequence[] items = {
-                "Aquafina", "Nestle Waters", "Romana Mineral Water"
-        };
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getDockActivity());
-        builder.setTitle("Select Supplier");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                // Do something with the selection
-                tvSelectSupplier.setText(items[item]);
+            case WebServiceConstants.signUp:
+                UserEnt userEnt = (UserEnt)result;
+                prefHelper.putUser(userEnt);
+                launchHomeFragment(AppConstants.REGISTERED_USER);
+                break;
+
+            case WebServiceConstants.getCompanies:
+                companyId = -1;
+                companyEnts = (List<CompanyEnt>)result;
+
+                break;
+        }
+    }
+
+
+    private void openDialog() {
+
+        if(companyEnts != null) {
+            final CharSequence[] items = new CharSequence[companyEnts.size()];
+            for (int i = 0; i < companyEnts.size(); i++) {
+                items[i] = companyEnts.get(i).getFullName();
             }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+// <<<<<<< HEAD
+//         });
+//         AlertDialog alert = builder.create();
+//         alert.show();
+// =======
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getDockActivity());
+            builder.setTitle(R.string.select_supplier);
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int pos) {
+                    tvSelectSupplier.setText(items[pos]);
+                    companyId = companyEnts.get(pos).getId();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }else{
+            serviceHelper.enqueueCall(webService.getCompany(),
+                    WebServiceConstants.getCompanies);
+        }
+
+// >>>>>>> c03a76523bb6e679e4ab8de70ec1d4c6299f85c7
     }
 
     private boolean isValidate() {
         if (etName.testValidity() && etEmail.testValidity() && etPassword.testValidity()) {
             if (checkPassword()) {
-                return true;
+                if(companyId != -1)
+                    return true;
+                else
+                    UIHelper.showLongToastInCenter(getDockActivity(),getString(R.string.please_select_company));
             }
         }
         return false;

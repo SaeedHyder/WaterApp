@@ -10,7 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.AppConstants;
+import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
@@ -107,14 +110,27 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 break;
             case R.id.tv_profile_selectSupplier:
                 break;
+
             case R.id.img_profile_camera:
-                notImplemented();
+
+
                 break;
             case R.id.btn_profile_update:
-                if (isValidate())
-                    notImplemented();
+                if (isValidate()){
+
+                }
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+
+            case WebServiceConstants.updateProfile:
+
                 break;
         }
     }
