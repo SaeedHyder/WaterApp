@@ -16,11 +16,13 @@ public class TitleBar extends RelativeLayout {
     private TextView txtTitle;
     private ImageView btnLeft;
     private ImageView btnRight;
+    private ImageView btnCart;
 
 
     private View.OnClickListener menuButtonListener;
     private OnClickListener backButtonListener;
     private OnClickListener notificationButtonListener;
+    private OnClickListener cartButtonListener;
 
     private Context context;
 
@@ -53,6 +55,7 @@ public class TitleBar extends RelativeLayout {
         txtTitle = (TextView) this.findViewById(R.id.txt_subHead);
         btnRight = (ImageView) this.findViewById(R.id.btnRight);
         btnLeft = (ImageView) this.findViewById(R.id.btnLeft);
+        btnCart = (ImageView) this.findViewById(R.id.btnCart);
     }
 
     private void initLayout(Context context) {
@@ -65,25 +68,30 @@ public class TitleBar extends RelativeLayout {
 
     public void clearHeaderBackround() {
         layoutHeader.setBackgroundColor(getResources().getColor(R.color.white));
-
     }
 
     public void hideButtons() {
         txtTitle.setVisibility(View.INVISIBLE);
         btnLeft.setVisibility(View.INVISIBLE);
         btnRight.setVisibility(View.INVISIBLE);
+        btnCart.setVisibility(View.INVISIBLE);
     }
 
     public void showBackButton() {
         btnLeft.setVisibility(View.VISIBLE);
         btnLeft.setOnClickListener(backButtonListener);
         btnLeft.setImageResource(R.drawable.ic_back);
+        layoutHeader.setBackgroundResource(R.drawable.header);
     }
 
     public void showMenuButton() {
         btnLeft.setVisibility(View.VISIBLE);
         btnLeft.setOnClickListener(menuButtonListener);
         btnLeft.setImageResource(R.drawable.ic_nav);
+        btnRight.setVisibility(View.VISIBLE);
+        btnCart.setVisibility(View.VISIBLE);
+        btnRight.setOnClickListener(notificationButtonListener);
+        btnCart.setOnClickListener(cartButtonListener);
     }
 
     public void setSubHeading(String heading) {
@@ -105,5 +113,13 @@ public class TitleBar extends RelativeLayout {
 
     public void setBackButtonListener(View.OnClickListener listener) {
         backButtonListener = listener;
+    }
+
+    public void setNotificationButtonListener(View.OnClickListener listener) {
+        notificationButtonListener = listener;
+    }
+
+    public void setCartButtonListener(View.OnClickListener listener) {
+        cartButtonListener = listener;
     }
 }

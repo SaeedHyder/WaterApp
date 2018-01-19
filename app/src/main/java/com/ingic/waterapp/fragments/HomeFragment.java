@@ -155,6 +155,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showMenuButton();
+        titleBar.showMenuButton();
+
         titleBar.clearHeaderBackround();
     }
 

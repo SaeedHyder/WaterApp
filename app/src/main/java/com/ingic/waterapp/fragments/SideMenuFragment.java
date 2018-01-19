@@ -155,10 +155,10 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
 
                     break;
                 case 1:
-                    comingSoon();
+                    getDockActivity().replaceDockableFragment(MyOrdersFragment.newInstance(), MyOrdersFragment.class.getSimpleName());
                     break;
                 case 2:
-                    comingSoon();
+                    getDockActivity().replaceDockableFragment(CompaniesListFragment.newInstance(), CompaniesListFragment.class.getSimpleName());
                     break;
                 case 3:
                     getDockActivity().replaceDockableFragment(AboutFragment.newInstance(), AboutFragment.class.getSimpleName());

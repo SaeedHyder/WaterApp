@@ -43,7 +43,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     AnyEditTextView etPassword;
     @BindView(R.id.et_signup_confirmPassword)
     AnyEditTextView etConfirmPassword;
-    @BindView(R.id.et_signup_selectSupplier)
+    @BindView(R.id.tv_signup_selectSupplier)
     AnyTextView tvSelectSupplier;
     @BindView(R.id.btn_signup)
     Button btnSignUp;
@@ -118,7 +118,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
                 }
                 break;
-            case R.id.et_signup_selectSupplier:
+
+            case R.id.tv_signup_selectSupplier:
                 openDialog();
                 break;
             default:
@@ -152,6 +153,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             for (int i = 0; i < companyEnts.size(); i++) {
                 items[i] = companyEnts.get(i).getFullName();
             }
+// <<<<<<< HEAD
+//         });
+//         AlertDialog alert = builder.create();
+//         alert.show();
+// =======
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getDockActivity());
             builder.setTitle(R.string.select_supplier);
@@ -168,6 +174,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                     WebServiceConstants.getCompanies);
         }
 
+// >>>>>>> c03a76523bb6e679e4ab8de70ec1d4c6299f85c7
     }
 
     private boolean isValidate() {

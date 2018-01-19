@@ -94,6 +94,19 @@ public class MainActivity extends DockActivity implements OnClickListener {
             }
         });
 
+        titleBar.setNotificationButtonListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNotification();
+            }
+        });
+        titleBar.setCartButtonListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCart();
+            }
+        });
+
         if (savedInstanceState == null)
             initFragment();
 

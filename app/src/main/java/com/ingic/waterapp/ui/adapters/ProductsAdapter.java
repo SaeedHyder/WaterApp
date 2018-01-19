@@ -63,9 +63,30 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
             tv_waterBottle_amount.setText(item.getProductAmount());
             tv_waterBottle_name.setText(item.getProductName());
 
+// <<<<<<< HEAD
+//            img.setImageBitmap(ImageLoaderHelper.getRoundedBitmap(getContext() ,getContext().getResources().getDrawable(R.drawable.placeholder_image)));
+//            img.setBackgroundResource(item.getPicture());
+//            TextViewHelper.setText(textTitle,item.getName());
+//            TextViewHelper.setText(textDesc,item.getDesc());
         }
     }
 
+//    @Override
+//    protected void bindView(ServicesFragment.ServicesModel item, RecyclerviewViewHolder viewHolder) {
+//        if (item != null) {
+//            final int position = viewHolder.getAdapterPosition();
+//            ImageView img = (ImageView) viewHolder.getView(R.id.img_itemNews);
+//            TextView textTitle = (TextView) viewHolder.getView(R.id.tv_itemNews_title);
+//            TextView textDesc = (TextView) viewHolder.getView(R.id.tv_itemNews_description);
+//
+//            textDesignation.setVisibility(View.VISIBLE);
+//            img.setBackgroundResource(item.getPicture());
+//            TextViewHelper.setText(textTitle,item.getName());
+//            TextViewHelper.setText(textDesc,item.getDesc());
+//        }
+//    }
+
+// =======
     @Override
     protected int bindItemViewType(int position) {
         return 0;

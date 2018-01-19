@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/_16sdp"
+    android:paddingRight="@dimen/_20sdp">
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_item_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seperator2"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="left"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:textColor="@color/login_email_grey"
+        android:textSize="14sp"
+        app:typeface="@string/typeface_regular"
+        tools:text="ksjdkjsdk" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seperator2"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="left"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:text="08 May, 2017"
+        android:textColor="@color/home_dark_blue"
+        android:textSize="10sp"
+        app:typeface="@string/typeface_regular" />
+    <!--
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_item_notification"
+            android:background="@color/color_seperator" />-->
+</LinearLayout>

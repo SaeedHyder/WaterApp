@@ -1,0 +1,222 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ingic.waterapp.fragments.CartFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/seperator"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/rv_cart"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/color_seperator2" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seperator"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="@string/cost"
+            android:textColor="@color/login_email_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_regular" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_cart_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seperator"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="AED 40.00"
+            android:textColor="@color/blue_theme"
+            android:textSize="18sp"
+            app:typeface="@string/typeface_regular" />
+
+        <View
+            android:id="@+id/seperator1"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/tv_cart_cost"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/color_seperator2" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seperator1"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="@string/service_charges"
+            android:textColor="@color/login_email_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_regular" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_cart_serviceCharges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seperator1"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="AED 02.00"
+            android:textColor="@color/blue_theme"
+            android:textSize="18sp"
+            app:typeface="@string/typeface_regular" />
+
+        <View
+            android:id="@id/seperator2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/tv_cart_serviceCharges"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/color_seperator2" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seperator2"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="Vat Tax (%5)"
+            android:textColor="@color/login_email_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_regular" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_cart_vatTax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seperator2"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="AED 02.00"
+            android:textColor="@color/blue_theme"
+            android:textSize="18sp"
+            app:typeface="@string/typeface_regular" />
+
+        <View
+            android:id="@id/seperator3"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/tv_cart_vatTax"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/color_seperator2" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seperator3"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="@string/total"
+            android:textColor="@color/login_email_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_regular" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_cart_BottleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seperator3"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="AED 42.00"
+            android:textColor="@color/blue_theme"
+            android:textSize="18sp"
+            app:typeface="@string/typeface_bold" />
+
+        <View
+            android:id="@id/seperator4"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/tv_cart_BottleName"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@color/color_seperator2" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_cart_deliveryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seperator4"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center_horizontal"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="@string/your_first_delivery_would_reach_text"
+            android:textColor="@color/login_email_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_regular" />
+
+        <Button
+            android:id="@+id/btn_cart_proceed"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_below="@+id/tv_cart_deliveryText"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_46sdp"
+            android:layout_marginRight="@dimen/_46sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/login_btn"
+            android:text="@string/proceed_to_checkout"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+</ScrollView>

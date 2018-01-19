@@ -4,15 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.ingic.waterapp.R;
+import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 
-//Only for use case of Generic @RecyclerViewListAdapter
-public class NotificationsAdapter extends RecyclerViewListAdapter<Object> {
+public class NotificationsListAdapter extends RecyclerViewListAdapter<String> {
     private Context context;
 
-    public NotificationsAdapter(Context context, OnViewHolderClick listener) {
+    public NotificationsListAdapter(Context context, OnViewHolderClick listener) {
         super(context, listener);
         this.context = context;
     }
@@ -20,15 +22,15 @@ public class NotificationsAdapter extends RecyclerViewListAdapter<Object> {
     @Override
     protected View createView(Context context, ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        return inflater.inflate(R.layout.item_notifications, viewGroup, false);
-        return null;
+        return inflater.inflate(R.layout.item_notification, viewGroup, false);
     }
 
     @Override
-    protected void bindView(Object item, RecyclerviewViewHolder viewHolder) {
+    protected void bindView(final String item, RecyclerviewViewHolder viewHolder) {
         if (item != null) {
-            int position = viewHolder.getAdapterPosition();
-//            ImageView imgIcon = (ImageView) viewHolder.getView(R.id.img_itemNotification);
+            final int position = viewHolder.getAdapterPosition();
+            TextView text = (TextView) viewHolder.getView(R.id.tv_item_notification);
+            TextViewHelper.setText(text, item);
         }
     }
 

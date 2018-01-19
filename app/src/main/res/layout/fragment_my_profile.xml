@@ -1,8 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.ingic.waterapp.fragments.MyProfileFragment">
 
     <RelativeLayout
@@ -17,24 +17,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:layout_marginBottom="@dimen/_36sdp">
+            android:layout_marginBottom="@dimen/_36sdp"
+            android:layout_marginTop="@dimen/_30sdp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_profile"
                 android:layout_width="@dimen/_120sdp"
                 android:layout_height="@dimen/_110sdp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/dummy_image"
-                />
+                android:src="@drawable/dummy_image" />
 
             <ImageView
                 android:id="@+id/img_profile_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/camerawithcircle"
                 android:layout_gravity="end|bottom"
-                android:layout_marginEnd="@dimen/_14sdp"/>
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:src="@drawable/camerawithcircle" />
         </FrameLayout>
 
         <com.ingic.waterapp.ui.views.AnyEditTextView
@@ -64,9 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/et_profile_name"
-            android:background="@color/color_seperator2"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_6sdp"/>
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/color_seperator2" />
 
         <com.ingic.waterapp.ui.views.AnyEditTextView
             android:id="@+id/et_profile_email"
@@ -96,9 +95,9 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/et_profile_email"
-            android:background="@color/color_seperator2"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_6sdp"/>
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/color_seperator2" />
 
         <com.ingic.waterapp.ui.views.AnyEditTextView
             android:id="@+id/et_profile_address"
@@ -126,9 +125,9 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/et_profile_address"
-            android:background="@color/color_seperator2"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_6sdp"/>
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/color_seperator2" />
 
 
         <com.ingic.waterapp.ui.views.AnyEditTextView
@@ -138,6 +137,7 @@
             android:layout_below="@id/seperator3"
             android:background="@color/transparent"
             android:cursorVisible="true"
+            android:digits="+0123456789"
             android:drawableLeft="@drawable/ic_profile_contact"
             android:drawablePadding="@dimen/_8sdp"
             android:gravity="start"
@@ -157,19 +157,18 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/et_profile_phone"
-            android:background="@color/color_seperator2"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_6sdp"/>
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/color_seperator2" />
 
         <ImageView
             android:id="@+id/img_profile_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/selector_toggle"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/seperator4"
             android:layout_centerVertical="true"
-            />
+            android:src="@drawable/selector_toggle" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/et_profile_pushNotifications"
@@ -179,17 +178,16 @@
             android:layout_marginBottom="@dimen/_8sdp"
             android:background="@color/transparent"
             android:cursorVisible="true"
-            android:text="@string/push_notifications"
             android:drawableLeft="@drawable/ic_profile_contact"
             android:drawablePadding="@dimen/_8sdp"
             android:gravity="start"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_4sdp"
+            android:text="@string/push_notifications"
             android:textColor="@color/login_email_grey"
             android:textColorHint="@color/login_email_grey"
             android:textSize="14sp"
             app:typeface="@string/typeface_light" />
-
 
 
         <View
@@ -197,9 +195,8 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/et_profile_pushNotifications"
-            android:background="@color/color_seperator2"
             android:layout_marginBottom="@dimen/_16sdp"
-            />
+            android:background="@color/color_seperator2" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_profile_changePassword"
@@ -208,13 +205,13 @@
             android:layout_below="@id/seperator5"
             android:background="@color/transparent"
             android:cursorVisible="true"
-            android:text="@string/change_password"
             android:drawableLeft="@drawable/ic_pwd"
-            android:drawableRight="@drawable/ic_rightarrow"
             android:drawablePadding="@dimen/_8sdp"
+            android:drawableRight="@drawable/ic_rightarrow"
             android:gravity="start"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_4sdp"
+            android:text="@string/change_password"
             android:textColor="@color/login_email_grey"
             android:textColorHint="@color/login_email_grey"
             android:textSize="14sp"
@@ -225,9 +222,9 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/tv_profile_changePassword"
-            android:background="@color/color_seperator2"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_6sdp"/>
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/color_seperator2" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_profile_selectSupplier"
@@ -236,13 +233,13 @@
             android:layout_below="@id/seperator6"
             android:background="@color/transparent"
             android:cursorVisible="true"
-            android:text="@string/select_supplier"
             android:drawableLeft="@drawable/ic_supplier"
-            android:drawableRight="@drawable/ic_down_arrow"
             android:drawablePadding="@dimen/_8sdp"
+            android:drawableRight="@drawable/ic_down_arrow"
             android:gravity="start"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_4sdp"
+            android:text="@string/select_supplier"
             android:textColor="@color/login_email_grey"
             android:textColorHint="@color/login_email_grey"
             android:textSize="14sp"
@@ -253,9 +250,9 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/tv_profile_selectSupplier"
-            android:background="@color/color_seperator2"
             android:layout_marginBottom="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_6sdp"/>
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/color_seperator2" />
 
         <Button
             android:id="@+id/btn_profile_update"

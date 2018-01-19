@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/child_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/item_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:background="@drawable/stroke_grey_solid_white"
+        android:paddingBottom="@dimen/_16sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_16sdp">
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_itemChild_deliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/img_itemCart_bottle"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="@string/delivery_date"
+            android:textColor="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_itemChild_deliveryDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_itemChild_deliveryText"
+            android:layout_toEndOf="@id/img_itemCart_bottle"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="27 Jan, 2017"
+            android:textColor="@color/blue_theme"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_bold" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_itemChild_deliveryPeriodText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="@string/delivery_period"
+            android:textColor="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_itemChild_deliveryPeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/tv_itemChild_deliveryPeriodText"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="Morning"
+            android:textColor="@color/blue_theme"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_bold" />
+
+        <View
+            android:id="@+id/seperator"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_itemChild_deliveryPeriod"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/color_seperator_forgot" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_itemChild_bottles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seperator" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_itemChild_cancel"
+        android:layout_width="@dimen/_110sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_below="@+id/item_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/stroke_blue"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/red"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_itemChild_reorder"
+        android:layout_width="@dimen/_110sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_below="@+id/item_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/solid_blue"
+        android:gravity="center"
+        android:text="@string/reorder"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

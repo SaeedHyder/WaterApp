@@ -144,8 +144,33 @@
     <!--Exit-->
     <string name="attention">Attention</string>
     <string name="message_exit">Are you sure you want to exit?</string>
+<!-- <<<<<<< HEAD -->
+    <string name="notifications">Notifications</string>
+    <string name="companies">Companies</string>
+    <string name="service_charges">Service Charges</string>
+    <string name="your_first_delivery_would_reach_text">Your first delivery would reach you\nwithin 2 working days.</string>
+    <string name="proceed_to_checkout">Proceed to checkout</string>
+    <string name="cart">Cart</string>
+    <string name="date">Date</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="time_slot">Time Slot</string>
+    <string name="comfirmation_delivery_text">Al Ain 5 Gallon as your first delivery would reach you within 2 working days</string>
+    <string name="aquafina"><b>Aquafina</b> (x5)</string>
+    <string name="continuee">Continue</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="order_id">Order ID</string>
+    <string name="delivery_date">Delivery Date</string>
+    <string name="delivery_period">Delivery Period</string>
+    <string name="cancel">Cancel</string>
+    <string name="my_order">My Order</string>
+    <string name="in_progress">In Progress</string>
+    <string name="delivered">Delivered</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="reorder">Reorder</string>
+    <string name="by_registering_you_agree_to_nterms_amp_conditions"><![CDATA[By registering you agree to\n<b>Terms & Conditions</b>]]></string>
     <string name="please_select_company">Please select company</string>
     <string name="pasword_change_sucess">Password changed successfully</string>
+
     <string name="guest">Guest</string>
 
 </resources>

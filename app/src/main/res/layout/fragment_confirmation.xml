@@ -1,0 +1,183 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ingic.waterapp.fragments.ConfirmationFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_28sdp"
+        android:layout_marginRight="@dimen/_28sdp">
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_confirmation_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="24dp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawablePadding="@dimen/_8sdp"
+            android:drawableRight="@drawable/ic_address_blue"
+            android:gravity="start"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:text="@string/enter_address"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator1"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_confirmation_address"
+            android:background="@color/color_seperator_forgot" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_confirmation_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seperator1"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawablePadding="@dimen/_8sdp"
+            android:drawableRight="@drawable/ic_calender_blue"
+            android:gravity="start"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:text="@string/date"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_confirmation_date"
+            android:background="@color/color_seperator_forgot" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_confirmation_timeSlot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seperator2"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawablePadding="@dimen/_8sdp"
+            android:drawableRight="@drawable/ic_down_arrow"
+            android:gravity="start"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:text="@string/time_slot"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator3"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_confirmation_timeSlot"
+            android:background="@color/color_seperator_forgot" />
+
+        <ImageView
+            android:id="@+id/img_confirmation_bottle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seperator3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:src="@drawable/trucicon" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_confirmation_deliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_confirmation_bottle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_26sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/_4sdp"
+            android:text="@string/comfirmation_delivery_text"
+            android:textColor="@color/contact_us_grey"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator4"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_confirmation_deliveryText"
+            android:background="@color/color_seperator_forgot" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_confirmation_bottleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seperator4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/aquafina"
+            android:textColor="@color/forgot_dark_grey"
+            android:textSize="20sp"
+            app:typeface="@string/typeface_light" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_confirmation_totalAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_confirmation_bottleName"
+            android:layout_centerHorizontal="true"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:text="25.00 AED"
+            android:textColor="@color/blue_theme"
+            android:textSize="28sp"
+            app:typeface="@string/typeface_bold" />
+
+
+        <Button
+            android:id="@+id/btn_confirmation_continue"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_below="@+id/tv_confirmation_totalAmount"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/login_btn"
+            android:text="@string/continuee"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</ScrollView>
