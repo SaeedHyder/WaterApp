@@ -10,7 +10,9 @@ import android.widget.Button;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.ui.views.TitleBar;
 
 import butterknife.BindView;
@@ -56,11 +58,27 @@ public class EnterCodeFragment extends BaseFragment {
             public void onClick(View view) {
                 if (etPinEditText.length() < 4) {
                     etPinEditText.setError(getString(R.string.please_enter_pin));
-                } else
-                    getDockActivity().replaceDockableFragment(SetNewPasswordFragment.newInstance(), SetNewPasswordFragment.class.getSimpleName());
+                } else {
+
+                    serviceHelper.enqueueCall(webService.verifyCode(etPinEditText.getText().toString(),prefHelper.getUser().getToken()),
+                            WebServiceConstants.forgotPassword);
+                }
             }
         });
     }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag){
+
+            case WebServiceConstants.forgotPassword:
+
+                getDockActivity().replaceDockableFragment(SetNewPasswordFragment.newInstance(), SetNewPasswordFragment.class.getSimpleName());
+
+                break;
+        }
+    }
+
     @Override
     public void setTitleBar(TitleBar titleBar) {
         // TODO Auto-generated method stub

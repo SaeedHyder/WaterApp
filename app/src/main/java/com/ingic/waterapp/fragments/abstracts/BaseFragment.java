@@ -18,6 +18,7 @@ import com.andreabaccega.formedittextvalidator.Validator;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.DockActivity;
 import com.ingic.waterapp.activities.MainActivity;
+import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.BasePreferenceHelper;
 import com.ingic.waterapp.helpers.GPSTracker;
 import com.ingic.waterapp.helpers.ServiceHelper;
@@ -25,6 +26,7 @@ import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.LoadingListener;
 import com.ingic.waterapp.interfaces.webServiceResponseLisener;
 import com.ingic.waterapp.retrofit.WebService;
+import com.ingic.waterapp.retrofit.WebServiceFactory;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
@@ -44,6 +46,7 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
 	protected  DockActivity myDockActivity;
 	//private DockActivity activity;
 
+
 	@Override
 	public void onCreate( Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
@@ -55,7 +58,7 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
 		mGpsTracker = new GPSTracker(getDockActivity());
 
 		if (webService == null) {
-			//webService = WebServiceFactory.getWebServiceInstanceWithCustomInterceptor(getDockActivity(),"End Point");
+			webService = WebServiceFactory.getWebServiceInstanceWithCustomInterceptor(getDockActivity(), WebServiceConstants.BASE_URL);
 		}
 		if (serviceHelper == null){
 			serviceHelper = new ServiceHelper(this,getDockActivity(),webService);

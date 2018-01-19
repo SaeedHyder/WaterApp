@@ -18,7 +18,7 @@ import retrofit2.http.Query;
 public interface WebService {
 
  @FormUrlEncoded
- @POST("/user/register")
+ @POST("user/register")
  Call<ResponseWrapper<UserEnt>> signUp(
             @Field("full_name") String full_name,
             @Field("email") String email,
@@ -30,7 +30,7 @@ public interface WebService {
     );
 
     @FormUrlEncoded
-    @POST("/user/login")
+    @POST("user/login")
     Call<ResponseWrapper<UserEnt>> login(
             @Field("email") String email,
             @Field("password") String password,
@@ -39,7 +39,7 @@ public interface WebService {
     );
 
     @FormUrlEncoded
-    @POST("/user/userFacebookLogin")
+    @POST("user/userFacebookLogin")
     Call<ResponseWrapper<UserEnt>> userFacebookLogin(
             @Field("social_media_id") String social_media_id,
             @Field("social_media_platform") String social_media_platform,
@@ -49,12 +49,12 @@ public interface WebService {
             @Field("device_type") String device_type
     );
 
-    @GET("/water/getCompany")
+    @GET("water/getCompany")
     Call<ResponseWrapper<List<CompanyEnt>>> getCompany();
 
 
     @FormUrlEncoded
-    @POST("/user/updateProfile")
+    @POST("user/updateProfile")
     Call<ResponseWrapper<UserEnt>> updateProfile(
             @Field("full_name") String full_name,
             @Field("email") String email,
@@ -69,7 +69,7 @@ public interface WebService {
     );
 
     @FormUrlEncoded
-    @POST("/user/changepassword")
+    @POST("user/changepassword")
     Call<ResponseWrapper<UserEnt>> changepassword(
             @Field("old_password") String old_password,
             @Field("password") String password,
@@ -78,34 +78,33 @@ public interface WebService {
     );
 
     @FormUrlEncoded
-    @POST("/user/forgotpassword")
+    @POST("user/forgotpassword")
     Call<ResponseWrapper<UserEnt>> forgotpassword(
             @Field("email") String email
     );
 
     @FormUrlEncoded
-    @POST("/user/verifyCode")
+    @POST("user/verifyCode")
     Call<ResponseWrapper<UserEnt>> verifyCode(
             @Field("verification_code") String verification_code,
             @Header("token") String token
     );
 
     @FormUrlEncoded
-    @POST("/user/ForgotChangePassword")
+    @POST("user/ForgotChangePassword")
     Call<ResponseWrapper<UserEnt>> ForgotChangePassword(
             @Field("password") String password,
             @Field("password_confirmation") String password_confirmation,
             @Header("token") String token
     );
 
-    @FormUrlEncoded
-    @POST("/water/getCompanyProductAboutReview")
+    @GET("water/getCompanyProductAboutReview")
     Call<ResponseWrapper<CompanyDetails>> getCompanyProductAboutReview(
-            @Field("type_select") String type_select,
+            @Query("type_select") String type_select,
             @Header("token") String token
     );
 
-    @GET("/user/logout")
-    Call<ResponseWrapper> logout();
+    @GET("user/logout")
+    Call<ResponseWrapper> logout(@Header("token") String token);
 
 }

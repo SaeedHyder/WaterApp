@@ -10,12 +10,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.google.gson.Gson;
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.CompanyDetails;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.AppConstants;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 //import com.google.android.gms.location.places.Place;
@@ -32,6 +38,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     Button btnReview;
     @BindView(R.id.home_container)
     FrameLayout frameLayout;
+
+    boolean isViewAll = false;
+    @BindView(R.id.tv_home_productName)
+    AnyTextView tvHomeProductName;
+    @BindView(R.id.tv_home_productCount)
+    AnyTextView tvHomeProductCount;
+    @BindView(R.id.tv_home_viewAll)
+    AnyTextView tvHomeViewAll;
+
+    String type_select = AppConstants.select_product;
+
+    CompanyDetails companyDetails;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -53,14 +71,55 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         btnReview.setSelected(false);
 
         setListeners();
-        loadFragment(new HomeProductsFragment());
+
+        callService();
+
         return view;
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+
+            case WebServiceConstants.getCompanyProductAboutReview:
+                companyDetails = (CompanyDetails)result;
+                setData();
+                break;
+        }
+    }
+
+    public void setData(){
+
+        if(companyDetails != null && companyDetails.getName()!= null){
+            tvHomeProductName.setText(companyDetails.getName());
+            tvHomeProductCount.setText(companyDetails.getCount()+" Products");
+
+            HomeProductsFragment homeProductsFragment = new HomeProductsFragment();
+            Bundle orderBundle = new Bundle();
+            orderBundle.putString(AppConstants.CompanyDetails, new Gson().toJson(companyDetails));
+            homeProductsFragment.setArguments(orderBundle);
+            loadFragment(homeProductsFragment);
+
+        }else{
+            callService();
+        }
+
+    }
+
+    public void callService(){
+
+        serviceHelper.enqueueCall(webService.getCompanyProductAboutReview(
+                type_select,
+                prefHelper.getUser().getToken()),
+                WebServiceConstants.getCompanyProductAboutReview);
+
     }
 
     private void setListeners() {
         btnProducts.setOnClickListener(this);
         btnAbout.setOnClickListener(this);
         btnReview.setOnClickListener(this);
+        tvHomeViewAll.setOnClickListener(this);
 
     }
 
@@ -90,7 +149,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
@@ -101,7 +159,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     btnProducts.setSelected(true);
                     btnAbout.setSelected(false);
                     btnReview.setSelected(false);
-                    loadFragment(new HomeProductsFragment());
+                    setData();
 
                 }
                 break;
@@ -112,7 +170,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     btnProducts.setSelected(false);
                     btnAbout.setSelected(true);
                     btnReview.setSelected(false);
-                    loadFragment(new HomeProductAboutFragment());
+
+                    HomeProductAboutFragment productAboutFragment = new HomeProductAboutFragment();
+                    Bundle orderBundle = new Bundle();
+                    orderBundle.putString(AppConstants.CompanyDetails, new Gson().toJson(companyDetails));
+                    productAboutFragment.setArguments(orderBundle);
+
+                    loadFragment(productAboutFragment);
 
                 }
                 break;
@@ -122,9 +186,29 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     btnProducts.setSelected(false);
                     btnAbout.setSelected(false);
                     btnReview.setSelected(true);
-                    loadFragment(new HomeProductReviewFragment());
+
+                    HomeProductReviewFragment productReviewFragment = new HomeProductReviewFragment();
+                    Bundle orderBundle = new Bundle();
+                    orderBundle.putString(AppConstants.CompanyDetails, new Gson().toJson(companyDetails));
+                    productReviewFragment.setArguments(orderBundle);
+
+                    loadFragment(productReviewFragment);
 
                 }
+                break;
+
+            case R.id.tv_home_viewAll:
+
+                if (isViewAll) {
+                    isViewAll = false;
+                    type_select = AppConstants.select_product;
+                } else {
+                    isViewAll = true;
+                    type_select = AppConstants.all_product;
+                }
+
+                callService();
+
                 break;
 
             default:

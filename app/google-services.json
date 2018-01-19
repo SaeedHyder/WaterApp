@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "120831459252-cot5js19opqf8id3j97i6jmjv47n9maj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ingic.waterapp",
+            "certificate_hash": "68e91fbdaa381c3899c2a14e1969e3ad1465d71f"
+          }
+        },
+        {
           "client_id": "120831459252-cg6193qslmm24rdtkpobl00l1vv3252l.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120831459252-cg6193qslmm24rdtkpobl00l1vv3252l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

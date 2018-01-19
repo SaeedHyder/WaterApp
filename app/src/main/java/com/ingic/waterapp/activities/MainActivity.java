@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends DockActivity implements OnClickListener {
     public TitleBar titleBar;
     @BindView(R.id.sideMneuFragmentContainer)
-    public FrameLayout sideMneuFragmentContainer;
+    FrameLayout sideMneufragmentContainer;
     @BindView(R.id.header_main)
     TitleBar header_main;
     @BindView(R.id.mainFrameLayout)
@@ -114,10 +114,10 @@ public class MainActivity extends DockActivity implements OnClickListener {
 
             if (direction.equals(SideMenuDirection.LEFT.getValue())) {
                 params.gravity = Gravity.LEFT;
-                sideMneuFragmentContainer.setLayoutParams(params);
+                sideMneufragmentContainer.setLayoutParams(params);
             } else {
                 params.gravity = Gravity.RIGHT;
-                sideMneuFragmentContainer.setLayoutParams(params);
+                sideMneufragmentContainer.setLayoutParams(params);
             }
             drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 

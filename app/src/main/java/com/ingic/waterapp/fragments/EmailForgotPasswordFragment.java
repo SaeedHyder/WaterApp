@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
@@ -55,11 +57,27 @@ public class EmailForgotPasswordFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (etEmail.testValidity()) {
-                    getDockActivity().replaceDockableFragment(EnterCodeFragment.newInstance(), EnterCodeFragment.class.getSimpleName());
+
+                    serviceHelper.enqueueCall(webService.forgotpassword(etEmail.getText().toString()),
+                            WebServiceConstants.forgotPassword);
                 }
             }
         });
 
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag){
+
+            case WebServiceConstants.forgotPassword:
+
+                UserEnt userEnt = (UserEnt)result;
+                prefHelper.putUser(userEnt);
+                getDockActivity().replaceDockableFragment(EnterCodeFragment.newInstance(), EnterCodeFragment.class.getSimpleName());
+
+                break;
+        }
     }
 
     @Override
