@@ -200,10 +200,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.tv_home_viewAll:
 
                 if (isViewAll) {
-                    isViewAll = false;
+                    //isViewAll = false;
                     type_select = AppConstants.select_product;
                 } else {
-                    isViewAll = true;
+                    //isViewAll = true;
                     type_select = AppConstants.all_product;
                 }
 

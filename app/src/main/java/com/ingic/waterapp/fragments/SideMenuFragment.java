@@ -25,6 +25,7 @@ import com.ingic.waterapp.ui.dialogs.DialogFactory;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,6 +124,18 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
 //        }
         Collections.addAll(sideMenuList, userMenuList);
         adapter.addAll(sideMenuList);
+
+
+        if(prefHelper.getUser() != null) {
+
+            tvProfileName.setText(prefHelper.getUser().getFullName());
+
+            if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
+                Picasso.with(getDockActivity())
+                        .load(prefHelper.getUser().getProfileImage())
+                        .into(imgProfile);
+            }
+        }
 
     }
 
