@@ -17,4 +17,6 @@ public class WebServiceConstants {
     public static final String PLATFORM_GOOGLE = "google";
     public static final String PLATFORM_FACEBOOK = "facebook";
 
+    public static final String guestUserToken = "guestUserToken";
+
 }

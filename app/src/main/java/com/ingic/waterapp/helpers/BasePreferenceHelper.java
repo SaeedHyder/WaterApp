@@ -23,6 +23,8 @@ public class BasePreferenceHelper extends PreferenceHelper {
 
     protected static final String NotificationCount = "NotificationCount";
 
+    protected static final String Guest_TOKEN = "Guest_TOKEN";
+
 
     public BasePreferenceHelper(Context c) {
         this.context = c;
@@ -74,5 +76,13 @@ public class BasePreferenceHelper extends PreferenceHelper {
                 .getConfiguredGson().toJson(user));
     }
 
+
+    public String getGuestTOKEN() {
+        return getStringPreference(context, FILENAME, Guest_TOKEN);
+    }
+
+    public void setGuestTOKEN(String _token) {
+        putStringPreference(context, FILENAME, Guest_TOKEN, _token);
+    }
 
 }

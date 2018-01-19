@@ -136,6 +136,9 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
                         .into(imgProfile);
             }
         }
+        else if(prefHelper.getGuestTOKEN()!= null){
+            tvProfileName.setText(getString(R.string.guest));
+        }
 
     }
 

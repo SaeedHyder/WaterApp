@@ -15,6 +15,7 @@ import com.ingic.waterapp.activities.MainActivity;
 import com.ingic.waterapp.annotation.RestAPI;
 import com.ingic.waterapp.entities.CompanyEnt;
 import com.ingic.waterapp.entities.FacebookLoginEnt;
+import com.ingic.waterapp.entities.GuestEnt;
 import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
@@ -137,7 +138,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                 }
                 break;
             case R.id.tv_login_guest:
-                launchMainActivity(AppConstants.GUEST_USER);
+
+                serviceHelper.enqueueCall(webService.guestUserToken(
+                       AppConstants.Water),
+                        WebServiceConstants.guestUserToken);
+
                 break;
             case R.id.btn_login_fb:
                 LoginManager.getInstance().logInWithReadPermissions(LoginFragment.this, facebookLoginHelper.getPermissionNeeds());
@@ -164,6 +169,16 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                 UserEnt userEnt = (UserEnt)result;
                 prefHelper.putUser(userEnt);
                 launchMainActivity(AppConstants.REGISTERED_USER);
+                break;
+
+            case WebServiceConstants.guestUserToken:
+
+                GuestEnt guestEnt = (GuestEnt)result;
+                if(guestEnt!= null) {
+                    prefHelper.setGuestTOKEN(guestEnt.getToken());
+                    launchMainActivity(AppConstants.GUEST_USER);
+                }
+
                 break;
         }
     }

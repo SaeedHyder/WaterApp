@@ -2,6 +2,7 @@ package com.ingic.waterapp.retrofit;
 
 import com.ingic.waterapp.entities.CompanyDetails;
 import com.ingic.waterapp.entities.CompanyEnt;
+import com.ingic.waterapp.entities.GuestEnt;
 import com.ingic.waterapp.entities.ResponseWrapper;
 import com.ingic.waterapp.entities.UserEnt;
 
@@ -100,9 +101,14 @@ public interface WebService {
 
     @GET("water/getCompanyProductAboutReview")
     Call<ResponseWrapper<CompanyDetails>> getCompanyProductAboutReview(
+            @Query("user_type") String user_type,
             @Query("type_select") String type_select,
             @Header("token") String token
     );
+
+   @FormUrlEncoded
+   @POST("user/guestUserToken")
+   Call<ResponseWrapper<GuestEnt>> guestUserToken(@Field("project_name") String project_name);
 
     @GET("user/logout")
     Call<ResponseWrapper> logout(@Header("token") String token);

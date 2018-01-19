@@ -108,10 +108,23 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     public void callService(){
 
-        serviceHelper.enqueueCall(webService.getCompanyProductAboutReview(
-                type_select,
-                prefHelper.getUser().getToken()),
-                WebServiceConstants.getCompanyProductAboutReview);
+        if(prefHelper.getUser()!= null){
+            serviceHelper.enqueueCall(webService.getCompanyProductAboutReview(
+                    AppConstants.Normal,
+                    type_select,
+                    prefHelper.getUser().getToken()),
+                    WebServiceConstants.getCompanyProductAboutReview);
+        }else{
+
+            serviceHelper.enqueueCall(webService.getCompanyProductAboutReview(
+                    AppConstants.Guest,
+                    type_select,
+                    prefHelper.getGuestTOKEN()),
+                    WebServiceConstants.getCompanyProductAboutReview);
+
+        }
+
+
 
     }
 

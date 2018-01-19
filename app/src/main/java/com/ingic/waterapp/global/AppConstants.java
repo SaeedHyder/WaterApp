@@ -27,4 +27,8 @@ public class AppConstants {
 
     public static String CompanyDetails = "CompanyDetails";
 
+    public static String Guest = "guest";
+    public static String Normal = "normal";
+    public static String Water = "water";
+
 }
