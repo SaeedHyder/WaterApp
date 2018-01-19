@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_12sdp">
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemMyOrder_orderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_toEndOf="@id/img_itemCart_bottle"
+        android:gravity="left"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:text="@string/order_id"
+        android:textColor="@color/login_email_grey"
+        android:textSize="14sp"
+        app:typeface="@string/typeface_light" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemMyOrder_orderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_itemMyOrder_orderText"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_toEndOf="@id/img_itemCart_bottle"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:text="5412"
+        android:textColor="@color/blue_theme"
+        android:textSize="16sp"
+        app:typeface="@string/typeface_bold" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemMyOrder_totalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:text="@string/total_amount"
+        android:textColor="@color/login_email_grey"
+        android:textSize="14sp"
+        app:typeface="@string/typeface_light" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemMyOrder_totalAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/tv_itemMyOrder_totalText"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:text="AED 50"
+        android:textColor="@color/blue_theme"
+        android:textSize="16sp"
+        app:typeface="@string/typeface_bold" />
+
+    <View
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/tv_itemMyOrder_totalAmount"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@color/color_seperator2" />
+
+</RelativeLayout>

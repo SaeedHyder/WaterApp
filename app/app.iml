@@ -159,6 +159,7 @@
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-11.6.0" level="project" />
     <orderEntry type="library" name="com.github.hotchemi:permissionsdispatcher-3.0.1" level="project" />
     <orderEntry type="library" name="com.squareup.okio:okio:1.13.0@jar" level="project" />
+    <orderEntry type="library" name="com.bignerdranch.android:expandablerecyclerview-3.0.0-RC1" level="project" />
     <orderEntry type="library" name="com.squareup.retrofit2:retrofit:2.3.0@jar" level="project" />
     <orderEntry type="library" name="android.arch.lifecycle:common:1.0.3@jar" level="project" />
     <orderEntry type="library" name="com.facebook.android:facebook-android-sdk-4.26.0" level="project" />

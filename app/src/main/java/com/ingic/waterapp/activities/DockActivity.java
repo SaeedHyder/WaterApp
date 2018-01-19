@@ -12,7 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ingic.waterapp.BaseApplication;
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.fragments.CartFragment;
 import com.ingic.waterapp.fragments.HomeFragment;
+import com.ingic.waterapp.fragments.NotificationsFragment;
 import com.ingic.waterapp.fragments.SideMenuFragment;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.helpers.BasePreferenceHelper;
@@ -236,6 +238,14 @@ public abstract class DockActivity extends AppCompatActivity implements
         if (getSupportFragmentManager() == null)
             return;
         getSupportFragmentManager().popBackStack();
+    }
+
+    public void openNotification() {
+        this.replaceDockableFragment(NotificationsFragment.newInstance(), NotificationsFragment.class.getSimpleName());
+    }
+
+    public void openCart() {
+        this.replaceDockableFragment(CartFragment.newInstance(), CartFragment.class.getSimpleName());
     }
 
     public abstract void onMenuItemActionCalled(int actionId, String data);

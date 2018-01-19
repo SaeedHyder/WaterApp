@@ -35,7 +35,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     AnyEditTextView etPassword;
     @BindView(R.id.et_signup_confirmPassword)
     AnyEditTextView etConfirmPassword;
-    @BindView(R.id.et_signup_selectSupplier)
+    @BindView(R.id.tv_signup_selectSupplier)
     AnyTextView tvSelectSupplier;
     @BindView(R.id.btn_signup)
     Button btnSignUp;
@@ -94,7 +94,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                     launchHomeFragment(AppConstants.REGISTERED_USER);
                 }
                 break;
-            case R.id.tv_profile_selectSupplier:
+            case R.id.tv_signup_selectSupplier:
                 openDialog();
 
                 break;
@@ -118,7 +118,6 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         });
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
     private boolean isValidate() {

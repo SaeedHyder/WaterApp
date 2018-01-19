@@ -96,7 +96,7 @@ public class UIHelper {
     // final BaizaContacts _baizaContact = baizaContact;
     //
     // AlertDialog ad = new AlertDialog.Builder(_ctx)
-    // .setTitle("Select Phone Number")
+    // .setName("Select Phone Number")
     // .setCancelable(false)
     // .setSingleChoiceItems(baizaContact.getPhoneNumbersAsCharSequence(), 0,
     // new DialogInterface.OnClickListener() {

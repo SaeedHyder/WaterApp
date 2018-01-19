@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/_6sdp"
+    android:paddingTop="@dimen/_6sdp"
+    >
+
+
+    <ImageView
+        android:id="@+id/img_itemChidRv_bottle"
+        android:layout_width="@dimen/_46sdp"
+        android:layout_height="@dimen/_56sdp"
+        android:scaleType="centerInside"
+        android:src="@drawable/img2" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemChidRv_BottleName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_toEndOf="@id/img_itemChidRv_bottle"
+        android:gravity="left"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:text="Aquafina"
+        android:textColor="@color/login_email_grey"
+        android:textSize="16sp"
+        app:typeface="@string/typeface_bold" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemChidRv_ltr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_itemChidRv_BottleName"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_toEndOf="@id/img_itemChidRv_bottle"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:text="40 Ltr"
+        android:textColor="@color/login_text_grey"
+        android:textSize="12sp"
+        app:typeface="@string/typeface_light" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemChidRv_aed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_itemChidRv_ltr"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_toEndOf="@id/img_itemChidRv_bottle"
+        android:paddingLeft="@dimen/_4sdp"
+        android:text="AED"
+        android:textColor="@color/login_email_grey"
+        android:textSize="10sp"
+        app:typeface="@string/typeface_light" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemChidRv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_itemChidRv_ltr"
+        android:layout_marginTop="@dimen/_2sdp"
+
+        android:layout_toEndOf="@id/tv_itemChidRv_aed"
+        android:paddingLeft="@dimen/_4sdp"
+        android:text="20"
+        android:textColor="@color/blue_theme"
+        android:textSize="12sp"
+        app:typeface="@string/typeface_bold" />
+
+    <View
+        android:id="@+id/seperator"
+        android:layout_width="0.5dp"
+        android:layout_height="14dp"
+        android:layout_below="@id/tv_itemChidRv_ltr"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_toEndOf="@id/tv_itemChidRv_amount"
+        android:background="@color/login_grey" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemChidRv_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_itemChidRv_ltr"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_toEndOf="@id/seperator"
+        android:paddingLeft="@dimen/_4sdp"
+        android:text="QTY"
+        android:textColor="@color/login_email_grey"
+        android:textSize="10sp"
+        app:typeface="@string/typeface_light" />
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/tv_itemChidRv_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_itemChidRv_ltr"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_toEndOf="@id/tv_itemChidRv_qty"
+        android:paddingLeft="@dimen/_4sdp"
+        android:text="2"
+        android:textColor="@color/blue_theme"
+        android:textSize="12sp"
+        app:typeface="@string/typeface_bold" />
+
+</RelativeLayout>

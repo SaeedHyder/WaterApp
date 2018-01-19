@@ -50,7 +50,7 @@ public class ProductsAdapter extends RecyclerViewListAdapter<HomeProductsFragmen
 
 //            img.setImageBitmap(ImageLoaderHelper.getRoundedBitmap(getContext() ,getContext().getResources().getDrawable(R.drawable.placeholder_image)));
 //            img.setBackgroundResource(item.getPicture());
-//            TextViewHelper.setText(textTitle,item.getTitle());
+//            TextViewHelper.setText(textTitle,item.getName());
 //            TextViewHelper.setText(textDesc,item.getDesc());
         }
     }
@@ -65,7 +65,7 @@ public class ProductsAdapter extends RecyclerViewListAdapter<HomeProductsFragmen
 //
 //            textDesignation.setVisibility(View.VISIBLE);
 //            img.setBackgroundResource(item.getPicture());
-//            TextViewHelper.setText(textTitle,item.getTitle());
+//            TextViewHelper.setText(textTitle,item.getName());
 //            TextViewHelper.setText(textDesc,item.getDesc());
 //        }
 //    }

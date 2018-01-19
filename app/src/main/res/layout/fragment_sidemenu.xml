@@ -37,6 +37,9 @@
         android:textColor="@color/login_email_grey"
         app:typeface="@string/typeface_bold"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_4sdp"
         />
 
     <android.support.v7.widget.RecyclerView

@@ -5,6 +5,8 @@ public class AppConstants {
     public static final int REGISTERED_USER = 1;
     public static final int GUEST_USER = 0;
     public static final String LOGIN_TYPE = "loginType";
+    public static final String IN_PROGRESS_ORDER = "InProgressOrder";
+    public static final String DELIVERED_ORDER = "DeliveredOrder";
     public static String twitter = "twitter";
     public static final String Device_Type = "android";
     public static final String SOCIAL_MEDIA_TYPE = "facebook";
@@ -21,4 +23,5 @@ public class AppConstants {
     public static String DateFormat_HM = "HH:mm";
     public static String DateFormat_YMDHMS = "yyyy-MM-dd HH:mm:ss";
 
+    public static String fragment = "myFrag";
 }

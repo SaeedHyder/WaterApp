@@ -43,16 +43,74 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="@dimen/_8sdp"
         android:src="@drawable/notification"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
-<!--
+    <FrameLayout
+        android:id="@+id/fl_notificationCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/btnRight"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_11sdp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cartdrop" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:text="30"
+            android:textColor="@color/blue_theme"
+            android:textSize="@dimen/_5sdp" />
+    </FrameLayout>
+
     <ImageView
         android:id="@+id/btnCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:layout_toStartOf="@+id/btnRight"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="@dimen/_8sdp"
         android:src="@drawable/cart"
-        android:visibility="visible" />-->
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/fl_cartCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/btnCart"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_11sdp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cartdrop" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:text="3"
+            android:textColor="@color/blue_theme"
+            android:textSize="@dimen/_5sdp" />
+    </FrameLayout>
+    <!--
+        <ImageView
+            android:id="@+id/btnCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/btnRight"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/cart"
+            android:visibility="visible" />-->
 </RelativeLayout>

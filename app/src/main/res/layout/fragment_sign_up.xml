@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_26sdp"
-            android:layout_marginStart="@dimen/_54sdp"
+            android:layout_marginStart="@dimen/_60sdp"
             android:layout_marginTop="@dimen/_30sdp"
             android:src="@drawable/splash_logo" />
 
@@ -161,7 +161,7 @@
             android:background="@color/color_seperator" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
-            android:id="@+id/et_signup_selectSupplier"
+            android:id="@+id/tv_signup_selectSupplier"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -171,11 +171,11 @@
             android:cursorVisible="true"
             android:drawableLeft="@drawable/ic_supplier"
             android:drawableRight="@drawable/ic_down_arrow"
-            android:drawablePadding="@dimen/_8sdp"
+            android:drawablePadding="@dimen/_10sdp"
             android:gravity="start"
             android:text="@string/select_supplier"
             android:paddingBottom="@dimen/_6sdp"
-            android:paddingLeft="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_12sdp"
             android:paddingRight="@dimen/_4sdp"
             android:paddingTop="@dimen/_6sdp"
             android:singleLine="true"
@@ -188,7 +188,7 @@
             android:id="@+id/seperator5"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_below="@id/et_signup_selectSupplier"
+            android:layout_below="@id/tv_signup_selectSupplier"
             android:background="@color/color_seperator" />
 
         <Button
@@ -216,7 +216,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:gravity="center"
             android:paddingBottom="@dimen/_20sdp"
-            android:text="By registering you agree to\nTerms &amp; Conditions"
+            android:text="@string/by_registering_you_agree_to_nterms_amp_conditions"
             android:textColor="@color/login_email_grey"
             android:textSize="13sp"
             app:typeface="@string/typeface_light" />
