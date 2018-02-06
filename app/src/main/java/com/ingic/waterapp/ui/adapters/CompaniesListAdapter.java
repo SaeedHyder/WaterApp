@@ -4,13 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.CompanyEnt;
+import com.ingic.waterapp.helpers.ImageLoaderHelper;
+import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 
-public class CompaniesListAdapter extends RecyclerViewListAdapter<String> {
+public class CompaniesListAdapter extends RecyclerViewListAdapter<CompanyEnt> {
     private Context context;
 
     public CompaniesListAdapter(Context context, OnViewHolderClick listener) {
@@ -25,11 +29,15 @@ public class CompaniesListAdapter extends RecyclerViewListAdapter<String> {
     }
 
     @Override
-    protected void bindView(final String item, RecyclerviewViewHolder viewHolder) {
+    protected void bindView(final CompanyEnt item, RecyclerviewViewHolder viewHolder) {
         if (item != null) {
             final int position = viewHolder.getAdapterPosition();
             TextView text = (TextView) viewHolder.getView(R.id.tv_item_companies);
-//            TextViewHelper.setText(text, item);
+            TextViewHelper.setText(text, item.getFullName());
+
+            ImageView imageView = (ImageView) viewHolder.getView(R.id.img_item_companies);
+            ImageLoaderHelper.loadImageWithPicasso(context, item.getProfileImage(), imageView);
+
         }
     }
 

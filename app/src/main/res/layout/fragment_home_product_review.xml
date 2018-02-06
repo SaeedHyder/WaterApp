@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     android:scrollbars="none">
 
@@ -11,14 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="@dimen/_18sdp">
 
         <ImageView
             android:id="@+id/img_bottle"
-            android:layout_width="60dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_94sdp"
             android:src="@drawable/bottle" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
@@ -30,19 +31,19 @@
             android:lineSpacingExtra="@dimen/_20sdp"
             android:text="Aquafina"
             android:textColor="@color/rating_grey"
-            android:textSize="24sp"
+            android:textSize="22sp"
             app:typeface="@string/typeface_bold" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_rating_serviceRatingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_14sdp"
             android:background="@color/transparent"
             android:text="@string/service_rating"
             android:textColor="@color/forgot_grey"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:typeface="@string/typeface_regular" />
 
         <com.ingic.waterapp.ui.views.CustomRatingBar
@@ -56,17 +57,19 @@
             app:starOff="@drawable/star_unselected"
             app:starOn="@drawable/star_selected"
             app:starPadding="4dp"
-            app:stars="3" />
+            app:stars="3"
+            app:onlyForDisplay="true"
+            />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_rating_companyRatingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_14sdp"
             android:text="@string/company_rating"
             android:textColor="@color/forgot_grey"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:typeface="@string/typeface_regular" />
 
         <com.ingic.waterapp.ui.views.CustomRatingBar
@@ -80,7 +83,9 @@
             app:starOff="@drawable/star_unselected"
             app:starOn="@drawable/star_selected"
             app:starPadding="4dp"
-            app:stars="3" />
+            app:stars="3"
+            app:onlyForDisplay="true"
+            />
 
     </LinearLayout>
 

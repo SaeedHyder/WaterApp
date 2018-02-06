@@ -15,7 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="3"
+            android:background="@drawable/bg_shadow"
+            >
 
             <Button
                 android:id="@+id/btn_about"
@@ -38,9 +40,11 @@
                 android:text="@string/terms_conditions"
                 android:textAllCaps="false"
                 android:textSize="12sp"
+                android:paddingRight="1dp"
+                android:paddingLeft="1dp"
                 android:textColor="@drawable/selector_blue_white_text"
-
                 />
+
             <Button
                 android:id="@+id/btn_about_privacyPolicy"
                 android:layout_width="0dp"

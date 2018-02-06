@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.NotificationCountEnt;
+import com.ingic.waterapp.helpers.DateHelper;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 
-public class NotificationsListAdapter extends RecyclerViewListAdapter<String> {
+public class NotificationsListAdapter extends RecyclerViewListAdapter<NotificationCountEnt> {
     private Context context;
 
     public NotificationsListAdapter(Context context, OnViewHolderClick listener) {
@@ -26,11 +28,13 @@ public class NotificationsListAdapter extends RecyclerViewListAdapter<String> {
     }
 
     @Override
-    protected void bindView(final String item, RecyclerviewViewHolder viewHolder) {
+    protected void bindView(final NotificationCountEnt item, RecyclerviewViewHolder viewHolder) {
         if (item != null) {
             final int position = viewHolder.getAdapterPosition();
             TextView text = (TextView) viewHolder.getView(R.id.tv_item_notification);
-            TextViewHelper.setText(text, item);
+            TextView date = (TextView) viewHolder.getView(R.id.tv_item_date);
+            TextViewHelper.setText(text, item.getMessage());
+            TextViewHelper.setText(date, DateHelper.getChatMessageTime(item.getCreatedAt()));
         }
     }
 

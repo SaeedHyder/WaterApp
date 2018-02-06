@@ -17,7 +17,7 @@ import retrofit2.Response;
  * Created on 7/17/2017.
  */
 
-public class ServiceHelper<T> {
+public class ServiceHelper<T>  {
     private webServiceResponseLisener serviceResponseLisener;
     private DockActivity context;
     private WebService webService;

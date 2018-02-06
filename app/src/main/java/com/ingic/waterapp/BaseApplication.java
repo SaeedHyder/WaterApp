@@ -15,6 +15,8 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.L;
 
 import io.fabric.sdk.android.Fabric;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class BaseApplication extends Application {
 	
@@ -22,6 +24,7 @@ public class BaseApplication extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+		realmConfiguration();
 
 		FacebookSdk.sdkInitialize(getApplicationContext());
 		MultiDex.install(this);
@@ -47,6 +50,15 @@ public class BaseApplication extends Application {
 		
 		ImageLoader.getInstance().init( config );
 		L.disableLogging();
+	}
+	private void realmConfiguration() {
+		Realm.init(this);
+		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+				.name(Realm.DEFAULT_REALM_NAME)
+				.schemaVersion(0)
+				.deleteRealmIfMigrationNeeded()
+				.build();
+		Realm.setDefaultConfiguration(realmConfiguration);
 	}
 	
 }

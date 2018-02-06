@@ -20,7 +20,6 @@
             android:layout_height="0.5dp"
             android:layout_below="@+id/rv_cart"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/color_seperator2" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
@@ -52,7 +51,7 @@
             android:paddingRight="@dimen/_4sdp"
             android:text="AED 40.00"
             android:textColor="@color/blue_theme"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:typeface="@string/typeface_regular" />
 
         <View
@@ -94,7 +93,7 @@
             android:paddingRight="@dimen/_4sdp"
             android:text="AED 02.00"
             android:textColor="@color/blue_theme"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:typeface="@string/typeface_regular" />
 
         <View
@@ -135,7 +134,7 @@
             android:paddingRight="@dimen/_4sdp"
             android:text="AED 02.00"
             android:textColor="@color/blue_theme"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:typeface="@string/typeface_regular" />
 
         <View
@@ -163,7 +162,7 @@
             app:typeface="@string/typeface_regular" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
-            android:id="@+id/tv_cart_BottleName"
+            android:id="@+id/tv_cart_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -176,14 +175,14 @@
             android:paddingRight="@dimen/_4sdp"
             android:text="AED 42.00"
             android:textColor="@color/blue_theme"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:typeface="@string/typeface_bold" />
 
         <View
             android:id="@id/seperator4"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_below="@+id/tv_cart_BottleName"
+            android:layout_below="@+id/tv_cart_total"
             android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_16sdp"
             android:background="@color/color_seperator2" />

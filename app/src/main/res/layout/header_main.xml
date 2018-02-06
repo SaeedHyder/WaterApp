@@ -60,6 +60,7 @@
             android:src="@drawable/cartdrop" />
 
         <TextView
+            android:id="@+id/tv_notificationCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -87,7 +88,9 @@
         android:layout_alignRight="@id/btnCart"
         android:layout_marginRight="@dimen/_3sdp"
         android:layout_marginTop="@dimen/_11sdp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -95,13 +98,15 @@
             android:src="@drawable/cartdrop" />
 
         <TextView
+            android:id="@+id/tv_cartCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_1sdp"
             android:text="3"
             android:textColor="@color/blue_theme"
-            android:textSize="@dimen/_5sdp" />
+            android:textStyle="bold"
+            android:textSize="@dimen/_7sdp" />
     </FrameLayout>
     <!--
         <ImageView

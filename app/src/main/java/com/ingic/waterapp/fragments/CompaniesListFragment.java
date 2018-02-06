@@ -11,14 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.CompanyEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.CompaniesListAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.TitleBar;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +34,9 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
     RecyclerView rvNotifcations;
     Unbinder unbinder;
     RecyclerViewListAdapter adapter;
+
+    List<CompanyEnt> companyEnts;
+    int companyId = -1;
 
     public CompaniesListFragment() {
         // Required empty public constructor
@@ -56,6 +61,8 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
 //        if (prefHelper.getLoginTYpe() == AppConstants.NOT_REGISTERED_USER)
 //            llNoNotifications.setVisibility(View.VISIBLE);
 //        else
+        serviceHelper.enqueueCall(webService.getCompany(),
+                WebServiceConstants.getCompanies);
         initRecyclerView();
     }
 
@@ -64,7 +71,14 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
         rvNotifcations.setLayoutManager(new LinearLayoutManager(getDockActivity(), LinearLayoutManager.VERTICAL, false));
         rvNotifcations.addItemDecoration(new SimpleDividerItemDecoration(getDockActivity()));
         rvNotifcations.setAdapter(adapter);
-        ArrayList<String> list = new ArrayList<>();
+//        ArrayList<String> list = new ArrayList<>();
+
+  /*      if (companyEnts != null) {
+            final CharSequence[] items = new CharSequence[companyEnts.size()];
+            for (int i = 0; i < companyEnts.size(); i++) {
+                items[i] = companyEnts.get(i).getFullName();
+            }
+        }
         list.add("The Oasis Water Company");
         list.add("Masafi Co.");
         list.add("Falcon Spring Drinking Water");
@@ -74,8 +88,8 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
         list.add("Masafi Co.");
         list.add("Falcon Spring Drinking Water");
         list.add("Nestle Waters");
-        list.add("Awafi Mineral Water");
-        adapter.addAll(list);
+        list.add("Awafi Mineral Water");*/
+        adapter.addAll(companyEnts);
 
     }
 
@@ -105,5 +119,15 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.getCompanies:
+                companyId = -1;
+                companyEnts = (List<CompanyEnt>) result;
+                break;
+        }
     }
 }

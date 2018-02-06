@@ -1,13 +1,17 @@
+/*
+ * Created by Ingic on 12/13/17 7:13 PM
+ * Copyright (c) 2017. All rights reserved.
+ *
+ * Last modified 12/13/17 7:12 PM
+ */
+
 package com.ingic.waterapp.fcm;
 
-import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.ingic.waterapp.global.AppConstants;
-import com.ingic.waterapp.helpers.BasePreferenceHelper;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.ingic.waterapp.helpers.BasePreferenceHelper;
 
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
@@ -20,28 +24,18 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         super.onTokenRefresh();
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.e(TAG, "sendRegistrationToServer: **onTokenRefresh** " );
+
         preferenceHelper = new BasePreferenceHelper(getApplicationContext());
-        // Saving reg id to shared preferences
-        storeRegIdInPref(refreshedToken);
-
-        // sending reg id to your server
-        sendRegistrationToServer(refreshedToken);
-
-        // Notify UI that registration has completed, so the progress indicator can be hidden.
-        Intent registrationComplete = new Intent(AppConstants.REGISTRATION_COMPLETE);
-        registrationComplete.putExtra("token", refreshedToken);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+        // sending gcm token to server
+        if (preferenceHelper.getUser() != null)
+            sendRegistrationToServer(refreshedToken);
     }
 
     private void sendRegistrationToServer(final String token) {
-        // sending gcm token to server
         Log.e(TAG, "sendRegistrationToServer: " + token);
-        //TokenUpdater.getInstance().UpdateToken(getApplicationContext(), preferenceHelper.getMerchantId(), token, AppConstants.Device_Type);
-    }
-
-
-    private void storeRegIdInPref(String token) {
-
-        preferenceHelper.setFirebase_TOKEN(token);
+        /*todo : refresh token */
+//        TokenUpdater.getInstance().UpdateToken(getApplicationContext(),
+//                preferenceHelper.getUser().getId(), token);
     }
 }

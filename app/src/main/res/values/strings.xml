@@ -78,13 +78,13 @@
     <string name="signup">Signup</string>
     <string name="connect_via">or connect via</string>
     <string name="facebook">Facebook</string>
-    <string name="google">Google</string>
+    <string name="google">Google+</string>
     <string name="guest_login">Guest Login</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_email_address">Enter your email address</string>
-    <string name="please_enter_your_email_address">To reset your password, please enter the\nemail address you provided in the signup process</string>
+    <string name="please_enter_your_email_address">To reset your password, please enter the\nemail address you provided in the sign up process</string>
     <string name="submit">Submit</string>
     <string name="enter_code">Enter Code</string>
     <string name="enter_your_4_digit_code_here">Enter your 4 digit code here</string>
@@ -167,10 +167,35 @@
     <string name="delivered">Delivered</string>
     <string name="confirmation">Confirmation</string>
     <string name="reorder">Reorder</string>
-    <string name="by_registering_you_agree_to_nterms_amp_conditions"><![CDATA[By registering you agree to\n<b>Terms & Conditions</b>]]></string>
+    <!--<string name="by_registering_you_agree_to_nterms_amp_conditions"><By registering you agree to <b>Terms &amp; Conditions</b></string>-->
+    <string name="by_registering">By registering you agree to\n<b>Terms &amp; Conditions</b></string>
     <string name="please_select_company">Please select company</string>
     <string name="pasword_change_sucess">Password changed successfully</string>
 
     <string name="guest">Guest</string>
+    <string name="fill_imformation">Please fill complete information</string>
+    <string name="please_login">Please login</string>
+
+
+    <!--Camera permission text-->
+    <string name="permission_location_rationale">Location permission required</string>
+    <string name="permission_location_denied">Please access Location permission to complete process</string>
+    <string name="permission_location_neverask">Please access Location permission to complete process</string>
+
+    <string name="permission_storage_rationale">Please enable storage permission to complete process</string>
+    <string name="permission_storage_denied">Please access Storage permission to complete process</string>
+    <string name="permission_storage_neverask">Please access Storage permission to complete process</string>
+
+    <!--webServices strings-->
+    <string name="null_response">Null response found</string>
+    <string name="failure_response">Something went wrong. Please try again.</string>
+    <string name="error_null">Something went wrong.</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="internal_storage">Internal Storage</string>
+
+
+    <string name="button_allow">Allow</string>
+    <string name="button_deny">Deny</string>
+    <string name="error_empty_list">Please select you desire order to proceed.</string>
 
 </resources>

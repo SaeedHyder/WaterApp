@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.helpers.TextViewHelper;
 
 public class TitleBar extends RelativeLayout {
 
@@ -17,6 +19,11 @@ public class TitleBar extends RelativeLayout {
     private ImageView btnLeft;
     private ImageView btnRight;
     private ImageView btnCart;
+
+    private TextView tvNotificationCount;
+    private TextView tvCartCount;
+    private FrameLayout flNotification;
+    private FrameLayout flCart;
 
 
     private View.OnClickListener menuButtonListener;
@@ -56,6 +63,28 @@ public class TitleBar extends RelativeLayout {
         btnRight = (ImageView) this.findViewById(R.id.btnRight);
         btnLeft = (ImageView) this.findViewById(R.id.btnLeft);
         btnCart = (ImageView) this.findViewById(R.id.btnCart);
+
+        flNotification = (FrameLayout) this.findViewById(R.id.fl_notificationCount);
+        flCart = (FrameLayout) this.findViewById(R.id.fl_cartCount);
+        tvNotificationCount = (TextView) this.findViewById(R.id.tv_notificationCount);
+        tvCartCount = (TextView) this.findViewById(R.id.tv_cartCount);
+
+    }
+
+    public void setNotificationCount(int count) {
+        if (count > 0&& btnRight.getVisibility()==VISIBLE) {
+            flNotification.setVisibility(VISIBLE);
+            TextViewHelper.setText(tvNotificationCount, String.valueOf(count));
+        } else
+            flNotification.setVisibility(INVISIBLE);
+    }
+
+    public void setCartCount(int count) {
+        if (count > 0 && btnCart.getVisibility()==VISIBLE) {
+            flCart.setVisibility(VISIBLE);
+            TextViewHelper.setText(tvCartCount, String.valueOf(count));
+        } else
+            flCart.setVisibility(INVISIBLE);
     }
 
     private void initLayout(Context context) {
@@ -75,6 +104,8 @@ public class TitleBar extends RelativeLayout {
         btnLeft.setVisibility(View.INVISIBLE);
         btnRight.setVisibility(View.INVISIBLE);
         btnCart.setVisibility(View.INVISIBLE);
+        flCart.setVisibility(INVISIBLE);
+        flNotification.setVisibility(INVISIBLE);
     }
 
     public void showBackButton() {

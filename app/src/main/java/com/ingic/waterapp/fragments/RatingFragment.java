@@ -10,6 +10,10 @@ import android.widget.Button;
 
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.AppConstants;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.TextViewHelper;
+import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.CustomRatingBar;
 import com.ingic.waterapp.ui.views.TitleBar;
 
@@ -30,6 +34,10 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
 
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    @BindView(R.id.tv_rating_title)
+    AnyTextView tvName;
+    private int companyId = 0;
+    private String name;
 
     public RatingFragment() {
         // Required empty public constructor
@@ -44,6 +52,11 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rating, container, false);
+        if (getArguments() != null) {
+            companyId = getArguments().getInt(AppConstants.COMPANY_ID);
+            name = getArguments().getString(AppConstants.BOTTLE_NAME);
+        }
+        TextViewHelper.setText(tvName, name);
         return view;
     }
 
@@ -78,7 +91,22 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_submit:
-                notImplemented();
+                int serviceRating = (int) Math.ceil(rbService.getScore());
+                int companyRating = (int) Math.ceil(rbCompany.getScore());
+                serviceHelper.enqueueCall(webService.rating(companyId, serviceRating, companyRating),
+                        WebServiceConstants.rating);
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.rating:
+                getDockActivity().popFragment();
                 break;
             default:
                 break;

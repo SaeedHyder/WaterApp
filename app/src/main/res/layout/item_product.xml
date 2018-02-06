@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_155sdp"
     android:layout_gravity="center"
-    android:background="@drawable/box"
-    android:orientation="vertical"
     android:layout_margin="@dimen/_8sdp"
-    >
+    android:background="@drawable/box2"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_6sdp">
 
     <RelativeLayout
         android:id="@+id/top"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/_100sdp"
         android:layout_gravity="center"
         android:orientation="vertical">
@@ -20,42 +21,52 @@
             android:id="@+id/img_ribbin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:scaleType="fitXY"
             android:src="@drawable/img_ribbin"
-            android:layout_marginRight="4dp"
-            android:visibility="visible"
-            android:layout_centerHorizontal="true"
-            />
+            android:visibility="visible" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_waterBottle_discountText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/_2sdp"
             android:layout_marginTop="2dp"
             android:background="@color/transparent"
-            android:text="10% Discount on 2 bottles"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingLeft="4dp"
+            android:paddingRight="40dp"
+            android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="10sp"
-            app:typeface="@string/typeface_regular" />
+            app:typeface="@string/typeface_regular"
+            tools:text="10% Discount on 2 bottles 10% Discount on 2 bottles 10% Discount on 2 bottles10% Discount on 2 bottles" />
 
         <ImageView
             android:id="@+id/img_bottle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/img_ribbin"
-            android:src="@drawable/img2"
             android:layout_centerHorizontal="true"
-            />
+            android:scaleType="fitCenter"
+            android:src="@drawable/img2" />
     </RelativeLayout>
 
     <com.ingic.waterapp.ui.views.AnyTextView
         android:id="@+id/tv_waterBottle_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/_6sdp"
         android:layout_below="@+id/top"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/transparent"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:paddingLeft="@dimen/_6sdp"
+        android:singleLine="true"
         android:text="@string/water_bottle"
         android:textColor="@color/forgot_grey"
         android:textSize="12sp"
@@ -65,84 +76,89 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_waterBottle_name"
-        android:paddingLeft="@dimen/_6sdp"
-        >
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:paddingLeft="@dimen/_6sdp">
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_waterBottle_aed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
             android:background="@color/transparent"
             android:text="@string/aed"
             android:textColor="@color/blue_theme"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:typeface="@string/typeface_bold" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
-            android:id="@+id/tv_waterBottle_oldAmount"
+            android:id="@+id/tv_waterBottle_originalAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_2sdp"
             android:layout_toEndOf="@+id/tv_waterBottle_aed"
             android:background="@color/transparent"
             android:text="12"
             android:textColor="@color/login_text_grey"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
-            app:typeface="@string/typeface_bold"
-            android:visibility="visible"/>
+            android:visibility="gone"
+            app:typeface="@string/typeface_bold" />
 
         <View
             android:id="@+id/crossLine"
             android:layout_width="20dp"
             android:layout_height="0.5dp"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_9sdp"
             android:layout_toEndOf="@+id/tv_waterBottle_aed"
             android:background="@color/forgot_grey"
-            android:visibility="visible"/>
+            android:visibility="gone" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
-            android:id="@+id/tv_waterBottle_amount"
+            android:id="@+id/tv_waterBottle_currentAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_toEndOf="@+id/tv_waterBottle_oldAmount"
+            android:layout_marginLeft="@dimen/_6sdp"
+            android:layout_toStartOf="@+id/img_minus"
+            android:layout_toEndOf="@+id/tv_waterBottle_originalAmount"
             android:background="@color/transparent"
-            android:text="14"
+            tools:text="14"
             android:textColor="@color/blue_theme"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
-            app:typeface="@string/typeface_bold" />
+            app:typeface="@string/typeface_bold"
+            android:singleLine="true"/>
 
         <ImageView
             android:id="@+id/img_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="4dp"
-            android:src="@drawable/addicon"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:scaleType="matrix"
+            android:src="@drawable/addicon" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_waterBottle_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="4dp"
             android:layout_toLeftOf="@+id/img_add"
+            android:gravity="center_vertical"
+            android:padding="2dp"
             android:text="2"
             android:textColor="@color/forgot_grey"
-            android:textSize="8sp"
+            android:textSize="12sp"
             app:typeface="@string/typeface_regular" />
 
         <ImageView
+            android:id="@+id/img_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/tv_waterBottle_quantity"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="4dp"
-            android:src="@drawable/minusicon"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:scaleType="matrix"
+            android:src="@drawable/minusicon" />
     </RelativeLayout>
 </RelativeLayout>

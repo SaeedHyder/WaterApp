@@ -19,4 +19,17 @@ public class WebServiceConstants {
 
     public static final String guestUserToken = "guestUserToken";
 
+    public static final String about = "about";
+    public static final String getCms = "getCms";
+    public static final String privacy = "privacy";
+    public static final String term = "term";
+    public static final String getNotifications = "getNotifications";
+    public static final String getNotificationCount = "getNotificationCount";
+    public static final String addToCart = "createCart";
+    public static final String getMyOrders = "getMyOrders";
+    public static final String getSetting ="getSettings";
+    public static final String createOrder ="createOrder";
+    public static final String reorder ="createReorder";
+    public static final String cancelOrder ="cancelorder";
+    public static final String rating ="rating";
 }

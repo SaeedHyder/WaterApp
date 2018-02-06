@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.DockActivity;
-import com.ingic.waterapp.entities.MyProjectsParentEntity;
+import com.ingic.waterapp.entities.MyOrdersParentEntity;
 
 public class MyProjectsParentVH extends ParentViewHolder {
     private static final float INITIAL_POSITION = 0.0f;
@@ -40,7 +40,7 @@ public class MyProjectsParentVH extends ParentViewHolder {
 
     }
 
-    public void bind(@NonNull MyProjectsParentEntity entity) {
+    public void bind(@NonNull MyOrdersParentEntity entity) {
         mOrderId.setText(entity.getOrderId());
         mTotalAmount.setText(entity.getTotalAmount());
     }

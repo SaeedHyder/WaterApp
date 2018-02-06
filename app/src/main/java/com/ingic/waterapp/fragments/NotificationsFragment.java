@@ -11,14 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.NotificationCountEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.NotificationsListAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.TitleBar;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +37,10 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
     Unbinder unbinder;
     RecyclerViewListAdapter adapter;
 
+    /*todo change its type*/
+    List<NotificationCountEnt> notificationsEnts;
+
+
     public NotificationsFragment() {
         // Required empty public constructor
     }
@@ -49,6 +55,7 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         return view;
     }
 
@@ -58,6 +65,8 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
 //        if (prefHelper.getLoginTYpe() == AppConstants.NOT_REGISTERED_USER)
 //            llNoNotifications.setVisibility(View.VISIBLE);
 //        else
+        serviceHelper.enqueueCall(webService.getNotifications(prefHelper.getUser().getToken()),
+                WebServiceConstants.getNotifications);
         initRecyclerView();
     }
 
@@ -66,11 +75,12 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
         rvNotifcations.setLayoutManager(new LinearLayoutManager(getDockActivity(), LinearLayoutManager.VERTICAL, false));
         rvNotifcations.addItemDecoration(new SimpleDividerItemDecoration(getDockActivity()));
         rvNotifcations.setAdapter(adapter);
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Lorem Ipsum is simply dummy text of the printing.");
-        list.add("Lorem Ipsum is simply dummy text of the printing.");
-        list.add("Lorem Ipsum is simply dummy text of the printing.");
-        adapter.addAll(list);
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add("Lorem Ipsum is simply dummy text of the printing.");
+//        list.add("Lorem Ipsum is simply dummy text of the printing.");
+//        list.add("Lorem Ipsum is simply dummy text of the printing.");
+//        adapter.addAll(list);
+        adapter.addAll(notificationsEnts);
 
     }
 
@@ -99,5 +109,14 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.getNotifications:
+                notificationsEnts = (List<NotificationCountEnt>) result;
+                break;
+        }
     }
 }

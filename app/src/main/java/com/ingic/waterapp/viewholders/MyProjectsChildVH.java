@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.ingic.waterapp.R;
-import com.ingic.waterapp.entities.MyProjectsChildEntity;
+import com.ingic.waterapp.activities.DockActivity;
+import com.ingic.waterapp.entities.MyOrdersChildEntity;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
-import com.ingic.waterapp.helpers.UIHelper;
-import com.ingic.waterapp.interfaces.OnViewHolderClick;
+import com.ingic.waterapp.interfaces.OnChildViewHolderItemClick;
 import com.ingic.waterapp.ui.adapters.MyOrdersChildListAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 
-public class MyProjectsChildVH extends ChildViewHolder implements OnViewHolderClick {
+public class MyProjectsChildVH extends ChildViewHolder {
 
     private RecyclerView mRecyclerView;
     RecyclerViewListAdapter adapter;
@@ -27,35 +27,31 @@ public class MyProjectsChildVH extends ChildViewHolder implements OnViewHolderCl
     private TextView mDeliveryPeriod;
     private Button mbtnCancel, mbtnReorder;
     private Context mContext;
+    private MyOrdersChildEntity mEntity;
 
-    public MyProjectsChildVH(@NonNull Context context, @NonNull View itemView) {
+    //For reorder and cancel
+    private OnChildViewHolderItemClick childItemListener;
+
+
+    public MyProjectsChildVH(@NonNull DockActivity context, @NonNull View itemView, OnChildViewHolderItemClick listener) {
         super(itemView);
         this.mContext = context;
+        this.childItemListener = listener;
+
         mDeliveryDate = itemView.findViewById(R.id.tv_itemChild_deliveryDate);
         mDeliveryPeriod = itemView.findViewById(R.id.tv_itemChild_deliveryPeriod);
         mbtnCancel = itemView.findViewById(R.id.btn_itemChild_cancel);
         mbtnReorder = itemView.findViewById(R.id.btn_itemChild_reorder);
 
-
         mRecyclerView = itemView.findViewById(R.id.rv_itemChild_bottles);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(context));
-        adapter = new MyOrdersChildListAdapter(context, this);
+        adapter = new MyOrdersChildListAdapter(context, null);
         mRecyclerView.setAdapter(adapter);
-
-//        ArrayList<String> list = new ArrayList<>();
-//        list.add("");
-//        list.add("");
-//        list.add("");
-//        list.add("");
-//
-//        adapter.addAll(list);
-
-
-//        mDeliveryPeriod = itemView.findViewById(R.id.tv_itemRecyclerView_date);
     }
 
-    public void bind(@NonNull MyProjectsChildEntity entity) {
+    public void bind(@NonNull final MyOrdersChildEntity entity, final int parentPosition, int childPosition) {
+        mEntity = entity;
         if (entity.getmWhichFragment().equalsIgnoreCase(AppConstants.IN_PROGRESS_ORDER)) {
             mbtnCancel.setVisibility(View.VISIBLE);
             mbtnReorder.setVisibility(View.GONE);
@@ -67,25 +63,21 @@ public class MyProjectsChildVH extends ChildViewHolder implements OnViewHolderCl
         mbtnReorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIHelper.showShortToastInCenter(mContext, mContext.getResources().getString(R.string.will_be_implemented_in_beta));
+                childItemListener.onReorderClick(view, parentPosition, mEntity.getOrderId());
             }
         });
 
         mbtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIHelper.showShortToastInCenter(mContext, mContext.getResources().getString(R.string.will_be_implemented_in_beta));
+                childItemListener.onCancelOrderClick(view, parentPosition, mEntity.getOrderId());
+
             }
         });
 
         mDeliveryDate.setText(entity.getmDeliveryDate());
         mDeliveryPeriod.setText(entity.getmDeliveryPeriod());
         adapter.addAll(entity.getmList());
-//        mDeliveryPeriod.setText(entity.getmList().get(position).getdate());
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
 
     }
 }

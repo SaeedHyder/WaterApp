@@ -13,7 +13,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
 import com.ingic.waterapp.annotation.RestAPI;
-import com.ingic.waterapp.entities.CompanyEnt;
 import com.ingic.waterapp.entities.FacebookLoginEnt;
 import com.ingic.waterapp.entities.GuestEnt;
 import com.ingic.waterapp.entities.UserEnt;
@@ -27,8 +26,6 @@ import com.ingic.waterapp.interfaces.FacebookLoginListener;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

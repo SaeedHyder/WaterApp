@@ -103,8 +103,8 @@ public class Util {
         try {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             CustomTabsIntent customTabsIntent = builder
-					.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
-					.setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
+                    .setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                    .setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
                     .setExitAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                     .build();
             customTabsIntent.launchUrl(context, Uri.parse(url));
@@ -171,4 +171,10 @@ public class Util {
         lastClickTime = SystemClock.elapsedRealtime();
         return true;
     }
+
+
+    public static float getDiscountedValue(float original, float discountPercent) {
+        return Math.abs(original - (discountPercent / 100) * original);
+    }
+
 }

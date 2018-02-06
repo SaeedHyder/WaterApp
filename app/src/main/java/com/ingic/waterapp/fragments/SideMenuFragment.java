@@ -1,6 +1,5 @@
 package com.ingic.waterapp.fragments;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.facebook.login.Login;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
+import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.DialogHelper;
@@ -21,7 +22,6 @@ import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.SideMenuAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
-import com.ingic.waterapp.ui.dialogs.DialogFactory;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
@@ -51,6 +51,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
     private List<String> sideMenuList = new ArrayList<>();
 
     private String[] userMenuList = {"Home", "Order History", "Company List", "About", "Contact us", "Logout"};
+    private String[] guestMenuList = {"Home", "Company List", "About", "Contact us", "Login"};
     private int loginType;
 
     public SideMenuFragment() {
@@ -66,7 +67,6 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
 
     public static SideMenuFragment newInstance() {
         return new SideMenuFragment();
-
     }
 
     @Override
@@ -105,8 +105,9 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
             @Override
             public void onClick(View view) {
                 if (Util.doubleClickCheck()) {
-//                    getDockActivity().closeResideMenu();
-                    getDockActivity().replaceDockableFragment(MyProfileFragment.newInstance(), MyProfileFragment.class.getSimpleName());
+                    getDockActivity().closeResideMenu();
+                    if (prefHelper.getUser() != null)
+                        getDockActivity().replaceDockableFragment(MyProfileFragment.newInstance(), MyProfileFragment.class.getSimpleName());
                 }
             }
         });
@@ -122,11 +123,16 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
 //            for (int i = 0; i < userMenuIcons.length; i++)
 //                sideMenuList.add(new SideMenuModel(userMenuIcons[i], userMenuList[i]));
 //        }
-        Collections.addAll(sideMenuList, userMenuList);
-        adapter.addAll(sideMenuList);
 
 
-        if(prefHelper.getUser() != null) {
+//        if (prefHelper.getGuestTOKEN() == null) {
+//            Collections.addAll(sideMenuList, userMenuList);
+//        } else
+//            Collections.addAll(sideMenuList, guestMenuList);
+//        adapter.addAll(sideMenuList);
+
+
+        if (prefHelper.getUser() != null) {
 
             tvProfileName.setText(prefHelper.getUser().getFullName());
 
@@ -135,10 +141,36 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
                         .load(prefHelper.getUser().getProfileImage())
                         .into(imgProfile);
             }
-        }
-        else if(prefHelper.getGuestTOKEN()!= null){
+            Collections.addAll(sideMenuList, userMenuList);
+        } else if (prefHelper.getGuestTOKEN() != null) {
+            imgProfile.setImageResource(R.drawable.user);
             tvProfileName.setText(getString(R.string.guest));
+            Collections.addAll(sideMenuList, guestMenuList);
         }
+        adapter.addAll(sideMenuList);
+
+
+    }
+
+    public void update(Login loginResult) {
+        if (sideMenuList != null) sideMenuList.clear();
+
+        if (prefHelper.getUser() != null) {
+
+            tvProfileName.setText(prefHelper.getUser().getFullName());
+
+            if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
+                Picasso.with(getDockActivity())
+                        .load(prefHelper.getUser().getProfileImage())
+                        .into(imgProfile);
+            }
+            Collections.addAll(sideMenuList, userMenuList);
+        } else if (prefHelper.getGuestTOKEN() != null) {
+            imgProfile.setImageResource(R.drawable.user);
+            tvProfileName.setText(getString(R.string.guest));
+            Collections.addAll(sideMenuList, guestMenuList);
+        }
+        adapter.addAll(sideMenuList);
 
     }
 
@@ -147,26 +179,27 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
         //sideMenu click events for non registered user
         if (Util.doubleClickCheck()) {
             getDockActivity().closeResideMenu();
+            if (prefHelper.getUser() != null) {
 
-            switch (position) {
-                case 0:
-                    getDockActivity().replaceDockableFragment(HomeFragment.newInstance(),
-                            HomeFragment.class.getSimpleName());
+                switch (position) {
+                    case 0:
+                        getDockActivity().replaceDockableFragment(HomeFragment.newInstance(),
+                                HomeFragment.class.getSimpleName());
 
-                    break;
-                case 1:
-                    getDockActivity().replaceDockableFragment(MyOrdersFragment.newInstance(), MyOrdersFragment.class.getSimpleName());
-                    break;
-                case 2:
-                    getDockActivity().replaceDockableFragment(CompaniesListFragment.newInstance(), CompaniesListFragment.class.getSimpleName());
-                    break;
-                case 3:
-                    getDockActivity().replaceDockableFragment(AboutFragment.newInstance(), AboutFragment.class.getSimpleName());
-                    break;
-                case 4:
-                    getDockActivity().replaceDockableFragment(ContactUsFragment.newInstance(), ContactUsFragment.class.getSimpleName());
-                    break;
-                case 5:
+                        break;
+                    case 1:
+                        getDockActivity().replaceDockableFragment(MyOrdersFragment.newInstance(), MyOrdersFragment.class.getSimpleName());
+                        break;
+                    case 2:
+                        getDockActivity().replaceDockableFragment(CompaniesListFragment.newInstance(), CompaniesListFragment.class.getSimpleName());
+                        break;
+                    case 3:
+                        getDockActivity().replaceDockableFragment(AboutFragment.newInstance(), AboutFragment.class.getSimpleName());
+                        break;
+                    case 4:
+                        getDockActivity().replaceDockableFragment(ContactUsFragment.newInstance(), ContactUsFragment.class.getSimpleName());
+                        break;
+                    case 5:
 
                     /*final Dialog dialog = DialogFactory.createCustomDialog(getDockActivity(), new View.OnClickListener() {
                         @Override
@@ -183,32 +216,67 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
 
                     dialog.show();*/
 
-                    final DialogHelper logoutdialog = new DialogHelper(getDockActivity());
-                    logoutdialog.initlogout(R.layout.logout_dialog,getResources().getString(R.string.logout), getResources().getString(R.string.message_logout) ,new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                        final DialogHelper logoutdialog = new DialogHelper(getDockActivity());
+                        logoutdialog.initlogout(R.layout.logout_dialog, getResources().getString(R.string.logout), getResources().getString(R.string.message_logout), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                            logoutdialog.hideDialog();
+                                logoutdialog.hideDialog();
 
-                            serviceHelper.enqueueCall(webService.logout(prefHelper.getUser().getToken()),
-                                    WebServiceConstants.logOut);
+                                serviceHelper.enqueueCall(webService.logout(prefHelper.getUser().getToken()),
+                                        WebServiceConstants.logOut);
 
-                        }
-                    }, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getMainActivity().getResideMenu().closeMenu();
-                            logoutdialog.hideDialog();
-                        }
-                    });
-                    logoutdialog.setCancelable(false);
-                    logoutdialog.showDialog();
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getMainActivity().getResideMenu().closeMenu();
+                                logoutdialog.hideDialog();
+                            }
+                        });
+                        logoutdialog.setCancelable(false);
+                        logoutdialog.showDialog();
+
+                        break;
 
 
+                    default:
+                        break;
+                }
+            } else if (prefHelper.getGuestTOKEN() != null) {
 
-                    break;
-                default:
-                    break;
+                switch (position) {
+                    case 0:
+                        getDockActivity().replaceDockableFragment(HomeFragment.newInstance(),
+                                HomeFragment.class.getSimpleName());
+
+                        break;
+                    case 1:
+                        getDockActivity().replaceDockableFragment(CompaniesListFragment.newInstance(), CompaniesListFragment.class.getSimpleName());
+                        break;
+                    case 2:
+                        getDockActivity().replaceDockableFragment(AboutFragment.newInstance(), AboutFragment.class.getSimpleName());
+                        break;
+                    case 3:
+                        getDockActivity().replaceDockableFragment(ContactUsFragment.newInstance(), ContactUsFragment.class.getSimpleName());
+                        break;
+                    case 4:
+                        prefHelper.setGuestTOKEN(null);
+//                        sideMenuList.clear();
+//                        Collections.addAll(sideMenuList, guestMenuList);
+//                        adapter.addAll(sideMenuList);
+
+
+//                        getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
+
+                        prefHelper.setLoginStatus(false);
+                        getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
 
@@ -220,10 +288,15 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
 
             case WebServiceConstants.logOut:
                 getMainActivity().getResideMenu().closeMenu();
-                prefHelper.setLoginStatus(false);
+//                prefHelper.setLoginStatus(false);
                 prefHelper.putUser(null);
-                getDockActivity().popBackStackTillEntry(0);
-                getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
+//                getDockActivity().popBackStackTillEntry(0);
+//                getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
+
+                prefHelper.setLoginStatus(false);
+                DataHelper.deleteRealmData();
+                getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 break;
         }
     }

@@ -91,7 +91,7 @@ public abstract class RecyclerViewListAdapter<T>
     }
 
     public void removeItem(@NonNull T entity) {
-        mList.remove(entity);
+         mList.remove(entity);
         notifyDataSetChanged();
     }
 

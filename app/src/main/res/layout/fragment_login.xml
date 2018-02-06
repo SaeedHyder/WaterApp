@@ -222,7 +222,7 @@
                 app:typeface="@string/typeface_light" />
 
             <View
-                android:layout_width="@dimen/_64sdp"
+                android:layout_width="@dimen/_60sdp"
                 android:layout_height="0.5dp"
                 android:layout_below="@id/tv_login_guest"
                 android:layout_centerHorizontal="true"

@@ -2,6 +2,7 @@ package com.ingic.waterapp.fragments;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -10,19 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.activities.MainActivity;
 import com.ingic.waterapp.entities.CompanyEnt;
 import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.UIHelper;
+import com.ingic.waterapp.interfaces.SideMenuUpdate;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,6 +52,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     List<CompanyEnt> companyEnts;
     int companyId = -1;
 
+    SideMenuUpdate sideMenuUpdate;
+
     public SignUpFragment() {
         // Required empty public constructor
     }
@@ -76,6 +79,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     public void setTitleBar(TitleBar titleBar) {
         // TODO Auto-generated method stub
         super.setTitleBar(titleBar);
+        titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.clearHeaderBackround();
     }
@@ -111,7 +115,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                             etEmail.getText().toString(),
                             etPassword.getText().toString(),
                             etConfirmPassword.getText().toString(),
-                            companyId+"",
+                            companyId + "",
                             AppConstants.Device_Type,
                             token),
                             WebServiceConstants.signUp);
@@ -132,14 +136,15 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         switch (Tag) {
 
             case WebServiceConstants.signUp:
-                UserEnt userEnt = (UserEnt)result;
+                UserEnt userEnt = (UserEnt) result;
                 prefHelper.putUser(userEnt);
-                launchHomeFragment(AppConstants.REGISTERED_USER);
+//                launchHomeFragment(AppConstants.REGISTERED_USER);
+                launchMainActivity(AppConstants.REGISTERED_USER);
                 break;
 
             case WebServiceConstants.getCompanies:
                 companyId = -1;
-                companyEnts = (List<CompanyEnt>)result;
+                companyEnts = (List<CompanyEnt>) result;
 
                 break;
         }
@@ -148,17 +153,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     private void openDialog() {
 
-        if(companyEnts != null) {
+        if (companyEnts != null) {
             final CharSequence[] items = new CharSequence[companyEnts.size()];
             for (int i = 0; i < companyEnts.size(); i++) {
                 items[i] = companyEnts.get(i).getFullName();
             }
-// <<<<<<< HEAD
-//         });
-//         AlertDialog alert = builder.create();
-//         alert.show();
-// =======
-
             AlertDialog.Builder builder = new AlertDialog.Builder(getDockActivity());
             builder.setTitle(R.string.select_supplier);
             builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -169,21 +168,19 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             });
             AlertDialog alert = builder.create();
             alert.show();
-        }else{
+        } else {
             serviceHelper.enqueueCall(webService.getCompany(),
                     WebServiceConstants.getCompanies);
         }
-
-// >>>>>>> c03a76523bb6e679e4ab8de70ec1d4c6299f85c7
     }
 
     private boolean isValidate() {
         if (etName.testValidity() && etEmail.testValidity() && etPassword.testValidity()) {
             if (checkPassword()) {
-                if(companyId != -1)
+                if (companyId != -1)
                     return true;
                 else
-                    UIHelper.showLongToastInCenter(getDockActivity(),getString(R.string.please_select_company));
+                    UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
             }
         }
         return false;
@@ -200,12 +197,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         getDockActivity().replaceDockableFragment(fragment, "HomeFragment");
     }
 
-//    private void launchMainActivity(int type) {
-//        prefHelper.setLoginStatus(true);
-//        prefHelper.setLoginType(type);
-//        getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
-//                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-//    }
+    private void launchMainActivity(int type) {
+        prefHelper.setLoginStatus(true);
+        prefHelper.setLoginType(type);
+        getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+    }
 
 
     private boolean checkPassword() {
@@ -233,4 +230,5 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     private boolean passwordLength(String pwd) {
         return (pwd.length() > 5);
     }
+
 }

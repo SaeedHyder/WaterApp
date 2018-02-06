@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ingic.waterapp.R;
-import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
-import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
@@ -85,13 +83,13 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
 
                 if (checkPassword()) {
 
-                    getDockActivity().popFragment();
-                   /* serviceHelper.enqueueCall(webService.changepassword(
+//                    getDockActivity().popFragment();
+                    serviceHelper.enqueueCall(webService.changepassword(
                             etCurrentPassword.getText().toString(),
                             etNewPassword.getText().toString(),
                             etConfirmNewPassword.getText().toString(),
                             prefHelper.getUser().getToken()),
-                            WebServiceConstants.changePassword);*/
+                            WebServiceConstants.changePassword);
                 }
 
                 break;

@@ -3,24 +3,36 @@ package com.ingic.waterapp.entities;
 
 import java.util.List;
 
-public class MyProjectsChildEntity {
+public class MyOrdersChildEntity {
     private String mWhichFragment;
-    private String mDeliveryDate, mDeliveryPeriod;
-    private List<MyprojectsChildListEntity> mList;
+    private String mDeliveryDate;
+    private String mDeliveryPeriod;
 
-    public MyProjectsChildEntity(String whichFragment, String deliveryDate, String deliveryPeriod, List<MyprojectsChildListEntity> mList) {
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    private int orderId;
+    private List<MyOrdersChildListEntity> mList;
+
+    public MyOrdersChildEntity(String whichFragment,int orderId, String deliveryDate, String deliveryPeriod, List<MyOrdersChildListEntity> mList) {
 
         this.mWhichFragment = whichFragment;
+        this.orderId = orderId;
         this.mDeliveryDate = deliveryDate;
         this.mDeliveryPeriod = deliveryPeriod;
         this.mList = mList;
     }
 
-    public List<MyprojectsChildListEntity> getmList() {
+    public List<MyOrdersChildListEntity> getmList() {
         return mList;
     }
 
-    public void setmList(List<MyprojectsChildListEntity> mList) {
+    public void setmList(List<MyOrdersChildListEntity> mList) {
         this.mList = mList;
     }
 

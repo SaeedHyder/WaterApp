@@ -53,6 +53,7 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     public void setTitleBar(TitleBar titleBar) {
         // TODO Auto-generated method stub
         super.setTitleBar(titleBar);
+        titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setSubHeading(getResources().getString(R.string.contact_us));
     }

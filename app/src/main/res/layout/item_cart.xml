@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="10dp"
+    >
 
     <ImageView
         android:id="@+id/img_itemCart_dlt"
@@ -12,12 +15,13 @@
         android:layout_gravity="end"
         android:layout_marginEnd="@dimen/_12sdp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="6dp"
-        android:src="@drawable/del" />
+        android:src="@drawable/del"
+        android:padding="4dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_76sdp">
+        android:layout_height="@dimen/_76sdp"
+        android:layout_marginTop="-1dp">
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_itemCart"
@@ -31,7 +35,7 @@
         <ImageView
             android:id="@+id/img_itemCart_bottle"
             android:layout_width="@dimen/_46sdp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_62sdp"
             android:layout_toEndOf="@+id/cb_itemCart"
             android:scaleType="fitXY"
             android:src="@drawable/img2" />
@@ -47,11 +51,11 @@
             android:paddingRight="@dimen/_4sdp"
             android:text="Bisleri 20L"
             android:textColor="@color/blue_theme"
-            android:textSize="18sp"
-            app:typeface="@string/typeface_bold" />
+            android:textSize="16sp"
+            app:typeface="@string/typeface_regular" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
-            android:id="@+id/tv_itemCart_date"
+            android:id="@+id/tv_itemCart_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_itemCart_BottleName"
@@ -59,44 +63,49 @@
             android:layout_toEndOf="@id/img_itemCart_bottle"
             android:paddingLeft="@dimen/_4sdp"
             android:paddingRight="@dimen/_4sdp"
-            android:text="Today 3-5 PM"
+            android:text="QTY : 5"
             android:textColor="@color/login_email_grey"
             android:textSize="12sp"
-            app:typeface="@string/typeface_light" />
+            app:typeface="@string/typeface_regular" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
-            android:id="@+id/tv_itemCart_address"
+            android:id="@+id/tv_itemCart_litter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_itemCart_date"
+            android:layout_below="@id/tv_itemCart_quantity"
             android:layout_toEndOf="@id/img_itemCart_bottle"
             android:paddingLeft="@dimen/_4sdp"
             android:paddingRight="@dimen/_4sdp"
-            android:text="Zone 1: Rd. No. 3 Banjara Hills"
+            android:text="20 Ll"
             android:textColor="@color/login_email_grey"
             android:textSize="12sp"
-            app:typeface="@string/typeface_light" />
+            app:typeface="@string/typeface_regular"
+            android:visibility="visible"
+            />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_itemCart_bookTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_itemCart_address"
+            android:layout_below="@id/tv_itemCart_litter"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:layout_toEndOf="@id/img_itemCart_bottle"
             android:paddingLeft="@dimen/_4sdp"
             android:paddingRight="@dimen/_4sdp"
             android:text="10 min ago"
             android:textColor="@color/login_email_grey"
-            android:textSize="12sp"
-            app:typeface="@string/typeface_light" />
+            android:textSize="10sp"
+            app:typeface="@string/typeface_light"
+            android:visibility="gone"
+            />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_itemCart_TotalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_below="@id/tv_itemCart_address"
+            android:layout_below="@id/tv_itemCart_litter"
             android:layout_marginEnd="@dimen/_12sdp"
             android:layout_marginTop="-2dp"
             android:gravity="left"
@@ -104,7 +113,7 @@
             android:paddingRight="@dimen/_4sdp"
             android:text="AED 42.00"
             android:textColor="@color/blue_theme"
-            android:textSize="18sp"
-            app:typeface="@string/typeface_bold" />
+            android:textSize="16sp"
+            app:typeface="@string/typeface_regular" />
     </RelativeLayout>
 </LinearLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Ingic on 10/10/17 5:31 PM
+  ~ Copyright (c) 2017. All rights reserved.
+  ~
+  ~ Last modified 10/10/17 5:31 PM
+  -->
+
+<full-backup-content>
+    <!-- TODO Remove the following "exclude" elements to make them a part of the auto backup -->
+    <!-- Exclude the shared preferences file that contains the GCM registrationId -->
+    <exclude
+        domain="sharedpref"
+        path="waterAppPreferences.xml" />
+    <exclude domain="sharedpref" path="evernote_jobs.xml" />
+    <exclude domain="database" path="evernote_jobs.db" />
+</full-backup-content>

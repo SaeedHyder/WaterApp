@@ -1,5 +1,9 @@
 package com.ingic.waterapp.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,8 +18,10 @@ import android.widget.ProgressBar;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.HomeFragment;
 import com.ingic.waterapp.fragments.LoginFragment;
+import com.ingic.waterapp.fragments.RatingFragment;
 import com.ingic.waterapp.fragments.SideMenuFragment;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.SideMenuChooser;
 import com.ingic.waterapp.global.SideMenuDirection;
 import com.ingic.waterapp.helpers.ScreenHelper;
@@ -44,6 +50,11 @@ public class MainActivity extends DockActivity implements OnClickListener {
 
     private String sideMenuType;
     private String sideMenuDirection;
+    //Unread notification count broadcast//
+    BroadcastReceiver notificationCountBroadcastReceiver;
+    BroadcastReceiver cartCountBroadcastReceiver;
+    private String ratingBottleName;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +70,24 @@ public class MainActivity extends DockActivity implements OnClickListener {
         sideMenuDirection = SideMenuDirection.LEFT.getValue();
 
         settingSideMenu(sideMenuType, sideMenuDirection);
+        if (getIntent().getExtras().get(AppConstants.RATING_BOTTLE) != null)
+            ratingBottleName = getIntent().getExtras().get(AppConstants.RATING_BOTTLE).toString();
+
+        notificationCountBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int count = intent.getIntExtra(AppConstants.UNREAD_NOTICATION_COUNT, 0);
+                titleBar.setNotificationCount(count);
+            }
+        };
+
+        cartCountBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int count = intent.getIntExtra(AppConstants.CART_COUNT, 0);
+                titleBar.setCartCount(count);
+            }
+        };
 
         titleBar.setMenuButtonListener(new OnClickListener() {
 
@@ -86,7 +115,6 @@ public class MainActivity extends DockActivity implements OnClickListener {
                     UIHelper.showLongToastInCenter(getApplicationContext(),
                             R.string.message_wait);
                 } else {
-
                     popFragment();
                     UIHelper.hideSoftKeyboard(getApplicationContext(),
                             titleBar);
@@ -97,13 +125,19 @@ public class MainActivity extends DockActivity implements OnClickListener {
         titleBar.setNotificationButtonListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                openNotification();
+                if (prefHelper.getUser() != null) {
+                    openNotification();
+                } else
+                    UIHelper.showShortToastInCenter(MainActivity.this, getResources().getString(R.string.please_login));
             }
         });
         titleBar.setCartButtonListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCart();
+                if (prefHelper.getUser() != null)
+                    openCart();
+                else
+                    UIHelper.showShortToastInCenter(MainActivity.this, getResources().getString(R.string.please_login));
             }
         });
 
@@ -112,6 +146,20 @@ public class MainActivity extends DockActivity implements OnClickListener {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.registerReceiver(notificationCountBroadcastReceiver, new IntentFilter(AppConstants.UNREAD_NOTICATION_COUNT_BROADCAST));
+        this.registerReceiver(cartCountBroadcastReceiver, new IntentFilter(AppConstants.CART_COUNT_BROADCAST));
+    }
+
+    @Override
+    protected void onDestroy() {
+        this.unregisterReceiver(notificationCountBroadcastReceiver);
+        this.unregisterReceiver(cartCountBroadcastReceiver);
+        super.onDestroy();
+    }
 
     public View getDrawerView() {
         return getLayoutInflater().inflate(getSideMenuFrameLayoutId(), null);
@@ -175,7 +223,14 @@ public class MainActivity extends DockActivity implements OnClickListener {
         getSupportFragmentManager().addOnBackStackChangedListener(getListener());
 //        replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
 
-        if (prefHelper.isLogin()) {
+        if (ratingBottleName != null && !ratingBottleName.isEmpty()) {
+            RatingFragment fragment = new RatingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(AppConstants.BOTTLE_NAME, ratingBottleName);
+            fragment.setArguments(bundle);
+            replaceDockableFragment(fragment, RatingFragment.class.getSimpleName());
+
+        } else if (prefHelper.isLogin()) {
             replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
         } else {
             replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "120831459252-idl2752odjol18t8k8qggf9ecshah9fr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ingic.waterapp",
+            "certificate_hash": "1c77144a2efb137e7ac4b9b4c030564ed92bde20"
+          }
+        },
+        {
           "client_id": "120831459252-cot5js19opqf8id3j97i6jmjv47n9maj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

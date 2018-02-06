@@ -1,3 +1,10 @@
+/*
+ * Created by Ingic on 12/13/17 7:13 PM
+ * Copyright (c) 2017. All rights reserved.
+ *
+ * Last modified 10/19/17 6:51 PM
+ */
+
 package com.ingic.waterapp.fcm;
 
 import android.app.Notification;
@@ -15,45 +22,67 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
+import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.helpers.BasePreferenceHelper;
-import com.ingic.waterapp.retrofit.WebService;
 
 import java.util.Map;
 import java.util.Random;
 
-
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+//    OnBadgeCountChange onBadgeCountChange;
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
-    private WebService webservice;
-    private BasePreferenceHelper preferenceHelper;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        preferenceHelper = new BasePreferenceHelper(getApplicationContext());
+        BasePreferenceHelper prefHelper = new BasePreferenceHelper(this);
+        if (prefHelper.getUser() == null || !prefHelper.isLogin()) {
+            Log.d(TAG, "prefHelper data null: ");
+            return;
+        }
+
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
+        if (remoteMessage.getData()!=null && remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map<String, String> msgData = remoteMessage.getData();
-            String msg = msgData.get("body");
+            String msg = msgData.get("message");
             String title = msgData.get("title");
+            String bottle_name = msgData.get("bottle_name");
+//            String badge = msgData.get("badge");
+//            String totalCount = msgData.get("total_count");
             Log.e(TAG, "onMessageReceived: msg->" + msg + " title->" + title);
-            sendNotification(title, msg);
-        } else
-            //Check if message contains a notification payload.
-            if (remoteMessage.getNotification() != null) {
-                Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-                String msg = remoteMessage.getNotification().getBody();
-                String title = remoteMessage.getNotification().getTitle();
-                sendNotification(title, msg);
+            sendDefaultNotification(title, msg,bottle_name);
+/*
+            //for blocking user
+            if (type.equalsIgnoreCase(AppConstant.ADMIN_BLOCKED)) {
+//            //broadcast hit: log out api, then clear preference
+                Log.d(TAG, "onMessageReceived: Type : " + type);
+                hitBlockUserBroadCast(type);
             }
+            //for updating view count
+            hitViewCountBroadCast(Util.getParsedInteger(badge) , Util.getParsedInteger(totalCount));*/
+        } else if (remoteMessage.getNotification() != null) {   //Check if message contains a notification payload.
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            String msg = remoteMessage.getNotification().getBody();
+            String title = remoteMessage.getNotification().getTitle();
+            sendDefaultNotification(title, msg, "");
+        }
     }
 
-    private void sendNotification(String title, String msg) {
+
+    /**
+     * Create and show a simple notification containing the received FCM message.
+     *  @param title
+     * @param msg   FCM message body received.
+     * @param bottle_name
+     */
+    private void sendDefaultNotification(String title, String msg, String bottle_name) {
         if (TextUtils.isEmpty(title)) title = getResources().getString(R.string.app_name);
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(AppConstants.RATING_BOTTLE, bottle_name);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
+
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -73,6 +102,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Random rn = new Random();
         int range = 10000 - 1 + 1;
         int randomNum = rn.nextInt(range) + 1;
+
         notificationManager.notify(randomNum /* ID of notification */, notificationBuilder.build());
     }
+/*
+    //broadcasting
+    private void updateCount(int count) {
+        //app badge count
+
+        onBadgeCountChange.onBadgeCountChange(count);
+    }
+
+    private void hitViewCountBroadCast(int badgeCount, int totalCount) {
+        Intent intent = new Intent();
+        intent.setAction(AppConstant.VIEW_COUNT_BROADCAST);
+        intent.putExtra(AppConstant.VIEW_COUNT, badgeCount);
+        intent.putExtra(AppConstant.TOTAL_VIEW_COUNT, totalCount);
+        this.sendBroadcast(intent);
+    }*/
 }

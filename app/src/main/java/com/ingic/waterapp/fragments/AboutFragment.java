@@ -9,8 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.CmsEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.TextViewHelper;
+import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
+import com.ingic.waterapp.ui.views.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +32,9 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
     Button btnTermsCondition;
     @BindView(R.id.btn_about_privacyPolicy)
     Button btnPrivacyPolicy;
+    @BindView(R.id.tv_about_description)
+    AnyTextView tvDesc;
+    private CmsEnt response;
 
     public AboutFragment() {
         // Required empty public constructor
@@ -61,6 +69,7 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
         titleBar.hideButtons();
         titleBar.setSubHeading(getDockActivity().getResources().getString(R.string.about));
         titleBar.showBackButton();
+        titleBar.clearHeaderBackround();
     }
 
     @Override
@@ -82,33 +91,72 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_about:
-                if (!btnAbout.isSelected()) {
-                    btnAbout.setSelected(true);
-                    btnTermsCondition.setSelected(false);
-                    btnPrivacyPolicy.setSelected(false);
-                }
+                if (Util.doubleClickCheck())
+                    if (!btnAbout.isSelected()) {
+                        btnAbout.setSelected(true);
+                        btnTermsCondition.setSelected(false);
+                        btnPrivacyPolicy.setSelected(false);
+
+                        callService(WebServiceConstants.about);
+//                        if (response != null)
+
+                    }
                 break;
 
             case R.id.btn_about_terms:
+                if (Util.doubleClickCheck())
+                    if (!btnTermsCondition.isSelected()) {
+                        btnAbout.setSelected(false);
+                        btnTermsCondition.setSelected(true);
+                        btnPrivacyPolicy.setSelected(false);
 
-                if (!btnTermsCondition.isSelected()) {
-                    btnAbout.setSelected(false);
-                    btnTermsCondition.setSelected(true);
-                    btnPrivacyPolicy.setSelected(false);
-                }
+                        callService(WebServiceConstants.term);
+//                        if (response != null)
+//                            TextViewHelper.setHtmlText(tvDesc, response.getBody());
+
+                    }
                 break;
 
             case R.id.btn_about_privacyPolicy:
-                if (!btnPrivacyPolicy.isSelected()) {
-                    btnAbout.setSelected(false);
-                    btnTermsCondition.setSelected(false);
-                    btnPrivacyPolicy.setSelected(true);
-                }
+                if (Util.doubleClickCheck())
+                    if (!btnPrivacyPolicy.isSelected()) {
+                        btnAbout.setSelected(false);
+                        btnTermsCondition.setSelected(false);
+                        btnPrivacyPolicy.setSelected(true);
+
+                        callService(WebServiceConstants.privacy);
+//                        if (response != null)
+//                            TextViewHelper.setHtmlText(tvDesc, response.getBody());
+
+                    }
                 break;
 
             default:
                 break;
         }
     }
+
+    private void callService(String type) {
+
+        serviceHelper.enqueueCall(webService.getCms(type),
+                WebServiceConstants.getCms);
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.getCms:
+                response = (CmsEnt) result;
+                if (response != null)
+                    TextViewHelper.setHtmlText(tvDesc, response.getBody());
+
+                break;
+        }
+    }
 }
+/*
+* TextViewHelper.setHtmlText(tvAboutApp, response.body().getResult().getText());
+* */
+
+
 

@@ -83,6 +83,7 @@ public class MyOrdersFragment extends BaseFragment implements View.OnClickListen
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showBackButton();
+        titleBar.clearHeaderBackround();
         titleBar.setSubHeading(getResources().getString(R.string.my_order));
     }
 

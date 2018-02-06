@@ -13,21 +13,24 @@ import android.view.ViewGroup;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.CompanyDetails;
 import com.ingic.waterapp.entities.Product;
+import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.helpers.GridSpacingItemDecoration;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.retrofit.GsonFactory;
 import com.ingic.waterapp.ui.adapters.ProductsAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.TitleBar;
+import com.ingic.waterapp.ui.views.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +44,11 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
 
     CompanyDetails companyDetails;
 
+
+    //Realm
+    private Realm realm;
+
+
     public HomeProductsFragment() {
         // Required empty public constructor
     }
@@ -49,11 +57,25 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        realm = Realm.getDefaultInstance();
         if (getArguments() != null) {
             companyDetails = GsonFactory.getConfiguredGson().fromJson(getArguments().getString(AppConstants.CompanyDetails), CompanyDetails.class);
         }
 
+        setQuantity();
+
+    }
+
+    private void setQuantity() {
+        if (companyDetails != null) {
+            List<Product> products = companyDetails.getProduct();
+            for (int i = 0; i < products.size(); i++) {
+                Product obj = products.get(i);
+                obj.setQuantity(String.valueOf(DataHelper.getProductQuantity(products.get(i).getId())));
+                products.set(i, obj);
+            }
+            companyDetails.setProduct(products);
+        }
     }
 
     @Override
@@ -74,7 +96,7 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
         adapter = new ProductsAdapter(getDockActivity(), this);
         rvProducts.setLayoutManager(new GridLayoutManager(getDockActivity(), 2));
         int spanCount = 2;
-        int spacing = 2;
+        int spacing = 1;
         rvProducts.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvProducts.setAdapter(adapter);
 
@@ -119,7 +141,21 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
 
     @Override
     public void onItemClick(View view, int position) {
-        getDockActivity().replaceDockableFragment(WaterBottleFragment.newInstance(), WaterBottleFragment.class.getSimpleName());
+        if (Util.doubleClickCheck()) {
+            if (prefHelper.getUser() != null) {
+                Product productDetail = companyDetails.getProduct().get(position);
+                int quantity = DataHelper.getProductQuantity(productDetail.getId());
+                WaterBottleFragment fragment = new WaterBottleFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(AppConstants.PRODUCT_OBJ, productDetail);
+//                int productId = companyDetails.getProduct().get(position).getId();
+                bundle.putInt(AppConstants.PRODUCT_QUANTITY, quantity);
+//                bundle.putDouble(AppConstants.PRODUCT_AMOUNT, Util.getParsedDouble(productAmount));
+                fragment.setArguments(bundle);
+                getDockActivity().replaceDockableFragment(fragment, WaterBottleFragment.class.getSimpleName());
+            } else
+                UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_login));
+        }
     }
 
     @Override

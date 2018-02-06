@@ -16,7 +16,6 @@ import com.ingic.waterapp.retrofit.GsonFactory;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.CustomRatingBar;
 import com.ingic.waterapp.ui.views.TitleBar;
-import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,11 +70,11 @@ public class HomeProductReviewFragment extends BaseFragment {
 
         if (companyDetails != null && companyDetails.getProduct().size() > 0) {
 
-            if (companyDetails.getReview().getCompanyDetail().getProfileImage() != null && companyDetails.getReview().getCompanyDetail().getProfileImage().length() > 0) {
-                Picasso.with(getDockActivity())
-                        .load(companyDetails.getReview().getCompanyDetail().getProfileImage())
-                        .into(imgBottle);
-            }
+//            if (companyDetails.getReview().getCompanyDetail().getProfileImage() != null && companyDetails.getReview().getCompanyDetail().getProfileImage().length() > 0) {
+//                Picasso.with(getDockActivity())
+//                        .load(companyDetails.getReview().getCompanyDetail().getProfileImage())
+//                        .into(imgBottle);
+//            }
 
             tvRatingTitle.setText(companyDetails.getName());
 

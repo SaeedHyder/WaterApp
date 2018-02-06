@@ -4,7 +4,9 @@ package com.ingic.waterapp.entities;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -42,6 +44,13 @@ public class Product {
     @SerializedName("product_image")
     @Expose
     private String productImage;
+    @SerializedName("liter")
+    @Expose
+    private String liter;
+
+    @SerializedName("quantity")
+    @Expose
+    private String quantity;
 
     public int getId() {
         return id;
@@ -139,4 +148,21 @@ public class Product {
         this.productImage = productImage;
     }
 
+
+    public String getLiter() {
+        return liter;
+    }
+
+    public void setLiter(String liter) {
+        this.liter = liter;
+    }
+
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 }

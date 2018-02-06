@@ -27,10 +27,14 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "0.5.12"
 
         multiDexEnabled true
     }
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -54,6 +58,7 @@ dependencies {
 
     implementation "com.google.android.gms:play-services-maps:$googleApiVersion"
     implementation "com.google.android.gms:play-services-location:$googleApiVersion"
+    implementation "com.google.android.gms:play-services:$googleApiVersion"
     implementation "com.google.firebase:firebase-messaging:$googleApiVersion"
     implementation "com.google.android.gms:play-services-plus:$googleApiVersion"
     implementation "com.google.android.gms:play-services-auth:$googleApiVersion"
@@ -82,16 +87,33 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.4'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.alimuzaffar.lib:pinentryedittext:1.3.1'
-//<<<<<<< HEAD
     implementation 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
-//=======
     compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true;
     }
 
     compile 'com.android.support:multidex:1.0.2'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
 
-//>>>>>>> c03a76523bb6e679e4ab8de70ec1d4c6299f85c7
+    // Realm
+//    annotationProcessor 'realm-android-0.82.1.jar'
+//    compile 'io.realm:realm-android:0.82.1'
+    compile 'io.realm:android-adapters:2.0.0'
+    compile 'org.parceler:parceler-api:1.1.9'
+    annotationProcessor 'org.parceler:parceler:1.1.9'
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'realm-android'
+
+
+
+
+
+/*
+Error:Execution failed for task ':app:javaPreCompileDebug'.
+        > Annotation processors must be explicitly declared now.  The following dependencies on the compile classpath are found to contain annotation processor.  Please add them to the annotationProcessor configuration.
+        - realm-android-0.82.1.jar (io.realm:realm-android:0.82.1)
+Alternatively, set android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true to continue with previous behavior.  Note that this option is deprecated and will be removed in the future.
+        See https://developer.android.com/r/tools/annotation-processor-error-message.html for more details.
+*/

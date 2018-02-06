@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ingic.waterapp.R;
-import com.ingic.waterapp.entities.MyprojectsChildListEntity;
+import com.ingic.waterapp.entities.MyOrdersChildListEntity;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 
 
-public class MyOrdersChildListAdapter extends RecyclerViewListAdapter<MyprojectsChildListEntity> {
+public class MyOrdersChildListAdapter extends RecyclerViewListAdapter<MyOrdersChildListEntity> {
     private Context context;
 
     public MyOrdersChildListAdapter(Context context, OnViewHolderClick listener) {
@@ -29,7 +29,7 @@ public class MyOrdersChildListAdapter extends RecyclerViewListAdapter<Myprojects
 
 
     @Override
-    protected void bindView(MyprojectsChildListEntity item, RecyclerviewViewHolder viewHolder) {
+    protected void bindView(MyOrdersChildListEntity item, RecyclerviewViewHolder viewHolder) {
         if (item != null) {
             final int position = viewHolder.getAdapterPosition();
             TextView textTitle = (TextView) viewHolder.getView(R.id.tv_itemChidRv_BottleName);

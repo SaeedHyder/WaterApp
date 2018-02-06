@@ -5,14 +5,13 @@ import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.List;
 
-public class MyProjectsParentEntity implements Parent<MyProjectsChildEntity> {
-    private final List<MyProjectsChildEntity> childList;
-    private int img;
+public class MyOrdersParentEntity implements Parent<MyOrdersChildEntity> {
+    private final List<MyOrdersChildEntity> childList;
     private String orderId;
     private String totalAmount;
 
 
-    public MyProjectsParentEntity(String orderId, String totalAmount, List<MyProjectsChildEntity> list) {
+    public MyOrdersParentEntity(String orderId, String totalAmount, List<MyOrdersChildEntity> list) {
         this.orderId = orderId;
         this.totalAmount = totalAmount;
         childList = list;
@@ -20,10 +19,6 @@ public class MyProjectsParentEntity implements Parent<MyProjectsChildEntity> {
 
     public String getOrderId() {
         return orderId;
-    }
-
-    public int getImg() {
-        return img;
     }
 
     public void setOrderId(String orderId) {
@@ -38,7 +33,7 @@ public class MyProjectsParentEntity implements Parent<MyProjectsChildEntity> {
         this.totalAmount = totalAmount;
     }
 
-    public MyProjectsChildEntity getChild(int position) {
+    public MyOrdersChildEntity getChild(int position) {
 //        if (childList == null || childList.size() < position) {
 //            return null;
 //        } else
@@ -46,7 +41,7 @@ public class MyProjectsParentEntity implements Parent<MyProjectsChildEntity> {
     }
 
     @Override
-    public List<MyProjectsChildEntity> getChildList() {
+    public List<MyOrdersChildEntity> getChildList() {
         return childList;
     }
 
