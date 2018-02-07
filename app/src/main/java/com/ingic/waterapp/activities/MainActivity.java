@@ -53,7 +53,7 @@ public class MainActivity extends DockActivity implements OnClickListener {
     //Unread notification count broadcast//
     BroadcastReceiver notificationCountBroadcastReceiver;
     BroadcastReceiver cartCountBroadcastReceiver;
-    private String ratingBottleName;
+    private String ratingBottleName ,ratingCompanyId;
 
 
     @Override
@@ -70,8 +70,10 @@ public class MainActivity extends DockActivity implements OnClickListener {
         sideMenuDirection = SideMenuDirection.LEFT.getValue();
 
         settingSideMenu(sideMenuType, sideMenuDirection);
-        if (getIntent().getExtras().get(AppConstants.RATING_BOTTLE) != null)
+        if (getIntent().getExtras().get(AppConstants.RATING_BOTTLE) != null){
             ratingBottleName = getIntent().getExtras().get(AppConstants.RATING_BOTTLE).toString();
+            ratingCompanyId = getIntent().getExtras().get(AppConstants.RATING_COMPANY_ID).toString();
+        }
 
         notificationCountBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -227,6 +229,7 @@ public class MainActivity extends DockActivity implements OnClickListener {
             RatingFragment fragment = new RatingFragment();
             Bundle bundle = new Bundle();
             bundle.putString(AppConstants.BOTTLE_NAME, ratingBottleName);
+            bundle.putString(AppConstants.COMPANY_ID, ratingCompanyId);
             fragment.setArguments(bundle);
             replaceDockableFragment(fragment, RatingFragment.class.getSimpleName());
 

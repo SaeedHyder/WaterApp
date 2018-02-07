@@ -10,7 +10,11 @@ import android.widget.Button;
 
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.TextViewHelper;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
+import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
 import butterknife.BindView;
@@ -23,6 +27,10 @@ import butterknife.Unbinder;
 public class ContactUsFragment extends BaseFragment implements View.OnClickListener {
 
     Unbinder unbinder;
+    @BindView(R.id.tv_contactUs_phone)
+    AnyTextView tvPhone;
+    @BindView(R.id.tv_contactUs_email)
+    AnyTextView tvEmail;
     @BindView(R.id.et_contactUs_feedback)
     AnyEditTextView etFeedback;
     @BindView(R.id.btn_submit)
@@ -64,6 +72,14 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         setListeners();
+        setData();
+    }
+
+    private void setData() {
+        if (prefHelper.getUser() != null) {
+            TextViewHelper.setText(tvPhone, prefHelper.getUser().getAdminMobile());
+            TextViewHelper.setText(tvEmail, prefHelper.getUser().getAdminEmail());
+        }
     }
 
     @Override
@@ -78,6 +94,8 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_submit:
                 if (etFeedback.testValidity()) {
+                    serviceHelper.enqueueCall(webService.feedback(etFeedback.getText().toString()
+                            , prefHelper.getUser().getToken()), WebServiceConstants.feedback);
                     notImplemented();
                 }
                 break;
@@ -86,4 +104,13 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
+    @Override
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
+            case WebServiceConstants.feedback:
+                UIHelper.showShortToastInCenter(getDockActivity(), tag);
+                getDockActivity().popFragment();
+                break;
+        }
+    }
 }

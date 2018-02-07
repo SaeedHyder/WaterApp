@@ -9,6 +9,7 @@ import com.ingic.waterapp.realm.RealmConstants;
 import java.util.Collection;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class DataHelper {
     static Realm realm = Realm.getDefaultInstance();
@@ -191,6 +192,10 @@ public class DataHelper {
                 realm.delete(MyCartModel.class);
             }
         });
+    }
+
+    public static RealmResults<MyCartModel> getRealmData() {
+        return realm.where(MyCartModel.class).findAll();
     }
 
 }

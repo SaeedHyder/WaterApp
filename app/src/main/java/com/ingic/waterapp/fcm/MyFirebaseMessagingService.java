@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-//    OnBadgeCountChange onBadgeCountChange;
+    //    OnBadgeCountChange onBadgeCountChange;
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 
     @Override
@@ -41,16 +41,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         // Check if message contains a data payload.
-        if (remoteMessage.getData()!=null && remoteMessage.getData().size() > 0) {
+        if (remoteMessage.getData() != null && remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map<String, String> msgData = remoteMessage.getData();
             String msg = msgData.get("message");
             String title = msgData.get("title");
-            String bottle_name = msgData.get("bottle_name");
+            String type = msgData.get("type");
+            String company_name = msgData.get("company_name");
+            String company_id = msgData.get("company_id");
 //            String badge = msgData.get("badge");
 //            String totalCount = msgData.get("total_count");
             Log.e(TAG, "onMessageReceived: msg->" + msg + " title->" + title);
-            sendDefaultNotification(title, msg,bottle_name);
+            sendDefaultNotification(title, msg, company_name, company_id, type);
 /*
             //for blocking user
             if (type.equalsIgnoreCase(AppConstant.ADMIN_BLOCKED)) {
@@ -64,26 +66,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             String msg = remoteMessage.getNotification().getBody();
             String title = remoteMessage.getNotification().getTitle();
-            sendDefaultNotification(title, msg, "");
+            sendDefaultNotification(title, msg, "", "", "");
         }
     }
 
 
     /**
      * Create and show a simple notification containing the received FCM message.
-     *  @param title
-     * @param msg   FCM message body received.
+     *
+     * @param title
+     * @param msg         FCM message body received.
      * @param bottle_name
+     * @param company_id
+     * @param type
      */
-    private void sendDefaultNotification(String title, String msg, String bottle_name) {
+    private void sendDefaultNotification(String title, String msg, String bottle_name, String company_id, String type) {
         if (TextUtils.isEmpty(title)) title = getResources().getString(R.string.app_name);
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(AppConstants.RATING_BOTTLE, bottle_name);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = null;
+        if (!type.isEmpty() && type.equalsIgnoreCase(AppConstants.RATING)) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(AppConstants.RATING_BOTTLE, bottle_name);
+            intent.putExtra(AppConstants.RATING_COMPANY_ID, company_id);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
 
-
+        }
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)

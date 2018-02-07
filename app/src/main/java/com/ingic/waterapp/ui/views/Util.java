@@ -171,6 +171,13 @@ public class Util {
         lastClickTime = SystemClock.elapsedRealtime();
         return true;
     }
+    public static boolean doubleClickCheck2Seconds() {
+        if (SystemClock.elapsedRealtime() - lastClickTime < 3000) {
+            return false;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
+        return true;
+    }
 
 
     public static float getDiscountedValue(float original, float discountPercent) {

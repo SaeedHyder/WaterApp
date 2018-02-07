@@ -25,11 +25,13 @@ import android.widget.ImageView;
 import com.ingic.waterapp.BuildConfig;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.CompanyEnt;
+import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.ImageLoaderHelper;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.helpers.UIHelper;
+import com.ingic.waterapp.interfaces.ProfileUpdateListener;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
@@ -65,6 +67,8 @@ import static android.app.Activity.RESULT_OK;
 @RuntimePermissions
 public class MyProfileFragment extends BaseFragment implements View.OnClickListener {
     public static final String TAG = MyProfileFragment.class.getSimpleName();
+    public static final int TRUE = 1;
+    public static final int FALSE = 0;
 
 
     Unbinder unbinder;
@@ -100,12 +104,14 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private File fileUrl;
     private Snackbar snackbar;
     private View rootView;
+    static ProfileUpdateListener mListener;
 
     public MyProfileFragment() {
         // Required empty public constructor
     }
 
-    public static MyProfileFragment newInstance() {
+    public static MyProfileFragment newInstance(ProfileUpdateListener listener) {
+        mListener = listener;
         return new MyProfileFragment();
     }
 
@@ -151,7 +157,15 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
             TextViewHelper.setText(etName, prefHelper.getUser().getFullName());
             TextViewHelper.setText(etEmail, prefHelper.getUser().getEmail());
-            tvSelectSupplier.setText("Smart Water");
+            TextViewHelper.setText(etAddress, prefHelper.getUser().getLocation());
+            TextViewHelper.setText(etPhoneNumber, prefHelper.getUser().getMobileNo());
+            TextViewHelper.setText(tvSelectSupplier, prefHelper.getUser().getCompanyName());
+            int push = prefHelper.getUser().getPushNotification();
+            if (push == TRUE) {
+                btnNotification.setSelected(false);
+            } else
+                btnNotification.setSelected(true);
+
 
             if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
                 Picasso.with(getDockActivity())
@@ -221,10 +235,10 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                     String fullName = etName.getText().toString();
                     String email = etEmail.getText().toString();
                     String phoneNo = etPhoneNumber.getText().toString();
+                    int mCompanyId = (companyId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCompanyId()) : companyId;
                     String location = etAddress.getText().toString();
                     int push = btnNotification.isSelected() ? 1 : 0;
-                    callService(fullName, email, phoneNo, location, companyId, push, prefHelper.getUser().getToken());
-//                    notImplemented();
+                    callService(fullName, email, phoneNo, location, mCompanyId, push, prefHelper.getUser().getToken());
                 }
                 break;
             default:
@@ -253,10 +267,12 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
             case WebServiceConstants.updateProfile:
-
+                UserEnt login = (UserEnt) result;
+                prefHelper.putUser(login);
+                mListener.profileUpdate();
                 break;
             case WebServiceConstants.getCompanies:
                 companyId = -1;
@@ -268,7 +284,18 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private boolean isValidate() {
-        return etName.testValidity() && etEmail.testValidity() && etAddress.testValidity() && etPhoneNumber.testValidity();
+        if (etName.testValidity() && etAddress.testValidity()) {
+            if (checkPhoneLength()) {
+                return true;
+            } else
+                etPhoneNumber.setError("Please Enter valid phone number");
+
+        }// && checkPhoneLength());
+        return false;
+    }
+
+    private boolean checkPhoneLength() {
+        return (etPhoneNumber.length() > 9 || etPhoneNumber.length() < 1);
     }
 
     //Camera Integration

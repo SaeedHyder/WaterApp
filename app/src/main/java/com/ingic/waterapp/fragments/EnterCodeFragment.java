@@ -94,8 +94,8 @@ public class EnterCodeFragment extends BaseFragment {
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
 
             case WebServiceConstants.forgotPassword:
                 getDockActivity().popBackStackTillEntry(1);

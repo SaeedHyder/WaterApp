@@ -35,7 +35,8 @@ public class ServiceHelper<T>  {
                 public void onResponse(Call<ResponseWrapper<T>> call, Response<ResponseWrapper<T>> response) {
                     context.onLoadingFinished();
                     if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
-                        serviceResponseLisener.ResponseSuccess(response.body().getResult(), tag);
+
+                        serviceResponseLisener.ResponseSuccess(response.body().getResult(), tag, response.body().getMessage());
                     } else {
                         UIHelper.showShortToastInCenter(context, response.body().getMessage());
                     }

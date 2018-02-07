@@ -143,8 +143,8 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
             case WebServiceConstants.getCms:
                 response = (CmsEnt) result;
                 if (response != null)

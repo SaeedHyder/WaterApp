@@ -63,6 +63,9 @@ public class UserEnt {
     @SerializedName("company_id")
     @Expose
     private String companyId;
+    @SerializedName("company_name")
+    @Expose
+    private String companyName;
     @SerializedName("company_term")
     @Expose
     private String companyTerm;
@@ -84,6 +87,13 @@ public class UserEnt {
     @SerializedName("token")
     @Expose
     private String token;
+
+    @SerializedName("admin_mobile")
+    @Expose
+    private String adminMobile;
+    @SerializedName("admin_email")
+    @Expose
+    private String adminEmail;
 
     public int getId() {
         return id;
@@ -233,8 +243,17 @@ public class UserEnt {
         return companyId;
     }
 
+
     public void setCompanyId(String companyId) {
         this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getCompanyTerm() {
@@ -293,4 +312,19 @@ public class UserEnt {
         this.token = token;
     }
 
+    public String getAdminMobile() {
+        return adminMobile;
+    }
+
+    public void setAdminMobile(String adminMobile) {
+        this.adminMobile = adminMobile;
+    }
+
+    public String getAdminEmail() {
+        return adminEmail;
+    }
+
+    public void setAdminEmail(String adminEmail) {
+        this.adminEmail = adminEmail;
+    }
 }

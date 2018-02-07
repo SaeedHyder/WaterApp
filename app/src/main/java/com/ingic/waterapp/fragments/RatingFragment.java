@@ -13,6 +13,7 @@ import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.TextViewHelper;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.CustomRatingBar;
 import com.ingic.waterapp.ui.views.TitleBar;
@@ -68,7 +69,7 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
     public void setTitleBar(TitleBar titleBar) {
         // TODO Auto-generated method stub
         super.setTitleBar(titleBar);
-        titleBar.showBackButton();
+//        titleBar.showBackButton();
         titleBar.setSubHeading(getDockActivity().getResources().getString(R.string.ratings));
     }
 
@@ -103,10 +104,11 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
             case WebServiceConstants.rating:
-                getDockActivity().popFragment();
+                UIHelper.showShortToastInCenter(getDockActivity(), message);
+                getDockActivity().finish();
                 break;
             default:
                 break;

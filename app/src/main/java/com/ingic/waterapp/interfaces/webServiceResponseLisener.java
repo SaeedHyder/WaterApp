@@ -5,6 +5,6 @@ package com.ingic.waterapp.interfaces;
  */
 
 public interface webServiceResponseLisener<T> {
-    public void ResponseSuccess(T result, String Tag);
+    public void ResponseSuccess(T result, String tag, String message);
     public void  ResponseFailure(String tag);
 }

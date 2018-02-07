@@ -112,8 +112,8 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
             case WebServiceConstants.getNotifications:
                 notificationsEnts = (List<NotificationCountEnt>) result;
                 break;

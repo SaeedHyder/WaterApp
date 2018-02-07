@@ -125,14 +125,14 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
                 childList.add(childObj);
             }
             //For Date
-            Date date = DateHelper.stringToDate(myOrderList.get(i).getCreatedAt(),DATE_TIME_FORMAT);
+            Date date = DateHelper.stringToDate(myOrderList.get(i).getCreatedAt(), DATE_TIME_FORMAT);
             Date dateFormatGMT = DateHelper.getDateInGMT(date);
             String getFormattedDate = DateHelper.getFormattedDate(dateFormatGMT);
-            String getFormattedTime = DateHelper.getFormattedTime(dateFormatGMT);
+//            String getFormattedTime = DateHelper.getFormattedTime(dateFormatGMT);
             //================================//
             MyOrdersChildEntity entity1 =
                     new MyOrdersChildEntity(whichFragment, myOrderList.get(i).getId(),
-                            getFormattedDate, getFormattedTime, childList);
+                            getFormattedDate, myOrderList.get(i).getTimeSlot(), childList);
             MyOrdersParentEntity parentEntity1 =
                     new MyOrdersParentEntity(String.valueOf(myOrderList.get(i).getId()),
                             "AED " + String.valueOf(myOrderList.get(i).getCost()), Arrays.asList(entity1));
@@ -172,8 +172,8 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
             case WebServiceConstants.getMyOrders:
                 myOrderList = (List<InProgressOrderEnt>) result;
                 mAdapter.setParentList(getdata(), false);
@@ -200,7 +200,7 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
     public void onCancelOrderClick(View view, int position, int orderId) {
         mChildPosition = 0;
         mChildPosition = position;
-        serviceHelper.enqueueCall(webService.reorder(orderId, prefHelper.getUser().getToken()),
+        serviceHelper.enqueueCall(webService.cancelOrder(orderId, prefHelper.getUser().getToken()),
                 WebServiceConstants.cancelOrder);
     }
 }

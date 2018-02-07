@@ -13,7 +13,6 @@ import com.ingic.waterapp.entities.Product;
 import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.entities.cart.MyCartModel;
 import com.ingic.waterapp.global.AppConstants;
-import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.Util;
@@ -71,12 +70,14 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
             }
             float currentValue = Util.getDiscountedValue(Util.getParsedFloat(item.getProductAmount()), //After discount
                     Util.getParsedFloat(item.getPercentage()));
-            float amount = DataHelper.getProductAmount(item.getId());
+            tvCurrentAmount.setText(String.valueOf(currentValue)); //our save
+
+           /* float amount = DataHelper.getProductAmount(item.getId());
             if (amount == 0) //if amount is 0 means realm have not this data obj so in this case we will set the data
                 //coming from api
                 tvCurrentAmount.setText(String.valueOf(currentValue)); //our save
             else
-                tvCurrentAmount.setText(String.valueOf(amount)); //new data from api
+                tvCurrentAmount.setText(String.valueOf(amount)); //new data from api*/
 
             tv_waterBottle_name.setText(item.getProductName());
             tvQuantity.setText(item.getQuantity());
@@ -146,14 +147,15 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
            /*If count = 0 then total = cost*/
         float productAmount = Util.getParsedFloat(item.getProductAmount());
         float originalAmount = count > 1 ? (count * productAmount) : productAmount;
-        float currentValue = Util.getDiscountedValue(Util.getParsedFloat(item.getProductAmount()), //After discount
+        float currentValue = Util.getDiscountedValue(productAmount, //After discount
                 Util.getParsedFloat(item.getPercentage()));
 
-        currentValue = currentValue * count;
+//        currentValue = currentValue * count;
         /*Set data to fields*/
-        TextViewHelper.setText(tvOriginalAmount, String.valueOf(originalAmount));
-        TextViewHelper.setText(tvCurrentAmount, String.valueOf(currentValue));
-        tvQuantity.setText(String.format("%02d", count));
+//        TextViewHelper.setText(tvOriginalAmount, String.valueOf(originalAmount));
+//        TextViewHelper.setText(tvCurrentAmount, String.valueOf(currentValue));
+//        tvQuantity.setText(String.format("%02d", count));
+        tvQuantity.setText("" + count);
 
 
         count = Util.getParsedInteger(tvQuantity.getText().toString());

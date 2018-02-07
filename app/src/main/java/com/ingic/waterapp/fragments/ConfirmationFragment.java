@@ -2,7 +2,6 @@ package com.ingic.waterapp.fragments;
 
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -38,8 +39,6 @@ import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,6 +69,8 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     AnyTextView tvDeliveryText;
     @BindView(R.id.tv_confirmation_totalAmount)
     AnyTextView tvTotalAmount;
+    @BindView(R.id.tv_confirmation_bottleName)
+    AnyTextView tvBottleName;
     @BindView(R.id.btn_confirmation_continue)
     Button btnContinue;
 
@@ -106,15 +107,24 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         unbinder = ButterKnife.bind(this, view);
         if (getArguments() != null) {
             cartObj = (CreateOrder) getArguments().getSerializable(AppConstants.CART_OBJ);
-            cartList = Parcels.unwrap(getArguments().getParcelable(AppConstants.CART_SELECTED_LIST));
+//            cartList = Parcels.unwrap(getArguments().getParcelable(AppConstants.CART_SELECTED_LIST));
         }
+        cartList = DataHelper.getRealmData();
         setListener();
+        setData();
         mGoogleApiClient = new GoogleApiClient.Builder(getDockActivity())
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(getDockActivity(), this)
                 .build();
 
+    }
+
+    private void setData() {
+        TextViewHelper.setText(tvBottleName, prefHelper.getUser().getCompanyName() + " (x" + DataHelper.getTotalQuantities() + ")");
+        TextViewHelper.setText(tvTotalAmount, "AED " + cartObj.getTotal());
+        if (prefHelper.getUser().getCompanyTerm() != null)
+            TextViewHelper.setText(tvDeliveryText, prefHelper.getUser().getCompanyTerm());
     }
 
     @Override
@@ -151,7 +161,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_confirmation_address:
-                if (Util.doubleClickCheck())
+                if (Util.doubleClickCheck2Seconds())
                     openPlacesPicker();
                 break;
             case R.id.tv_confirmation_date:
@@ -160,7 +170,8 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.tv_confirmation_timeSlot:
                 if (Util.doubleClickCheck())
-                    openTimePicker();
+                    TimeSlotActionSheetDialog();
+//                    openTimePicker();
                 break;
             case R.id.btn_confirmation_continue:
                 if (Util.doubleClickCheck())
@@ -231,7 +242,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         datePickerDialog.show();
     }
 
-    private void openTimePicker() {
+   /* private void openTimePicker() {
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -245,7 +256,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         }, hour, minute, false);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
-    }
+    }*/
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -280,10 +291,11 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
             case WebServiceConstants.createOrder:
-                DataHelper.deleteItemsAsync(getIds(cartList), getDockActivity());
+                DataHelper.deleteRealmData();
+//                DataHelper.deleteItemsAsync(getIds(cartList), getDockActivity());
                 getDockActivity().popBackStackTillEntry(1);
                 break;
         }
@@ -315,5 +327,24 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 
         return new GsonConverter(gson);
     }*/
+
+    private void TimeSlotActionSheetDialog() {
+        final String[] stringItems = {getResources().getString(R.string.morning),
+                getResources().getString(R.string.afternoon)};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog.title(getResources().getString(R.string.time_slot))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(android.R.string.cancel))
+                .show();
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                timeSlot = stringItems[position];
+                TextViewHelper.setText(tvTimeSlot, stringItems[position]);
+                dialog.dismiss();
+            }
+        });
+    }
 }
 

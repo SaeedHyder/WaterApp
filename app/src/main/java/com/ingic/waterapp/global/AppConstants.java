@@ -21,6 +21,8 @@ public class AppConstants {
     public static final String RATING_BOTTLE = "ratingBottle";
     public static final String BOTTLE_NAME = "bottleName";
     public static final String COMPANY_ID = "companyId";
+    public static final String RATING_COMPANY_ID = "ratingCompanyId";
+    public static final String RATING = "rating";
     public static String twitter = "twitter";
     public static final String Device_Type = "android";
     public static final String SOCIAL_MEDIA_TYPE = "facebook";

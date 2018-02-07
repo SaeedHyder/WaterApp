@@ -32,4 +32,5 @@ public class WebServiceConstants {
     public static final String reorder ="createReorder";
     public static final String cancelOrder ="cancelorder";
     public static final String rating ="rating";
+    public static final String feedback ="feedback";
 }

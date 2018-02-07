@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.facebook.login.Login;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
 import com.ingic.waterapp.entities.cart.DataHelper;
@@ -20,6 +19,7 @@ import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.DialogHelper;
 import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
+import com.ingic.waterapp.interfaces.ProfileUpdateListener;
 import com.ingic.waterapp.ui.adapters.SideMenuAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.AnyTextView;
@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class SideMenuFragment extends BaseFragment implements OnViewHolderClick {
+public class SideMenuFragment extends BaseFragment implements OnViewHolderClick ,ProfileUpdateListener {
 
 
     private Unbinder mBinder;
@@ -107,7 +107,8 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
                 if (Util.doubleClickCheck()) {
                     getDockActivity().closeResideMenu();
                     if (prefHelper.getUser() != null)
-                        getDockActivity().replaceDockableFragment(MyProfileFragment.newInstance(), MyProfileFragment.class.getSimpleName());
+                        getDockActivity().replaceDockableFragment(MyProfileFragment.newInstance(SideMenuFragment.this),
+                                MyProfileFragment.class.getSimpleName());
                 }
             }
         });
@@ -152,7 +153,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
 
     }
 
-    public void update(Login loginResult) {
+    public void update() {
         if (sideMenuList != null) sideMenuList.clear();
 
         if (prefHelper.getUser() != null) {
@@ -283,8 +284,8 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
 
             case WebServiceConstants.logOut:
                 getMainActivity().getResideMenu().closeMenu();
@@ -298,6 +299,19 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
                 getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 break;
+        }
+
+    }
+
+    @Override
+    public void profileUpdate() {
+        if (prefHelper.getUser() != null) {
+            tvProfileName.setText(prefHelper.getUser().getFullName());
+            if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
+                Picasso.with(getDockActivity())
+                        .load(prefHelper.getUser().getProfileImage())
+                        .into(imgProfile);
+            }
         }
     }
 

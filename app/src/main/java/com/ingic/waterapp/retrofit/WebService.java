@@ -49,7 +49,7 @@ public interface WebService {
 
     @Multipart
     @POST("user/updateProfile")
-    Call<ResponseWrapper> updateProfile(
+    Call<ResponseWrapper<UserEnt>> updateProfile(
             @Part MultipartBody.Part profile_picture,
             @Part("full_name") RequestBody full_name,
             @Part("email") RequestBody email,
@@ -186,6 +186,21 @@ public interface WebService {
     @POST("water/cancelorder")
     Call<ResponseWrapper> cancelOrder(
             @Field("order_id") int order_id,
+            @Header("token") String token
+    );
+
+    @FormUrlEncoded
+    @POST("cms/contactus")
+    Call<ResponseWrapper> feedback(
+            @Field("feedback") String feedback,
+            @Header("token") String token
+    );
+
+    @FormUrlEncoded
+    @POST("user/updateDeviceToken")
+    Call<ResponseWrapper> updateToken(
+            @Field("device_token") String device_token,
+            @Field("device_type") String device_type,
             @Header("token") String token
     );
 

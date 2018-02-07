@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
 import com.ingic.waterapp.entities.CompanyEnt;
@@ -53,6 +54,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     int companyId = -1;
 
     SideMenuUpdate sideMenuUpdate;
+    private String refreshToken;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -67,6 +69,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        refreshToken = FirebaseInstanceId.getInstance().getToken();
+
         return view;
     }
 
@@ -108,16 +112,14 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.btn_signup:
                 if (isValidate()) {
-                    //String token = FirebaseInstanceId.getInstance().getToken();
-                    String token = "sadad";
 
                     serviceHelper.enqueueCall(webService.signUp(etName.getText().toString(),
                             etEmail.getText().toString(),
                             etPassword.getText().toString(),
                             etConfirmPassword.getText().toString(),
                             companyId + "",
-                            AppConstants.Device_Type,
-                            token),
+                            refreshToken,
+                            AppConstants.Device_Type),
                             WebServiceConstants.signUp);
 
                 }
@@ -132,8 +134,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
 
             case WebServiceConstants.signUp:
                 UserEnt userEnt = (UserEnt) result;

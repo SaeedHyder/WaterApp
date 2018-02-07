@@ -151,7 +151,7 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
                     DataHelper.addToRealm(getDockActivity(), new MyCartModel(
                             productId, productObj.getProductName(), productObj.getProductImage(), productObj.getLiter(),
                             count,
-                            totalAmount));
+                            productAmount));
                     getDockActivity().popFragment();
                 }
                 break;
@@ -296,8 +296,8 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
     }*/
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
             case WebServiceConstants.addToCart:
                 UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.added_to_cart));
                 getDockActivity().popFragment();

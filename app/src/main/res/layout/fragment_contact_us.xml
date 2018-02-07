@@ -25,7 +25,7 @@
             android:src="@drawable/forgot_logo" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
-            android:id="@+id/tv_contactUs_enterEmailText"
+            android:id="@+id/tv_contactUs_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo"
@@ -42,10 +42,10 @@
 
 
         <com.ingic.waterapp.ui.views.AnyTextView
-            android:id="@+id/et_contactUs_phone"
+            android:id="@+id/tv_contactUs_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_contactUs_enterEmailText"
+            android:layout_below="@id/tv_contactUs_text"
             android:background="@color/transparent"
             android:cursorVisible="true"
             android:drawableLeft="@drawable/ic_contact"
@@ -65,7 +65,7 @@
             android:layout_height="0.5dp"
             android:layout_marginBottom="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_16sdp"
-            android:layout_below="@id/et_contactUs_phone"
+            android:layout_below="@id/tv_contactUs_phone"
             android:background="@color/color_seperator_forgot" />
 
         <com.ingic.waterapp.ui.views.AnyTextView

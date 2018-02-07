@@ -130,7 +130,7 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
 		myDockActivity = (DockActivity)context;
 	}
 	@Override
-	public void ResponseSuccess(Object result, String Tag) {
+	public void ResponseSuccess(Object result, String tag, String message) {
 
 	}
 

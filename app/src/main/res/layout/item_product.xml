@@ -77,6 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_waterBottle_name"
         android:layout_marginBottom="@dimen/_4sdp"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/_6sdp">
 
         <com.ingic.waterapp.ui.views.AnyTextView
@@ -85,11 +86,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_4sdp"
             android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:paddingTop="2dp"
             android:text="@string/aed"
             android:textColor="@color/blue_theme"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:typeface="@string/typeface_bold" />
+            android:textSize="10sp"
+            app:typeface="@string/typeface_regular" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_waterBottle_originalAmount"
@@ -97,12 +99,13 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/tv_waterBottle_aed"
             android:background="@color/transparent"
+            android:gravity="center_vertical"
+            android:paddingTop="2dp"
             android:text="12"
             android:textColor="@color/login_text_grey"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            android:textSize="10sp"
             android:visibility="gone"
-            app:typeface="@string/typeface_bold" />
+            app:typeface="@string/typeface_regular" />
 
         <View
             android:id="@+id/crossLine"
@@ -118,15 +121,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_6sdp"
-            android:layout_toStartOf="@+id/img_minus"
             android:layout_toEndOf="@+id/tv_waterBottle_originalAmount"
+            android:layout_toStartOf="@+id/img_minus"
             android:background="@color/transparent"
-            tools:text="14"
+            android:gravity="center_vertical"
+            android:paddingTop="2dp"
+            android:singleLine="true"
             android:textColor="@color/blue_theme"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:typeface="@string/typeface_bold"
-            android:singleLine="true"/>
+            android:textSize="10sp"
+            app:typeface="@string/typeface_regular"
+            tools:text="14" />
 
         <ImageView
             android:id="@+id/img_add"

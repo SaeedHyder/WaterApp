@@ -61,7 +61,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     String type_select = AppConstants.select_product;
 
     CompanyDetails companyDetails;
-    private int notificationCount = 0 , cartCount = 0 ;
+    private int notificationCount = 0, cartCount = 0;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -93,10 +93,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
             case WebServiceConstants.getCompanyProductAboutReview:
                 companyDetails = (CompanyDetails) result;
+                if (!btnProducts.isSelected()) {
+                    btnProducts.setSelected(true);
+                    btnAbout.setSelected(false);
+                    btnReview.setSelected(false);
+                }
                 setData();
                 break;
             case WebServiceConstants.getNotificationCount:

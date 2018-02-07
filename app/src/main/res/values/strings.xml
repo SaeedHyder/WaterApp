@@ -148,7 +148,7 @@
     <string name="notifications">Notifications</string>
     <string name="companies">Companies</string>
     <string name="service_charges">Service Charges</string>
-    <string name="your_first_delivery_would_reach_text">Your first delivery would reach you\nwithin 2 working days.</string>
+    <string name="your_first_delivery_would_reach_text">Your first delivery would reach you within 2 working days.</string>
     <string name="proceed_to_checkout">Proceed to checkout</string>
     <string name="cart">Cart</string>
     <string name="date">Date</string>
@@ -197,5 +197,8 @@
     <string name="button_allow">Allow</string>
     <string name="button_deny">Deny</string>
     <string name="error_empty_list">Please select you desire order to proceed.</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="your_cart_is_empty">Your cart is empty!</string>
 
 </resources>

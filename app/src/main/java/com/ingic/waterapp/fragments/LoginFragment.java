@@ -2,6 +2,7 @@ package com.ingic.waterapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,9 @@ import android.widget.Button;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
-import com.ingic.waterapp.annotation.RestAPI;
 import com.ingic.waterapp.entities.FacebookLoginEnt;
 import com.ingic.waterapp.entities.GuestEnt;
 import com.ingic.waterapp.entities.UserEnt;
@@ -33,6 +34,7 @@ import butterknife.Unbinder;
 
 
 public class LoginFragment extends BaseFragment implements View.OnClickListener, GoogleHelper.GoogleHelperInterfce, FacebookLoginListener {
+    public static final String TAG = LoginFragment.class.getSimpleName();
 
     private static final int RC_SIGN_IN = 007;
 
@@ -59,6 +61,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
     private GoogleHelper googleHelper;
     private String mSocialMediaPlatform = "";
     private String mSocialMediaID = "";
+    private String refreshToken;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -73,6 +76,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        refreshToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "onCreateView: Login Fragment refresh token : " + refreshToken);
         return view;
     }
 
@@ -123,13 +128,14 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                 if (isValidate()) {
 
                     //String token = FirebaseInstanceId.getInstance().getToken();
-                    String token = "sadad";
+//                    String token = "sadad";
 
                     serviceHelper.enqueueCall(webService.login(
                             etEmail.getText().toString(),
                             etPassword.getText().toString(),
-                            AppConstants.Device_Type,
-                            token),
+                            refreshToken,
+                            AppConstants.Device_Type
+                            ),
                             WebServiceConstants.signIn);
 
                 }
@@ -137,7 +143,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
             case R.id.tv_login_guest:
 
                 serviceHelper.enqueueCall(webService.guestUserToken(
-                       AppConstants.Water),
+                        AppConstants.Water),
                         WebServiceConstants.guestUserToken);
 
                 break;
@@ -159,19 +165,19 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag) {
+    public void ResponseSuccess(Object result, String tag, String message) {
+        switch (tag) {
 
             case WebServiceConstants.signIn:
-                UserEnt userEnt = (UserEnt)result;
+                UserEnt userEnt = (UserEnt) result;
                 prefHelper.putUser(userEnt);
                 launchMainActivity(AppConstants.REGISTERED_USER);
                 break;
 
             case WebServiceConstants.guestUserToken:
 
-                GuestEnt guestEnt = (GuestEnt)result;
-                if(guestEnt!= null) {
+                GuestEnt guestEnt = (GuestEnt) result;
+                if (guestEnt != null) {
                     prefHelper.setGuestTOKEN(guestEnt.getToken());
                     launchMainActivity(AppConstants.GUEST_USER);
                 }
@@ -200,10 +206,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         prefHelper.setLoginType(type);
         getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-    }
-
-    @RestAPI
-    private void login(String email, String password) {
     }
 
     @Override
@@ -247,7 +249,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         String Email = result.getEmail();
 
         String Image = "";
-        if(result.getPhotoUrl()!= null)
+        if (result.getPhotoUrl() != null)
             Image = result.getPhotoUrl().toString();
 
         mSocialMediaPlatform = WebServiceConstants.PLATFORM_GOOGLE;
@@ -277,16 +279,13 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
     private void socialMediaSignIn(final String SocialMediaId, final String SocialMediaPlatform, final String Name, final String Email, final String Image) {
 
-        //String token = FirebaseInstanceId.getInstance().getToken();
-        String token = "sadad";
-
         serviceHelper.enqueueCall(webService.userFacebookLogin(
                 mSocialMediaID,
                 mSocialMediaPlatform,
                 Name,
                 Email,
-                AppConstants.Device_Type,
-                token),
+                refreshToken,
+                AppConstants.Device_Type),
                 WebServiceConstants.signIn);
     }
 }

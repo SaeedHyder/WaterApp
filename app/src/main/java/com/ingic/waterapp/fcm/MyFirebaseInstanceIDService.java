@@ -11,7 +11,9 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.helpers.BasePreferenceHelper;
+import com.ingic.waterapp.helpers.TokenUpdater;
 
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
@@ -24,7 +26,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         super.onTokenRefresh();
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.e(TAG, "sendRegistrationToServer: **onTokenRefresh** " );
+        Log.e(TAG, "sendRegistrationToServer: **onTokenRefresh** " +refreshedToken);
 
         preferenceHelper = new BasePreferenceHelper(getApplicationContext());
         // sending gcm token to server
@@ -35,7 +37,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private void sendRegistrationToServer(final String token) {
         Log.e(TAG, "sendRegistrationToServer: " + token);
         /*todo : refresh token */
-//        TokenUpdater.getInstance().UpdateToken(getApplicationContext(),
-//                preferenceHelper.getUser().getId(), token);
+        TokenUpdater.getInstance().UpdateToken(getApplicationContext(),
+                preferenceHelper.getUser().getToken(), AppConstants.Device_Type ,token );
     }
 }

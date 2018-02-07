@@ -9,7 +9,7 @@ public class MyCartModelForJson  {
 
 
 
-    @SerializedName("id")
+    @SerializedName("product_id")
     private String productId;
 //    private String productName;
 //    private String productImage;

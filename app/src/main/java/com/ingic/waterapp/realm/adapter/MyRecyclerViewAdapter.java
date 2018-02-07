@@ -60,36 +60,29 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel,
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final MyCartModel obj = getItem(position);
         holder.data = obj;
+        float amount = obj.getProductAmount() * obj.getProductQuantity();
         ImageLoaderHelper.loadImageWithPicasso(context, obj.getProductImage(), holder.imgBottle);
         TextViewHelper.setText(holder.tvBottleName, obj.getProductName());
         TextViewHelper.setText(holder.tvBottleQuantity, "QTY : " + obj.getProductQuantity());
-        TextViewHelper.setText(holder.tvBottleLtr, obj.getProductLtr());
-        TextViewHelper.setText(holder.tvBottleAmount, obj.getProductAmount()+"");
+//        TextViewHelper.setText(holder.tvBottleLtr, obj.getProductLtr());
+        TextViewHelper.setText(holder.tvBottleAmount, "AED " + amount);
+        TextViewHelper.setText(holder.tvBottleUnitAmount, "Unit Price : " + obj.getProductAmount() + " AED");
 
         holder.imgDlt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DataHelper.deleteItemAsync(obj.getId());
+
                 removeAt(position);
-                if (holder.checkBox.isChecked()) {
+                onItemClick.onItemUncheck(obj);
+               /* if (holder.checkBox.isChecked()) {
                     onItemClick.onItemUncheck(obj);
-                }
+                }*/
             }
         });
 
 
-//        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                if (b) {
-//                    onItemClick.onItemCheck(obj);
-//                } else {
-//                    onItemClick.onItemUncheck(obj);
-//                }
-//            }
-//        });
-
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+       /* holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (holder.checkBox.isChecked()) {
@@ -98,7 +91,7 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel,
                     onItemClick.onItemUncheck(obj);
                 }
             }
-        });
+        });*/
 
     }
 
@@ -122,7 +115,8 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel,
     class MyViewHolder extends RecyclerView.ViewHolder {
         public MyCartModel data;
         ImageView imgBottle, imgDlt;
-        TextView tvBottleName, tvBottleQuantity, tvBottleAmount, tvBottleLtr;
+        TextView tvBottleName, tvBottleQuantity, tvBottleAmount, /*tvBottleLtr ,*/
+                tvBottleUnitAmount;
         CheckBox checkBox;
 
         MyViewHolder(View view) {
@@ -130,8 +124,9 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel,
             imgBottle = (ImageView) view.findViewById(R.id.img_itemCart_bottle);
             tvBottleName = (TextView) view.findViewById(R.id.tv_itemCart_BottleName);
             tvBottleQuantity = (TextView) view.findViewById(R.id.tv_itemCart_quantity);
-            tvBottleLtr = (TextView) view.findViewById(R.id.tv_itemCart_litter);
+//            tvBottleLtr = (TextView) view.findViewById(R.id.tv_itemCart_UnitPrice);
             tvBottleAmount = (TextView) view.findViewById(R.id.tv_itemCart_TotalPrice);
+            tvBottleUnitAmount = (TextView) view.findViewById(R.id.tv_itemCart_UnitPrice);
             imgDlt = (ImageView) view.findViewById(R.id.img_itemCart_dlt);
             checkBox = (CheckBox) view.findViewById(R.id.cb_itemCart);
         }

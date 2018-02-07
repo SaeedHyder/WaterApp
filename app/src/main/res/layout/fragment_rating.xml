@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:background="@color/transparent"
             android:lineSpacingExtra="@dimen/_20sdp"
-            android:text="Aquafina"
+            tools:text="Aquafina"
             android:textColor="@color/rating_grey"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -54,11 +54,10 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/_2sdp"
             app:maxStars="5"
-            app:onlyForDisplay="true"
             app:starOff="@drawable/star_unselected"
             app:starOn="@drawable/star_selected"
             app:starPadding="4dp"
-            app:stars="3" />
+            app:stars="0" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_rating_companyRatingText"
@@ -78,11 +77,10 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/_2sdp"
             app:maxStars="5"
-            app:onlyForDisplay="true"
             app:starOff="@drawable/star_unselected"
             app:starOn="@drawable/star_selected"
             app:starPadding="4dp"
-            app:stars="3" />
+            app:stars="0" />
 
         <Button
             android:id="@+id/btn_submit"
