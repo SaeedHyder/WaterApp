@@ -2,6 +2,7 @@ package com.ingic.waterapp.fragments;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,7 +31,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +46,7 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
 
 
     //Realm
-    private Realm realm;
+//    private Realm realm;
 
 
     public HomeProductsFragment() {
@@ -57,7 +57,7 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        realm = Realm.getDefaultInstance();
+//        realm = Realm.getDefaultInstance();
         if (getArguments() != null) {
             companyDetails = GsonFactory.getConfiguredGson().fromJson(getArguments().getString(AppConstants.CompanyDetails), CompanyDetails.class);
         }
@@ -67,15 +67,21 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
     }
 
     private void setQuantity() {
-        if (companyDetails != null) {
-            List<Product> products = companyDetails.getProduct();
-            for (int i = 0; i < products.size(); i++) {
-                Product obj = products.get(i);
-                obj.setQuantity(String.valueOf(DataHelper.getProductQuantity(products.get(i).getId())));
-                products.set(i, obj);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (companyDetails != null) {
+                    List<Product> products = companyDetails.getProduct();
+                    for (int i = 0; i < products.size(); i++) {
+                        Product obj = products.get(i);
+                        obj.setQuantity(String.valueOf(DataHelper.getProductQuantity(products.get(i).getId())));
+                        products.set(i, obj);
+                    }
+                    companyDetails.setProduct(products);
+                }
             }
-            companyDetails.setProduct(products);
-        }
+        });
+
     }
 
     @Override

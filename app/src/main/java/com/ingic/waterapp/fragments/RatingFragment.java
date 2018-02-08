@@ -69,6 +69,7 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
     public void setTitleBar(TitleBar titleBar) {
         // TODO Auto-generated method stub
         super.setTitleBar(titleBar);
+        titleBar.hideButtons();
 //        titleBar.showBackButton();
         titleBar.setSubHeading(getDockActivity().getResources().getString(R.string.ratings));
     }
@@ -94,7 +95,7 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
             case R.id.btn_submit:
                 int serviceRating = (int) Math.ceil(rbService.getScore());
                 int companyRating = (int) Math.ceil(rbCompany.getScore());
-                serviceHelper.enqueueCall(webService.rating(companyId, serviceRating, companyRating),
+                serviceHelper.enqueueCall(webService.rating(companyId, serviceRating, companyRating, prefHelper.getUser().getToken()),
                         WebServiceConstants.rating);
 
                 break;

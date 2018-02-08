@@ -15,13 +15,16 @@ import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.entities.cart.MyCartModel;
 import com.ingic.waterapp.helpers.ImageLoaderHelper;
 import com.ingic.waterapp.helpers.TextViewHelper;
+import com.ingic.waterapp.ui.views.Util;
+
+import java.util.List;
 
 import io.realm.OrderedRealmCollection;
 
 public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel, MyRecyclerViewAdapter.MyViewHolder> {
 
     private Context context;
-    OrderedRealmCollection<MyCartModel> data;
+    List<MyCartModel> data;
     int size;
 //    private OnCheckedChanged mListener;
 
@@ -58,6 +61,7 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel,
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        if (getItem(position) == null) return;
         final MyCartModel obj = getItem(position);
         holder.data = obj;
         float amount = obj.getProductAmount() * obj.getProductQuantity();
@@ -68,13 +72,20 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel,
         TextViewHelper.setText(holder.tvBottleAmount, "AED " + amount);
         TextViewHelper.setText(holder.tvBottleUnitAmount, "Unit Price : " + obj.getProductAmount() + " AED");
 
+        obj.removeAllChangeListeners();
         holder.imgDlt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataHelper.deleteItemAsync(obj.getId());
+                if (Util.doubleClickCheck()) {
+                    DataHelper.deleteItemAsync(obj.getId());
+                    size--;
+                    notifyItemRemoved(position);
 
-                removeAt(position);
-                onItemClick.onItemUncheck(obj);
+
+//                    removeAt(position);
+                    notifyDataSetChanged();
+                    onItemClick.onItemUncheck(obj);
+                }
                /* if (holder.checkBox.isChecked()) {
                     onItemClick.onItemUncheck(obj);
                 }*/
@@ -96,10 +107,10 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel,
     }
 
     private void removeAt(int position) {
-        size = data.size();
-        size--;
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, size);
+//        size = data.size();
+//        size--;
+//        notifyItemRemoved(position);
+//        notifyItemRangeChanged(position, size);
     }
 
     @Override

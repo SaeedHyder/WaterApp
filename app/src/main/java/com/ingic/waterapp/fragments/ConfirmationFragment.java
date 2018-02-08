@@ -83,6 +83,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     List<MyCartModel> cartList = new ArrayList<>();
     private String timeSlot, date, address;
     private double lat, lng;
+    private String companyTerms;
 
     public ConfirmationFragment() {
         // Required empty public constructor
@@ -107,6 +108,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         unbinder = ButterKnife.bind(this, view);
         if (getArguments() != null) {
             cartObj = (CreateOrder) getArguments().getSerializable(AppConstants.CART_OBJ);
+            companyTerms = getArguments().getString(AppConstants.COMPANY_TERMS);
 //            cartList = Parcels.unwrap(getArguments().getParcelable(AppConstants.CART_SELECTED_LIST));
         }
         cartList = DataHelper.getRealmData();
@@ -123,8 +125,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     private void setData() {
         TextViewHelper.setText(tvBottleName, prefHelper.getUser().getCompanyName() + " (x" + DataHelper.getTotalQuantities() + ")");
         TextViewHelper.setText(tvTotalAmount, "AED " + cartObj.getTotal());
-        if (prefHelper.getUser().getCompanyTerm() != null)
-            TextViewHelper.setText(tvDeliveryText, prefHelper.getUser().getCompanyTerm());
+        TextViewHelper.setHtmlText(tvDeliveryText, companyTerms);
     }
 
     @Override

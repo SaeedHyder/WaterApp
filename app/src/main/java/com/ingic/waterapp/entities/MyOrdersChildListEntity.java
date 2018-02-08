@@ -2,14 +2,24 @@ package com.ingic.waterapp.entities;
 
 
 public class MyOrdersChildListEntity {
+    private String imgUrl;
     private String name;
     private String price;
     private String quantity;
 
-    public MyOrdersChildListEntity(String title, String price , String quantity) {
+    public MyOrdersChildListEntity(String imgUrl, String title, String price, String quantity) {
+        this.imgUrl = imgUrl;
         this.name = title;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public String getName() {

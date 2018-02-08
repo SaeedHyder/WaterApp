@@ -14,6 +14,12 @@ import io.realm.RealmResults;
 public class DataHelper {
     static Realm realm = Realm.getDefaultInstance();
 
+    public static Realm getRealm() {
+
+        realm.setAutoRefresh(true);
+        return realm;
+    }
+
     // Create 3 counters and insert them into random place of the list.
     public static void randomAddItemAsync(Realm realm) {
         realm.executeTransactionAsync(new Realm.Transaction() {
@@ -36,13 +42,25 @@ public class DataHelper {
     }
 
     public static void deleteItemAsync(final long id) {
-        if (realm != null)
-            realm.executeTransactionAsync(new Realm.Transaction() {
+//        MyCartModel.delete(realm, id);
+        if (realm != null) {
+            if (realm.isInTransaction()) return;
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    MyCartModel result = realm.where(MyCartModel.class).equalTo(MyCartModel.FIELD_ID, id).findFirst();
+                    if (result != null)
+                        result.deleteFromRealm();
+                }
+            });
+
+        }
+       /* realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     MyCartModel.delete(realm, id);
                 }
-            });
+            });*/
     }
 
     public static void deleteItemsAsync(Collection<Long> ids, final Context context) {
@@ -75,13 +93,8 @@ public class DataHelper {
     }*/
 
     public static void insertOrUpdate(Realm realm, final MyCartModel model, final Context context) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.insertOrUpdate(model);
-                hitBroadCast(context, getTotalQuantities());
-            }
-        });
+        realm.insertOrUpdate(model);
+        hitBroadCast(context, getTotalQuantities());
     }
 
     private static void hitBroadCast(Context context, int count) {
@@ -96,13 +109,29 @@ public class DataHelper {
         return realm.where(MyCartModel.class).findAll().size();
     }
 
-    public static int getProductQuantity(int productId) {
-//        Realm realm = Realm.getDefaultInstance();
+
+    public static int getProductQuantity(final int productId) {
+        Realm realm = Realm.getDefaultInstance();
+        final int[] quantity = {0};
+        if (realm != null) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    MyCartModel searchItem = realm.where(MyCartModel.class).equalTo(RealmConstants.PRODUCT_ID, productId).findFirst();
+                    if (searchItem == null) {
+                        quantity[0] = 0;
+                    } else
+                        quantity[0] = searchItem.getProductQuantity();
+                }
+            });
+        }
+
+/*
         MyCartModel searchItem = realm.where(MyCartModel.class).equalTo(RealmConstants.PRODUCT_ID, productId).findFirst();
         if (searchItem == null) {
             return 0;
-        }
-        return searchItem.getProductQuantity();
+        }*/
+        return quantity[0];
     }
 
     public static float getProductAmount(int productId) {
@@ -124,16 +153,25 @@ public class DataHelper {
         return 0;
     }
 
-    public static void addToRealm(Context context, MyCartModel obj) {
+    public static void addToRealm(final Context context, final MyCartModel obj) {
 //        obj = new MyCartModel(productId, productName, productImage, productLtr, quantity, totalAmount);
 
-        MyCartModel searchItem = realm.where(MyCartModel.class).equalTo(RealmConstants.PRODUCT_ID, obj.getProductId()).findFirst();
-        if (searchItem == null) {
-            obj.setId(DataHelper.getDbSize(realm) + System.currentTimeMillis());
-        } else
-            obj.setId(searchItem.getId());
+        if (realm == null) realm = Realm.getDefaultInstance();
 
-        DataHelper.insertOrUpdate(realm, obj, context);
+        if (realm != null) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    MyCartModel searchItem = realm.where(MyCartModel.class).equalTo(RealmConstants.PRODUCT_ID, obj.getProductId()).findFirst();
+                    if (searchItem == null) {
+                        obj.setId(DataHelper.getDbSize(realm) + System.currentTimeMillis());
+                    } else
+                        obj.setId(searchItem.getId());
+
+                    DataHelper.insertOrUpdate(realm, obj, context);
+                }
+            });
+        }
 //         /*===testing===*/
 //        MyCartModel testResult = realm.where(MyCartModel.class)
 //                .equalTo(RealmConstants.PRODUCT_ID, obj.getProductId()).findFirst();
@@ -186,15 +224,19 @@ public class DataHelper {
     }
 
     public static void deleteRealmData() {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.delete(MyCartModel.class);
-            }
-        });
+        if (realm != null) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.delete(MyCartModel.class);
+                }
+            });
+        }
     }
 
     public static RealmResults<MyCartModel> getRealmData() {
+        realm = Realm.getDefaultInstance();
+        if (realm.isClosed()) realm.beginTransaction();
         return realm.where(MyCartModel.class).findAll();
     }
 

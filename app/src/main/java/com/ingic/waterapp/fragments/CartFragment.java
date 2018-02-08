@@ -84,9 +84,6 @@ public class CartFragment extends BaseFragment {
         } else
             rlCart.setVisibility(View.GONE);
 
-        if (prefHelper.getUser().getCompanyTerm() != null)
-            TextViewHelper.setText(tvDeliveryText, prefHelper.getUser().getCompanyTerm());
-
         return view;
     }
 
@@ -109,6 +106,7 @@ public class CartFragment extends BaseFragment {
                             settings.getServiceCharges(), settings.getVatTax(), String.valueOf(total));
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(AppConstants.CART_OBJ, order);
+                    bundle.putString(AppConstants.COMPANY_TERMS, settings.getCompanyTerm());
 //                        bundle.putParcelable(AppConstants.CART_SELECTED_LIST, Parcels.wrap(selectedListData));
                     ConfirmationFragment fragment = new ConfirmationFragment();
                     fragment.setArguments(bundle);
@@ -171,7 +169,12 @@ public class CartFragment extends BaseFragment {
             @Override
             public void onItemUncheck(MyCartModel item) {
                 selectedListData = DataHelper.getRealmData();
-                setData();
+                if (selectedListData.size() > 0) {
+                    if (rlCart.getVisibility() == View.GONE)
+                        rlCart.setVisibility(View.VISIBLE);
+                    setData();
+                } else
+                    rlCart.setVisibility(View.GONE);
             }
         });
         rvCart.setLayoutManager(new LinearLayoutManager(getDockActivity()));
@@ -200,6 +203,7 @@ public class CartFragment extends BaseFragment {
 
             TextViewHelper.setText(tvTax, "AED " + settings.getVatTax());
             TextViewHelper.setText(tvServiceCharges, "AED " + settings.getServiceCharges());
+            TextViewHelper.setHtmlText(tvDeliveryText, settings.getCompanyTerm());
         }/* else
             setData();*/
 

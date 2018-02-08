@@ -127,6 +127,8 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
             case WebServiceConstants.getCompanies:
                 companyId = -1;
                 companyEnts = (List<CompanyEnt>) result;
+                adapter.addAll(companyEnts);
+
                 break;
         }
     }

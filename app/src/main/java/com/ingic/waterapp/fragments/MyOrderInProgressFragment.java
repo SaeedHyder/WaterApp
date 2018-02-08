@@ -120,7 +120,7 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
             List<OrderProduct> child = myOrderList.get(i).getOrderProduct();
             for (int j = 0; j < child.size(); j++) {
                 MyOrdersChildListEntity childObj =
-                        new MyOrdersChildListEntity(
+                        new MyOrdersChildListEntity(child.get(i).getProductDetail().getProductImage(),
                                 companyName, child.get(j).getAmount(), child.get(j).getQuantity()); /*todo : include ltr too and image*/
                 childList.add(childObj);
             }
@@ -135,7 +135,7 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
                             getFormattedDate, myOrderList.get(i).getTimeSlot(), childList);
             MyOrdersParentEntity parentEntity1 =
                     new MyOrdersParentEntity(String.valueOf(myOrderList.get(i).getId()),
-                            "AED " + String.valueOf(myOrderList.get(i).getCost()), Arrays.asList(entity1));
+                            "AED " + String.valueOf(myOrderList.get(i).getTotal()), Arrays.asList(entity1));
 
             parentEntityList.add(parentEntity1);
 

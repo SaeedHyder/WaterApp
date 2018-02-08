@@ -13,8 +13,11 @@ import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 
+import static com.ingic.waterapp.helpers.DateHelper.DATE_TIME_FORMAT;
+
 public class NotificationsListAdapter extends RecyclerViewListAdapter<NotificationCountEnt> {
     private Context context;
+    public static final String DATE_FORMAT = "MM/dd/yyyy";
 
     public NotificationsListAdapter(Context context, OnViewHolderClick listener) {
         super(context, listener);
@@ -34,7 +37,8 @@ public class NotificationsListAdapter extends RecyclerViewListAdapter<Notificati
             TextView text = (TextView) viewHolder.getView(R.id.tv_item_notification);
             TextView date = (TextView) viewHolder.getView(R.id.tv_item_date);
             TextViewHelper.setText(text, item.getMessage());
-            TextViewHelper.setText(date, DateHelper.getChatMessageTime(item.getCreatedAt()));
+
+            TextViewHelper.setText(date, DateHelper.yesterdayOrToday(DateHelper.stringToDate(item.getCreatedAt(),DATE_TIME_FORMAT),DATE_FORMAT));
         }
     }
 

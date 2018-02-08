@@ -133,7 +133,7 @@ public class DateHelper {
 		return new Date(time + offset);
 	}
 
-	public static String yesterdayOrToday(Date date) {
+	public static String yesterdayOrToday(Date date ,String pattern) {
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 		Calendar yesterday = Calendar.getInstance();
 		yesterday.roll(Calendar.DAY_OF_MONTH, -1);
@@ -666,7 +666,7 @@ public class DateHelper {
 
 	public static String getFormattedDate(Date mDate) {
 
-		SimpleDateFormat daysFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+		SimpleDateFormat daysFormat = new SimpleDateFormat("dd MMM, yyyy", Locale.US);
 		return daysFormat.format(mDate);
 	}
 

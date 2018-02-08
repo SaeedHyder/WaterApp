@@ -116,6 +116,7 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
         switch (tag) {
             case WebServiceConstants.getNotifications:
                 notificationsEnts = (List<NotificationCountEnt>) result;
+                adapter.addAll(notificationsEnts);
                 break;
         }
     }

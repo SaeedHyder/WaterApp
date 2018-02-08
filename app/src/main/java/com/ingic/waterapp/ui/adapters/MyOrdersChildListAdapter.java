@@ -4,10 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.MyOrdersChildListEntity;
+import com.ingic.waterapp.helpers.ImageLoaderHelper;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
@@ -32,13 +34,15 @@ public class MyOrdersChildListAdapter extends RecyclerViewListAdapter<MyOrdersCh
     protected void bindView(MyOrdersChildListEntity item, RecyclerviewViewHolder viewHolder) {
         if (item != null) {
             final int position = viewHolder.getAdapterPosition();
+            ImageView textImg = (ImageView) viewHolder.getView(R.id.img_itemChidRv_bottle);
             TextView textTitle = (TextView) viewHolder.getView(R.id.tv_itemChidRv_BottleName);
             TextView textAmount = (TextView) viewHolder.getView(R.id.tv_itemChidRv_amount);
             TextView textQuantity = (TextView) viewHolder.getView(R.id.tv_itemChidRv_quantity);
 
             TextViewHelper.setText(textTitle, item.getName());
             TextViewHelper.setText(textAmount, item.getPrice());
-            TextViewHelper.setText(textQuantity, item.getPrice());
+            TextViewHelper.setText(textQuantity, item.getQuantity());
+            ImageLoaderHelper.loadImageWithPicasso(context ,item.getImgUrl(),textImg);
 
 //            img.setImageBitmap(ImageLoaderHelper.getRoundedBitmap(getContext() ,getContext().getResources().getDrawable(R.drawable.placeholder_image)));
 //            img.setBackgroundResource(item.getPicture());

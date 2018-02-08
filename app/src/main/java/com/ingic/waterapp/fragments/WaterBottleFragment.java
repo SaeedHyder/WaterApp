@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.Product;
+import com.ingic.waterapp.entities.SettingsEnt;
 import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.entities.cart.MyCartModel;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
@@ -44,6 +45,8 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
     AnyTextView tvCost;
     @BindView(R.id.tv_bottle_total)
     AnyTextView tvTotal;
+    @BindView(R.id.tv_bottle_delivery_text)
+    AnyTextView tvDeliveryText;
     @BindView(R.id.btn_bottle_addToCart)
     Button btnAddToCart;
     private int count = 0;
@@ -81,10 +84,7 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
 //            productAmount = Util.getParsedDouble(productObj.getProductAmount());
 //            count = getArguments().getInt(AppConstants.PRODUCT_COUNT);
         }
-//        realm = RealmController.getInstance().getRealm();
         realm = Realm.getDefaultInstance();
-        //get realm instance
-//        this.realm = RealmController.with(getDockActivity()).getRealm();
         return view;
     }
 
@@ -109,6 +109,8 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
         // TODO Auto-generated method stub
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+        serviceHelper.enqueueCall(webService.settings(prefHelper.getUser().getToken())
+                , WebServiceConstants.getSetting);
         setData();
         setListeners();
     }
@@ -301,6 +303,10 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
             case WebServiceConstants.addToCart:
                 UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.added_to_cart));
                 getDockActivity().popFragment();
+                break;
+            case WebServiceConstants.getSetting:
+                SettingsEnt settings = (SettingsEnt) result;
+                TextViewHelper.setHtmlText(tvDeliveryText, settings.getCompanyTerm());
                 break;
         }
     }

@@ -85,7 +85,8 @@
             android:textSize="14sp"
             app:testErrorString="@string/error_email_address_not_valid"
             app:testType="email"
-            app:typeface="@string/typeface_light" />
+            app:typeface="@string/typeface_light"
+            android:enabled="false"/>
 
         <View
             android:id="@+id/seperator2"

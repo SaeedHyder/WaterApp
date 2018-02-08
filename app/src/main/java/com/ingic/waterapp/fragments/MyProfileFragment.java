@@ -19,13 +19,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.ingic.waterapp.BuildConfig;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.CompanyEnt;
 import com.ingic.waterapp.entities.UserEnt;
+import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.ImageLoaderHelper;
@@ -162,9 +166,9 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             TextViewHelper.setText(tvSelectSupplier, prefHelper.getUser().getCompanyName());
             int push = prefHelper.getUser().getPushNotification();
             if (push == TRUE) {
-                btnNotification.setSelected(false);
-            } else
                 btnNotification.setSelected(true);
+            } else
+                btnNotification.setSelected(false);
 
 
             if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
@@ -187,11 +191,12 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private void openDialog() {
 
         if (companyEnts != null) {
-            final CharSequence[] items = new CharSequence[companyEnts.size()];
+            final String[] items = new String[companyEnts.size()];
             for (int i = 0; i < companyEnts.size(); i++) {
                 items[i] = companyEnts.get(i).getFullName();
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(getDockActivity());
+            TimeSlotActionSheetDialog(items);
+           /* AlertDialog.Builder builder = new AlertDialog.Builder(getDockActivity());
             builder.setTitle(R.string.select_supplier);
             builder.setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int pos) {
@@ -200,11 +205,30 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 }
             });
             AlertDialog alert = builder.create();
-            alert.show();
+            alert.show();*/
         } else {
             serviceHelper.enqueueCall(webService.getCompany(),
                     WebServiceConstants.getCompanies);
         }
+    }
+
+    private void TimeSlotActionSheetDialog(final String[] stringItems) {
+//        final String[] stringItems = {getResources().getString(R.string.morning),
+//                getResources().getString(R.string.afternoon)};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog.title(getResources().getString(R.string.select_supplier))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(android.R.string.cancel))
+                .show();
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                companyId = companyEnts.get(position).getId();
+                TextViewHelper.setText(tvSelectSupplier, stringItems[position]);
+                dialog.dismiss();
+            }
+        });
     }
 
     @Override
@@ -270,9 +294,16 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.updateProfile:
+                //Empty card
+                if (companyId != Util.getParsedInteger(prefHelper.getUser().getCompanyId())) {
+                    DataHelper.deleteRealmData();
+                }
+
                 UserEnt login = (UserEnt) result;
                 prefHelper.putUser(login);
                 mListener.profileUpdate();
+
+                getDockActivity().popFragment();
                 break;
             case WebServiceConstants.getCompanies:
                 companyId = -1;

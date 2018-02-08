@@ -205,9 +205,11 @@ public interface WebService {
     );
 
     @FormUrlEncoded
-    @POST("water/rating")
+    @POST("water/companyReview")
     Call<ResponseWrapper> rating(
             @Field("company_id") int companyId,
             @Field("service_rate") int serviceRating,
-            @Field("company_rate") int companyRating);
+            @Field("company_rate") int companyRating,
+            @Header("token") String token
+    );
 }
