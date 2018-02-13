@@ -87,7 +87,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:gravity="center_horizontal"
-            android:text="@string/didnot_get_the_code_yet"
+            tools:text="@string/didnot_get_the_code_yet"
             android:textColor="@color/login_email_grey"
             android:textSize="12sp"
             app:typeface="@string/font_thin" />

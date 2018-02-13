@@ -15,7 +15,7 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_margin="@dimen/_10sdp"
         android:scaleType="fitCenter"
-        android:src="@drawable/companies" />
+        tools:src="@drawable/companies" />
 
     <com.ingic.waterapp.ui.views.AnyTextView
         android:id="@+id/tv_item_companies"
@@ -31,7 +31,7 @@
         android:textColor="@color/login_email_grey"
         android:textSize="16sp"
         app:typeface="@string/typeface_regular"
-        android:text="Masafi Co." />
+        tools:text="Masafi Co." />
     <!--
         <View
             android:layout_width="match_parent"

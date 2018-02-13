@@ -306,5 +306,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         return key;
     }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
 }
 

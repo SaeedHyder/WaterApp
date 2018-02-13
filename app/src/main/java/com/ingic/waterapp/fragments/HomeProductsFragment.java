@@ -18,13 +18,11 @@ import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.helpers.GridSpacingItemDecoration;
-import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.retrofit.GsonFactory;
 import com.ingic.waterapp.ui.adapters.ProductsAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.TitleBar;
-import com.ingic.waterapp.ui.views.Util;
 
 import java.util.List;
 
@@ -37,9 +35,9 @@ import butterknife.Unbinder;
  */
 public class HomeProductsFragment extends BaseFragment implements OnViewHolderClick {
 
+    Unbinder unbinder;
     @BindView(R.id.rv_homeProducts)
     RecyclerView rvProducts;
-    Unbinder unbinder;
     RecyclerViewListAdapter adapter;
 
     CompanyDetails companyDetails;
@@ -58,11 +56,12 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        realm = Realm.getDefaultInstance();
-        if (getArguments() != null) {
+       /* if (getArguments() != null) {
             companyDetails = GsonFactory.getConfiguredGson().fromJson(getArguments().getString(AppConstants.CompanyDetails), CompanyDetails.class);
         }
 
-        setQuantity();
+        setQuantity();*/
+
 
     }
 
@@ -78,6 +77,9 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
                         products.set(i, obj);
                     }
                     companyDetails.setProduct(products);
+                }
+                if (companyDetails != null && companyDetails.getProduct().size() > 0) {
+                    initRecyclerView(companyDetails.getProduct());
                 }
             }
         });
@@ -106,9 +108,15 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
         rvProducts.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvProducts.setAdapter(adapter);
 
-        if (companyDetails != null && companyDetails.getProduct().size() > 0) {
+      /*  if (companyDetails != null && companyDetails.getProduct().size() > 0) {
             initRecyclerView(companyDetails.getProduct());
+        }*/
+
+        if (getArguments() != null) {
+            companyDetails = GsonFactory.getConfiguredGson().fromJson(getArguments().getString(AppConstants.CompanyDetails), CompanyDetails.class);
         }
+
+        setQuantity();
 
 
     }
@@ -125,7 +133,6 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
         list.add(new projects(R.drawable.bottle, "Water Bottle"));*/
 
         adapter.addAll(products);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -147,7 +154,8 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
 
     @Override
     public void onItemClick(View view, int position) {
-        if (Util.doubleClickCheck()) {
+
+       /* if (Util.doubleClickCheck()) {
             if (prefHelper.getUser() != null) {
                 Product productDetail = companyDetails.getProduct().get(position);
                 int quantity = DataHelper.getProductQuantity(productDetail.getId());
@@ -161,13 +169,7 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
                 getDockActivity().replaceDockableFragment(fragment, WaterBottleFragment.class.getSimpleName());
             } else
                 UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_login));
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
+        }*/
     }
 
     public class projects {
@@ -194,5 +196,11 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
         public void setName(String name) {
             this.name = name;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

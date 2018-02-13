@@ -28,6 +28,7 @@ import com.ingic.waterapp.helpers.ScreenHelper;
 import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.residemenu.ResideMenu;
 import com.ingic.waterapp.ui.views.TitleBar;
+import com.ingic.waterapp.ui.views.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +54,7 @@ public class MainActivity extends DockActivity implements OnClickListener {
     //Unread notification count broadcast//
     BroadcastReceiver notificationCountBroadcastReceiver;
     BroadcastReceiver cartCountBroadcastReceiver;
-    private String ratingBottleName ,ratingCompanyId;
+    private String ratingBottleName, ratingCompanyId;
 
 
     @Override
@@ -70,7 +71,7 @@ public class MainActivity extends DockActivity implements OnClickListener {
         sideMenuDirection = SideMenuDirection.LEFT.getValue();
 
         settingSideMenu(sideMenuType, sideMenuDirection);
-        if (getIntent().getExtras().get(AppConstants.RATING_BOTTLE) != null){
+        if (getIntent().getExtras().get(AppConstants.RATING_BOTTLE) != null) {
             ratingBottleName = getIntent().getExtras().get(AppConstants.RATING_BOTTLE).toString();
             ratingCompanyId = getIntent().getExtras().get(AppConstants.RATING_COMPANY_ID).toString();
         }
@@ -128,7 +129,8 @@ public class MainActivity extends DockActivity implements OnClickListener {
             @Override
             public void onClick(View view) {
                 if (prefHelper.getUser() != null) {
-                    openNotification();
+                    if (Util.doubleClickCheck())
+                        openNotification();
                 } else
                     UIHelper.showShortToastInCenter(MainActivity.this, getResources().getString(R.string.please_login));
             }
@@ -136,9 +138,10 @@ public class MainActivity extends DockActivity implements OnClickListener {
         titleBar.setCartButtonListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (prefHelper.getUser() != null)
-                    openCart();
-                else
+                if (prefHelper.getUser() != null) {
+                    if (Util.doubleClickCheck())
+                        openCart();
+                } else
                     UIHelper.showShortToastInCenter(MainActivity.this, getResources().getString(R.string.please_login));
             }
         });
@@ -224,17 +227,16 @@ public class MainActivity extends DockActivity implements OnClickListener {
     public void initFragment() {
         getSupportFragmentManager().addOnBackStackChangedListener(getListener());
 //        replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
-
-        if (ratingBottleName != null && !ratingBottleName.isEmpty()) {
-            RatingFragment fragment = new RatingFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(AppConstants.BOTTLE_NAME, ratingBottleName);
-            bundle.putString(AppConstants.COMPANY_ID, ratingCompanyId);
-            fragment.setArguments(bundle);
-            replaceDockableFragment(fragment, RatingFragment.class.getSimpleName());
-
-        } else if (prefHelper.isLogin()) {
+        if (prefHelper.isLogin()) {
             replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
+            if (ratingBottleName != null && !ratingBottleName.isEmpty()) {
+                RatingFragment fragment = new RatingFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(AppConstants.BOTTLE_NAME, ratingBottleName);
+                bundle.putString(AppConstants.COMPANY_ID, ratingCompanyId);
+                fragment.setArguments(bundle);
+                replaceDockableFragment(fragment, RatingFragment.class.getSimpleName());
+            }
         } else {
             replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
         }

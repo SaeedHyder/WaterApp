@@ -149,7 +149,7 @@ public interface WebService {
     Call<ResponseWrapper<SettingsEnt>> settings(@Header("token") String token);
 
     @GET("cms/getCms")
-    Call<ResponseWrapper<CmsEnt>> getCms(@Header("type") String type);
+    Call<ResponseWrapper<CmsEnt>> getCms(@Query("type") String type);
 
     @GET("getnotifications")
     Call<ResponseWrapper<List<NotificationCountEnt>>> getNotifications(@Header("token") String token);
@@ -192,6 +192,7 @@ public interface WebService {
     @FormUrlEncoded
     @POST("cms/contactus")
     Call<ResponseWrapper> feedback(
+            @Field("user_type") String user_type,
             @Field("feedback") String feedback,
             @Header("token") String token
     );

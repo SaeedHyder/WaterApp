@@ -262,7 +262,6 @@
     <orderEntry type="library" name="com.google.android.gms:play-services-analytics-impl-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.squareup.okio:okio:1.13.0@jar" level="project" />
     <orderEntry type="library" name="com.bignerdranch.android:expandablerecyclerview-3.0.0-RC1" level="project" />
-    <orderEntry type="library" name="org.parceler:parceler-api:1.1.9@jar" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-database-connection-11.8.0" level="project" />
     <orderEntry type="library" name="android.arch.lifecycle:common:1.0.3@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-maps-11.8.0" level="project" />

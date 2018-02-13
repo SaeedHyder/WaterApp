@@ -2,23 +2,22 @@ package com.ingic.waterapp.entities.cart;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import io.realm.MyCartModelRealmProxy;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
+//import org.parceler.Parcel;
+
 /**
  * Created by syedatafseer on 1/26/2018.
  */
-@Parcel(implementations = {MyCartModelRealmProxy.class},
-        value = Parcel.Serialization.BEAN,
-        analyze = {MyCartModel.class})
+//@Parcel(implementations = {MyCartModelRealmProxy.class},
+//        value = Parcel.Serialization.BEAN,
+//        analyze = {MyCartModel.class})
 public class MyCartModel extends RealmObject {
     public static final String FIELD_ID = "id";
 

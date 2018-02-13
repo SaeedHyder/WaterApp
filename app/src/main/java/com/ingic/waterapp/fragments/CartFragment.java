@@ -22,6 +22,7 @@ import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
 import com.ingic.waterapp.helpers.TextViewHelper;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.realm.adapter.MyRecyclerViewAdapter;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
@@ -101,20 +102,21 @@ public class CartFragment extends BaseFragment {
 //                    if (selectedListData != null && selectedListData.size() > 0) {
 //                    String cost = tvCost.getText().toString();
 //                    String total = tvTotal.getText().toString();
-                    CreateOrder order = new CreateOrder(settings.getCompany_id(), settings.getCompany_name(),
-                            String.valueOf(cost),
-                            settings.getServiceCharges(), settings.getVatTax(), String.valueOf(total));
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(AppConstants.CART_OBJ, order);
-                    bundle.putString(AppConstants.COMPANY_TERMS, settings.getCompanyTerm());
+                    if (settings != null) {
+                        CreateOrder order = new CreateOrder(settings.getCompany_id(), settings.getCompany_name(),
+                                String.valueOf(cost),
+                                settings.getServiceCharges(), settings.getVatTax(), String.valueOf(total));
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppConstants.CART_OBJ, order);
+                        bundle.putString(AppConstants.COMPANY_TERMS, settings.getCompanyTerm());
 //                        bundle.putParcelable(AppConstants.CART_SELECTED_LIST, Parcels.wrap(selectedListData));
-                    ConfirmationFragment fragment = new ConfirmationFragment();
-                    fragment.setArguments(bundle);
+                        ConfirmationFragment fragment = new ConfirmationFragment();
+                        fragment.setArguments(bundle);
 
-                    getDockActivity().replaceDockableFragment(fragment,
-                            ConfirmationFragment.class.getSimpleName());
-//                    } else
-//                        UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.error_empty_list));
+                        getDockActivity().replaceDockableFragment(fragment,
+                                ConfirmationFragment.class.getSimpleName());
+                    } else
+                        UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.no_internet_connection));
                 }
             }
         });
@@ -149,12 +151,6 @@ public class CartFragment extends BaseFragment {
         titleBar.hideButtons();
         titleBar.setSubHeading(getDockActivity().getResources().getString(R.string.cart));
         titleBar.showBackButton();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
     }
 
     private void setUpRecyclerView() {
@@ -194,7 +190,7 @@ public class CartFragment extends BaseFragment {
             cost = 0;
             List<MyCartModel> mlist = selectedListData;
             for (MyCartModel model : mlist) {
-                cost = cost + model.getProductAmount();
+                cost = cost + (model.getProductQuantity() * model.getProductAmount());
             }
             total = cost + Util.getParsedFloat(settings.getVatTax()) + Util.getParsedFloat(settings.getServiceCharges());
 
@@ -220,5 +216,11 @@ public class CartFragment extends BaseFragment {
                 break;
         }
     }
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
+
 }
 

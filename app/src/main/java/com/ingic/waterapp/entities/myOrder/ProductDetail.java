@@ -42,6 +42,12 @@ public class ProductDetail {
     @SerializedName("product_image")
     @Expose
     private String productImage;
+    @SerializedName("liter")
+    @Expose
+    private String liter;
+    @SerializedName("unit")
+    @Expose
+    private String unit;
 
     public int getId() {
         return id;
@@ -139,4 +145,19 @@ public class ProductDetail {
         this.productImage = productImage;
     }
 
+    public String getLiter() {
+        return liter;
+    }
+
+    public void setLiter(String liter) {
+        this.liter = liter;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 }

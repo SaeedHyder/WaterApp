@@ -38,11 +38,13 @@ public class MyOrdersChildListAdapter extends RecyclerViewListAdapter<MyOrdersCh
             TextView textTitle = (TextView) viewHolder.getView(R.id.tv_itemChidRv_BottleName);
             TextView textAmount = (TextView) viewHolder.getView(R.id.tv_itemChidRv_amount);
             TextView textQuantity = (TextView) viewHolder.getView(R.id.tv_itemChidRv_quantity);
+            TextView textUnitAmount = (TextView) viewHolder.getView(R.id.tv_itemChidRv_ltr);
 
             TextViewHelper.setText(textTitle, item.getName());
             TextViewHelper.setText(textAmount, item.getPrice());
             TextViewHelper.setText(textQuantity, item.getQuantity());
-            ImageLoaderHelper.loadImageWithPicasso(context ,item.getImgUrl(),textImg);
+            TextViewHelper.setText(textUnitAmount, item.getLiter() + " " + item.getUnit());
+            ImageLoaderHelper.loadImageWithPicasso(context, item.getImgUrl(), textImg);
 
 //            img.setImageBitmap(ImageLoaderHelper.getRoundedBitmap(getContext() ,getContext().getResources().getDrawable(R.drawable.placeholder_image)));
 //            img.setBackgroundResource(item.getPicture());

@@ -75,10 +75,10 @@ public class EnterCodeFragment extends BaseFragment {
         countDown = new CountDownTimer(300000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                tvCountDown.setText("Didn't get a code yet? Wait for " + String.format("%02d",
+                tvCountDown.setText(getResources().getString(R.string.code_expires) +" "+ String.format("%02d",
                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)) + ":" +
                         String.format("%02d", TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))) + " seconds");
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))) );
             }
 
             @Override

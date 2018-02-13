@@ -116,12 +116,6 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
-
-    @Override
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.getCompanies:
@@ -131,5 +125,10 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
 
                 break;
         }
+    }
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

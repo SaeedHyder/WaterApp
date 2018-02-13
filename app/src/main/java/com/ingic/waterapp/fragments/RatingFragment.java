@@ -54,7 +54,7 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rating, container, false);
         if (getArguments() != null) {
-            companyId = getArguments().getInt(AppConstants.COMPANY_ID);
+            companyId = Integer.parseInt(getArguments().getString(AppConstants.COMPANY_ID));
             name = getArguments().getString(AppConstants.BOTTLE_NAME);
         }
         TextViewHelper.setText(tvName, name);
@@ -109,10 +109,16 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
         switch (tag) {
             case WebServiceConstants.rating:
                 UIHelper.showShortToastInCenter(getDockActivity(), message);
-                getDockActivity().finish();
+                getDockActivity().popFragment();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

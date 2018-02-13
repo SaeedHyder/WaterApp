@@ -347,5 +347,10 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
             }
         });
     }
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
 }
 

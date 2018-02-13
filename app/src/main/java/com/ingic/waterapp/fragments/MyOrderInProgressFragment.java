@@ -10,7 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.MyOrdersChildEntity;
 import com.ingic.waterapp.entities.MyOrdersChildListEntity;
@@ -120,12 +123,13 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
             List<OrderProduct> child = myOrderList.get(i).getOrderProduct();
             for (int j = 0; j < child.size(); j++) {
                 MyOrdersChildListEntity childObj =
-                        new MyOrdersChildListEntity(child.get(i).getProductDetail().getProductImage(),
-                                companyName, child.get(j).getAmount(), child.get(j).getQuantity()); /*todo : include ltr too and image*/
+                        new MyOrdersChildListEntity(child.get(j).getProductDetail().getProductImage(),
+                                companyName, child.get(j).getAmount(), child.get(j).getQuantity(),
+                                child.get(j).getProductDetail().getLiter(), child.get(j).getProductDetail().getUnit()); /*todo : include ltr too and image*/
                 childList.add(childObj);
             }
             //For Date
-            Date date = DateHelper.stringToDate(myOrderList.get(i).getCreatedAt(), DATE_TIME_FORMAT);
+            Date date = DateHelper.stringToDate(myOrderList.get(i).getUpdatedAt(), DATE_TIME_FORMAT);
             Date dateFormatGMT = DateHelper.getDateInGMT(date);
             String getFormattedDate = DateHelper.getFormattedDate(dateFormatGMT);
 //            String getFormattedTime = DateHelper.getFormattedTime(dateFormatGMT);
@@ -177,11 +181,13 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
             case WebServiceConstants.getMyOrders:
                 myOrderList = (List<InProgressOrderEnt>) result;
                 mAdapter.setParentList(getdata(), false);
+//                UIHelper.showShortToastInCenter(getDockActivity(), message);
                 break;
 
             case WebServiceConstants.cancelOrder:
 //                adapter= new
                 mAdapter.notifyParentRemoved(mChildPosition);
+//                UIHelper.showShortToastInCenter(getDockActivity(), message);
 
                 break;
 
@@ -198,9 +204,31 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
 
     @Override
     public void onCancelOrderClick(View view, int position, int orderId) {
-        mChildPosition = 0;
-        mChildPosition = position;
-        serviceHelper.enqueueCall(webService.cancelOrder(orderId, prefHelper.getUser().getToken()),
-                WebServiceConstants.cancelOrder);
+        alertActionSheetDialog(position, orderId);
     }
+
+    private void alertActionSheetDialog(final int mPosition, final int orderId) {
+        final String[] stringItems = {getResources().getString(R.string.yes),
+                getResources().getString(R.string.no)};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog.title(getResources().getString(R.string.alert))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(android.R.string.cancel))
+                .show();
+        dialog.titleTextColor(getResources().getColor(R.color.red));
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    mChildPosition = 0;
+                    mChildPosition = mPosition;
+                    serviceHelper.enqueueCall(webService.cancelOrder(orderId, prefHelper.getUser().getToken()),
+                            WebServiceConstants.cancelOrder);
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+
 }

@@ -71,7 +71,7 @@
             android:lineSpacingExtra="@dimen/_2sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:gravity="center"
-            android:text="@string/lorem_ipsum"
+            tools:text="@string/lorem_ipsum"
             android:textColor="@color/forgot_grey"
             android:textSize="12sp"
             app:typeface="@string/typeface_light" />

@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.helpers.UIHelper;
@@ -35,6 +36,8 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     AnyEditTextView etFeedback;
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    private String token;
+    private String type;
 
 
     public ContactUsFragment() {
@@ -94,9 +97,15 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_submit:
                 if (etFeedback.testValidity()) {
-                    serviceHelper.enqueueCall(webService.feedback(etFeedback.getText().toString()
-                            , prefHelper.getUser().getToken()), WebServiceConstants.feedback);
-                    notImplemented();
+                    if (prefHelper.getUser() != null) {
+                        type = AppConstants.Normal;
+                        token = prefHelper.getUser().getToken();
+                    } else {
+                        type = AppConstants.Guest;
+                        token = prefHelper.getGuestTOKEN();
+                    }
+                    serviceHelper.enqueueCall(webService.feedback(type, etFeedback.getText().toString()
+                            , token), WebServiceConstants.feedback);
                 }
                 break;
             default:
@@ -108,9 +117,15 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.feedback:
-                UIHelper.showShortToastInCenter(getDockActivity(), tag);
+                UIHelper.showShortToastInCenter(getDockActivity(), message);
                 getDockActivity().popFragment();
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

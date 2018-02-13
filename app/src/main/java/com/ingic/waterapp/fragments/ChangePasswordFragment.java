@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
@@ -103,6 +104,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         switch (tag) {
 
             case WebServiceConstants.changePassword:
+                UIHelper.showShortToastInCenter(getDockActivity(), message);
                 getDockActivity().popFragment();
                 break;
         }
@@ -133,5 +135,11 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
 
     private boolean passwordLength(String pwd) {
         return (pwd.length() > 5);
+    }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

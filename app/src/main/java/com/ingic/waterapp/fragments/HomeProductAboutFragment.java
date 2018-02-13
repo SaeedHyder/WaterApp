@@ -29,7 +29,6 @@ public class HomeProductAboutFragment extends BaseFragment {
     CompanyDetails companyDetails;
     @BindView(R.id.tv_about_description)
     AnyTextView tvAboutDescription;
-    Unbinder unbinder1;
 
     public HomeProductAboutFragment() {
         // Required empty public constructor
@@ -55,7 +54,7 @@ public class HomeProductAboutFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_product_about, container, false);
-        unbinder1 = ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -71,9 +70,7 @@ public class HomeProductAboutFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, view);
-
-        if (companyDetails != null && companyDetails.getProduct().size() > 0){
+        if (companyDetails != null && companyDetails.getProduct().size() > 0) {
             tvAboutDescription.setText(Html.fromHtml(companyDetails.getAbout()));
         }
 
@@ -89,7 +86,7 @@ public class HomeProductAboutFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
+        unbinder.unbind();
         super.onDestroyView();
-        unbinder1.unbind();
     }
 }

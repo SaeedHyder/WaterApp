@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_recyclerView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/_6sdp"
-    android:paddingTop="@dimen/_6sdp"
-    >
+    android:paddingTop="@dimen/_6sdp">
 
 
     <ImageView
@@ -26,7 +26,7 @@
         android:gravity="left"
         android:paddingLeft="@dimen/_4sdp"
         android:paddingRight="@dimen/_4sdp"
-        android:text="Aquafina"
+        tools:text="Aquafina"
         android:textColor="@color/login_email_grey"
         android:textSize="16sp"
         app:typeface="@string/typeface_bold" />
@@ -40,7 +40,7 @@
         android:layout_toEndOf="@id/img_itemChidRv_bottle"
         android:paddingLeft="@dimen/_4sdp"
         android:paddingRight="@dimen/_4sdp"
-        android:text="40 Ltr"
+        tools:text="40 Ltr"
         android:textColor="@color/login_text_grey"
         android:textSize="12sp"
         app:typeface="@string/typeface_light" />
@@ -67,7 +67,7 @@
 
         android:layout_toEndOf="@id/tv_itemChidRv_aed"
         android:paddingLeft="@dimen/_4sdp"
-        android:text="20"
+        tools:text="20"
         android:textColor="@color/blue_theme"
         android:textSize="12sp"
         app:typeface="@string/typeface_bold" />
@@ -104,7 +104,7 @@
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_toEndOf="@id/tv_itemChidRv_qty"
         android:paddingLeft="@dimen/_4sdp"
-        android:text="2"
+        tools:text="2"
         android:textColor="@color/blue_theme"
         android:textSize="12sp"
         app:typeface="@string/typeface_bold" />

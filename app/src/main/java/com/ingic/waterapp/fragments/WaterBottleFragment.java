@@ -149,12 +149,16 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
             case R.id.btn_bottle_addToCart:
 //                notImplemented();
                 if (Util.doubleClickCheck()) {
+
                     count = Util.getParsedInteger(tvBottleCount.getText().toString());
-                    DataHelper.addToRealm(getDockActivity(), new MyCartModel(
-                            productId, productObj.getProductName(), productObj.getProductImage(), productObj.getLiter(),
-                            count,
-                            productAmount));
-                    getDockActivity().popFragment();
+                    if (count != 0) {
+                        DataHelper.addToRealm(getDockActivity(), new MyCartModel(
+                                productId, productObj.getProductName(), productObj.getProductImage(), productObj.getLiter(),
+                                count,
+                                productAmount));
+                        getDockActivity().popFragment();
+                    } else
+                        UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.add_quantity));
                 }
                 break;
             default:
@@ -313,8 +317,10 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        unbinder.unbind();
         realm.close();
+        super.onDestroy();
     }
+
 
 }

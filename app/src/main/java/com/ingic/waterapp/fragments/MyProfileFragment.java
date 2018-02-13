@@ -294,15 +294,18 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.updateProfile:
+                UserEnt login = (UserEnt) result;
+
                 //Empty card
-                if (companyId != Util.getParsedInteger(prefHelper.getUser().getCompanyId())) {
+                if (Util.getParsedInteger(login.getCompanyId())
+                        != Util.getParsedInteger(prefHelper.getUser().getCompanyId())) {
                     DataHelper.deleteRealmData();
                 }
 
-                UserEnt login = (UserEnt) result;
                 prefHelper.putUser(login);
                 mListener.profileUpdate();
 
+                UIHelper.showShortToastInCenter(getDockActivity(), message);
                 getDockActivity().popFragment();
                 break;
             case WebServiceConstants.getCompanies:
@@ -457,5 +460,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(i);
+    }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

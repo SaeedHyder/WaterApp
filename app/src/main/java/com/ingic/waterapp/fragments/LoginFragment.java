@@ -288,4 +288,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                 AppConstants.Device_Type),
                 WebServiceConstants.signIn);
     }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
 }

@@ -84,6 +84,7 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
         // TODO Auto-generated method stub
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+        callService(WebServiceConstants.about);
         setListeners();
     }
 
@@ -153,6 +154,13 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
                 break;
         }
     }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
+
 }
 /*
 * TextViewHelper.setHtmlText(tvAboutApp, response.body().getResult().getText());

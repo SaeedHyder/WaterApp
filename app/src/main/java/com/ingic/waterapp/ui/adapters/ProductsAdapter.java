@@ -2,6 +2,7 @@ package com.ingic.waterapp.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.activities.DockActivity;
 import com.ingic.waterapp.entities.Product;
-import com.ingic.waterapp.entities.cart.DataHelper;
-import com.ingic.waterapp.entities.cart.MyCartModel;
+import com.ingic.waterapp.fragments.WaterBottleFragment;
 import com.ingic.waterapp.global.AppConstants;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.Util;
 import com.squareup.picasso.Picasso;
 
 public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
-    private Context context;
+    private DockActivity context;
 
-    public ProductsAdapter(Context context, OnViewHolderClick listener) {
+    public ProductsAdapter(DockActivity context, OnViewHolderClick listener) {
         super(context, listener);
         this.context = context;
     }
@@ -72,6 +74,29 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
                     Util.getParsedFloat(item.getPercentage()));
             tvCurrentAmount.setText(String.valueOf(currentValue)); //our save
 
+
+            viewHolder.getView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (Util.doubleClickCheck()) {
+                        if (context.getPrefHelper().getUser() != null) {
+                            Product productDetail = item;
+                            int quantity = Util.getParsedInteger(tvQuantity.getText().toString());
+                            WaterBottleFragment fragment = new WaterBottleFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(AppConstants.PRODUCT_OBJ, productDetail);
+//                int productId = companyDetails.getProduct().get(position).getId();
+                            bundle.putInt(AppConstants.PRODUCT_QUANTITY, quantity);
+//                bundle.putDouble(AppConstants.PRODUCT_AMOUNT, Util.getParsedDouble(productAmount));
+                            fragment.setArguments(bundle);
+                            context.replaceDockableFragment(fragment, WaterBottleFragment.class.getSimpleName());
+                        } else
+                            UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_login));
+                    }
+                }
+            });
+
+
            /* float amount = DataHelper.getProductAmount(item.getId());
             if (amount == 0) //if amount is 0 means realm have not this data obj so in this case we will set the data
                 //coming from api
@@ -85,16 +110,16 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
             btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (Util.doubleClickCheck())
-                        updateCount(AppConstants.ADD, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
+//                    if (Util.doubleClickCheck())
+                    updateCount(AppConstants.ADD, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
 //                    UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.will_be_implemented_in_beta));
                 }
             });
             btnMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (Util.doubleClickCheck())
-                        updateCount(AppConstants.MINUS, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
+//                    if (Util.doubleClickCheck())
+                    updateCount(AppConstants.MINUS, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
 
 //                    UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.will_be_implemented_in_beta));
                 }
@@ -131,7 +156,6 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
 
     private void updateCount(String action, Product item, TextView tvOriginalAmount, TextView tvCurrentAmount, TextView tvQuantity) {
         int count = Util.getParsedInteger(tvQuantity.getText().toString());
-//        count = Util.getParsedInteger(tvQuantity.getText().toString());
         switch (action) {
             case AppConstants.ADD:
                 count++;
@@ -157,12 +181,13 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
 //        tvQuantity.setText(String.format("%02d", count));
         tvQuantity.setText("" + count);
 
-
+        //Direct added to cart has been removed
+/*
         count = Util.getParsedInteger(tvQuantity.getText().toString());
         DataHelper.addToRealm(context, new MyCartModel(
                 item.getId(), item.getProductName(), item.getProductImage(), item.getLiter(),
                 count,
-                currentValue));
+                currentValue));*/
 
     }
 }

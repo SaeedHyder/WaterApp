@@ -40,7 +40,6 @@ public class HomeProductReviewFragment extends BaseFragment {
     AnyTextView tvRatingCompanyRatingText;
     @BindView(R.id.rb_companyRating)
     CustomRatingBar rbCompanyRating;
-    Unbinder unbinder1;
 
     public HomeProductReviewFragment() {
         // Required empty public constructor
@@ -66,7 +65,7 @@ public class HomeProductReviewFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_product_review, container, false);
-        unbinder1 = ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         if (companyDetails != null && companyDetails.getProduct().size() > 0) {
 
@@ -99,7 +98,6 @@ public class HomeProductReviewFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, view);
     }
 
     @Override
@@ -111,7 +109,7 @@ public class HomeProductReviewFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
+        unbinder.unbind();
         super.onDestroyView();
-        unbinder1.unbind();
     }
 }

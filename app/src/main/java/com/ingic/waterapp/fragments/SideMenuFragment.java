@@ -18,6 +18,7 @@ import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.DialogHelper;
 import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.interfaces.ProfileUpdateListener;
 import com.ingic.waterapp.ui.adapters.SideMenuAdapter;
@@ -35,10 +36,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class SideMenuFragment extends BaseFragment implements OnViewHolderClick ,ProfileUpdateListener {
+public class SideMenuFragment extends BaseFragment implements OnViewHolderClick, ProfileUpdateListener {
 
 
-    private Unbinder mBinder;
+    private Unbinder unbinder;
     @BindView(R.id.rl_sideMenu)
     RelativeLayout rlParent;
     @BindView(R.id.img_sideMenu_profileImage)
@@ -80,7 +81,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sidemenu, container, false);
-        mBinder = ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getDockActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -105,10 +106,13 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
             @Override
             public void onClick(View view) {
                 if (Util.doubleClickCheck()) {
-                    getDockActivity().closeResideMenu();
-                    if (prefHelper.getUser() != null)
+                    if (prefHelper.getUser() != null) {
+                        getDockActivity().closeResideMenu();
                         getDockActivity().replaceDockableFragment(MyProfileFragment.newInstance(SideMenuFragment.this),
                                 MyProfileFragment.class.getSimpleName());
+                    } else
+                        UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_login));
+
                 }
             }
         });
@@ -342,4 +346,9 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick 
         }
     }
 
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
 }

@@ -38,6 +38,14 @@ public abstract class DockActivity extends AppCompatActivity implements
     BaseFragment baseFragment;
 
 
+    public BasePreferenceHelper getPrefHelper() {
+        return prefHelper;
+    }
+
+    public void setPrefHelper(BasePreferenceHelper prefHelper) {
+        this.prefHelper = prefHelper;
+    }
+
     protected BasePreferenceHelper prefHelper;
 
     //For side menu
@@ -57,6 +65,7 @@ public abstract class DockActivity extends AppCompatActivity implements
 
         }
     };
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
