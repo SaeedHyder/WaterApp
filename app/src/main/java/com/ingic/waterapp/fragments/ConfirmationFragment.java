@@ -27,6 +27,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.CityEnt;
 import com.ingic.waterapp.entities.CreateOrder;
 import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.entities.cart.MyCartModel;
@@ -36,6 +37,7 @@ import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.helpers.UIHelper;
+import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
@@ -60,11 +62,13 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 
     Unbinder unbinder;
     @BindView(R.id.tv_confirmation_address)
-    AnyTextView tvAddress;
+    AnyEditTextView tvAddress;
     @BindView(R.id.tv_confirmation_date)
     AnyTextView tvDate;
     @BindView(R.id.tv_confirmation_timeSlot)
     AnyTextView tvTimeSlot;
+    @BindView(R.id.tv_confirmation_city)
+    AnyTextView tvSelectCity;
     @BindView(R.id.tv_confirmation_deliveryText)
     AnyTextView tvDeliveryText;
     @BindView(R.id.tv_confirmation_totalAmount)
@@ -82,8 +86,11 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     private CreateOrder cartObj;
     List<MyCartModel> cartList = new ArrayList<>();
     private String timeSlot, date, address;
-    private double lat, lng;
+    private double lat=0.0, lng=0.0;
     private String companyTerms;
+    private List<CityEnt> cityList; //todo change its type
+    int cityId = -1;
+    String cityName;
 
     public ConfirmationFragment() {
         // Required empty public constructor
@@ -120,6 +127,9 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                 .enableAutoManage(getDockActivity(), this)
                 .build();
 
+        serviceHelper.enqueueCall(webService.getCities(),
+                WebServiceConstants.getCities);
+
     }
 
     private void setData() {
@@ -136,6 +146,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void setListener() {
+        tvSelectCity.setOnClickListener(this);
         tvAddress.setOnClickListener(this);
         tvDate.setOnClickListener(this);
         tvTimeSlot.setOnClickListener(this);
@@ -161,9 +172,13 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_confirmation_address:
+            case R.id.tv_confirmation_city:
                 if (Util.doubleClickCheck2Seconds())
-                    openPlacesPicker();
+                    openDialog();
+                break;
+            case R.id.tv_confirmation_address:
+//                if (Util.doubleClickCheck2Seconds())
+//                    openPlacesPicker();
                 break;
             case R.id.tv_confirmation_date:
                 if (Util.doubleClickCheck())
@@ -176,7 +191,8 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.btn_confirmation_continue:
                 if (Util.doubleClickCheck())
-                    if (!(tvAddress.getText().toString().isEmpty()
+                    if (!(tvSelectCity.getText().toString().isEmpty()
+                            || tvAddress.getText().toString().isEmpty()
                             || tvDate.getText().toString().isEmpty()
                             || tvTimeSlot.getText().toString().isEmpty())) {
                         if (cartList != null) {
@@ -184,8 +200,10 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 
                             String orderList = gson.toJson(getMyList(cartList));//gson.toJson(cartList);
                             Log.d("GSON", "onClick: orderListjson" + orderList);
-                            serviceHelper.enqueueCall(webService.createOrder(cartObj.getCompany_id()
-                                    , address, String.valueOf(lat), String.valueOf(lng),
+                            serviceHelper.enqueueCall(webService.createOrder(cartObj.getCompany_id(),
+                                    cityId
+                                    , address,
+                                    String.valueOf(lat), String.valueOf(lng),
                                     date, timeSlot, cartObj.getCost(),
                                     cartObj.getService_charge(), cartObj.getVat_tax()
                                     , cartObj.getTotal(), orderList.toString(), prefHelper.getUser().getToken())
@@ -299,6 +317,13 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 //                DataHelper.deleteItemsAsync(getIds(cartList), getDockActivity());
                 getDockActivity().popBackStackTillEntry(1);
                 break;
+            case WebServiceConstants.getCities:
+                cityList = (List<CityEnt>) result;
+                break;
+            case WebServiceConstants.changeVendor:
+                UIHelper.showShortToastInCenter(getDockActivity(), message);
+                break;
+
         }
     }
 
@@ -347,6 +372,42 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
             }
         });
     }
+
+    private void openDialog() {
+
+        if (cityList != null) {
+            final String[] items = new String[cityList.size()];
+            for (int i = 0; i < cityList.size(); i++) {
+                items[i] = cityList.get(i).getCityName();
+            }
+            SelectCityActionSheetDialog(items);
+        } else {
+            serviceHelper.enqueueCall(webService.getCities(),
+                    WebServiceConstants.getCities);
+        }
+    }
+
+    private void SelectCityActionSheetDialog(final String[] stringItems) {
+//        final String[] stringItems = {getResources().getString(R.string.morning),
+//                getResources().getString(R.string.afternoon)};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog.title(getResources().getString(R.string.select_city))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(android.R.string.cancel))
+                .show();
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                cityId = cityList.get(position).getId();
+                cityName = stringItems[position];
+                TextViewHelper.setText(tvSelectCity, stringItems[position]);
+                dialog.dismiss();
+            }
+        });
+    }
+
+
     @Override
     public void onDestroy() {
         unbinder.unbind();

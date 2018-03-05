@@ -79,17 +79,23 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
                 @Override
                 public void onClick(View view) {
                     if (Util.doubleClickCheck()) {
-                        if (context.getPrefHelper().getUser() != null) {
+                        if (context.getPrefHelper() != null && context.getPrefHelper().getUser() != null) {
                             Product productDetail = item;
-                            int quantity = Util.getParsedInteger(tvQuantity.getText().toString());
-                            WaterBottleFragment fragment = new WaterBottleFragment();
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable(AppConstants.PRODUCT_OBJ, productDetail);
+                            if (context.getPrefHelper().getUser().getCompanyId() != null &&
+                                    !context.getPrefHelper().getUser().getCompanyId().isEmpty() &&
+                                    !context.getPrefHelper().getUser().getCompanyId().equalsIgnoreCase("0")
+                                    ) {
+                                int quantity = Util.getParsedInteger(tvQuantity.getText().toString());
+                                WaterBottleFragment fragment = new WaterBottleFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable(AppConstants.PRODUCT_OBJ, productDetail);
 //                int productId = companyDetails.getProduct().get(position).getId();
-                            bundle.putInt(AppConstants.PRODUCT_QUANTITY, quantity);
+                                bundle.putInt(AppConstants.PRODUCT_QUANTITY, quantity);
 //                bundle.putDouble(AppConstants.PRODUCT_AMOUNT, Util.getParsedDouble(productAmount));
-                            fragment.setArguments(bundle);
-                            context.replaceDockableFragment(fragment, WaterBottleFragment.class.getSimpleName());
+                                fragment.setArguments(bundle);
+                                context.replaceDockableFragment(fragment, WaterBottleFragment.class.getSimpleName());
+                            } else
+                                UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_select_supplier));
                         } else
                             UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_login));
                     }
@@ -111,7 +117,17 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
                 @Override
                 public void onClick(View view) {
 //                    if (Util.doubleClickCheck())
-                    updateCount(AppConstants.ADD, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
+                    if (context.getPrefHelper() != null && context.getPrefHelper().getUser() != null) {
+                        if (context.getPrefHelper().getUser().getCompanyId() != null &&
+                                !context.getPrefHelper().getUser().getCompanyId().isEmpty() &&
+                                !context.getPrefHelper().getUser().getCompanyId().equalsIgnoreCase("0")
+                                ) {
+
+                            updateCount(AppConstants.ADD, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
+                        } else
+                            UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_select_supplier));
+                    }
+
 //                    UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.will_be_implemented_in_beta));
                 }
             });
@@ -119,7 +135,16 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
                 @Override
                 public void onClick(View view) {
 //                    if (Util.doubleClickCheck())
-                    updateCount(AppConstants.MINUS, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
+                    if (context.getPrefHelper() != null && context.getPrefHelper().getUser() != null) {
+                        if (context.getPrefHelper().getUser().getCompanyId() != null &&
+                                !context.getPrefHelper().getUser().getCompanyId().isEmpty() &&
+                                !context.getPrefHelper().getUser().getCompanyId().equalsIgnoreCase("0")
+                                ) {
+
+                            updateCount(AppConstants.MINUS, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
+                        } else
+                            UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_select_supplier));
+                    }
 
 //                    UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.will_be_implemented_in_beta));
                 }

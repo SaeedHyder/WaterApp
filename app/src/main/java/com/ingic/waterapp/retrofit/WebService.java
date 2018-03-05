@@ -1,5 +1,6 @@
 package com.ingic.waterapp.retrofit;
 
+import com.ingic.waterapp.entities.CityEnt;
 import com.ingic.waterapp.entities.CmsEnt;
 import com.ingic.waterapp.entities.CompanyDetails;
 import com.ingic.waterapp.entities.CompanyEnt;
@@ -55,9 +56,18 @@ public interface WebService {
             @Part("email") RequestBody email,
             @Part("mobile_no") RequestBody mobile_no,
             @Part("location") RequestBody location,
+            @Part("makani_number") RequestBody makani_number,
             @Part("company_id") RequestBody company_id,
             @Part("push_notification") RequestBody push_notification,
             @Header("token") String token
+    );
+
+    @FormUrlEncoded
+    @POST("user/changeVendor")
+    Call<ResponseWrapper<UserEnt>> changeVendor(
+            @Field("company_id") int company_id,
+            @Header("token") String token
+
     );
 
     @FormUrlEncoded
@@ -73,6 +83,9 @@ public interface WebService {
 
     @GET("water/getCompany")
     Call<ResponseWrapper<List<CompanyEnt>>> getCompany();
+
+    @GET("water/getCity")
+    Call<ResponseWrapper<List<CityEnt>>> getCities();
 
 
 //    @FormUrlEncoded
@@ -121,7 +134,7 @@ public interface WebService {
     );
 
     @GET("water/getCompanyProductAboutReview")
-    Call<ResponseWrapper<CompanyDetails>> getCompanyProductAboutReview(
+    Call<ResponseWrapper<List<CompanyDetails>>> getCompanyProductAboutReview(
             @Query("user_type") String user_type,
             @Query("type_select") String type_select,
             @Header("token") String token
@@ -162,6 +175,7 @@ public interface WebService {
     @POST("water/createOrder")
     Call<ResponseWrapper> createOrder(
             @Field("company_id") int company_id,
+            @Field("city_id") int city_id,
             @Field("address") String address,
             @Field("latitude") String latitude,
             @Field("longitude") String longitude,

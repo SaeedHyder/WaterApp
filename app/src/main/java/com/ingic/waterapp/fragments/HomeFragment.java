@@ -14,26 +14,37 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.Gson;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.CompanyDetails;
+import com.ingic.waterapp.entities.CompanyEnt;
 import com.ingic.waterapp.entities.NotificationCountEnt;
 import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.DialogHelper;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 //import com.google.android.gms.location.places.Place;
@@ -61,7 +72,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     String type_select = AppConstants.select_product;
 
     CompanyDetails companyDetails;
+    @BindView(R.id.img_home_leftArrow)
+    ImageView imgLeftArrow;
+    @BindView(R.id.img_home_rightArrow)
+    ImageView imgRightArrow;
+    @BindView(R.id.ll_arrows)
+    LinearLayout llArrows;
+    @BindView(R.id.middle)
+    RelativeLayout middle;
     private int notificationCount = 0, cartCount = 0;
+    List<CompanyDetails> companyList;
+    private int index = 0;
+
+    List<CompanyEnt> companyEnts;
+    int companyId = 0;
+    String companyName;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -96,20 +121,46 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.getCompanyProductAboutReview:
-                companyDetails = (CompanyDetails) result;
-                if (!btnProducts.isSelected()) {
-                    btnProducts.setSelected(true);
-                    btnAbout.setSelected(false);
-                    btnReview.setSelected(false);
+                companyList = (List<CompanyDetails>) result;
+                if (companyList != null && companyList.size() > 0 && companyList.get(0) != null) {
+                    index = 0;
+                    if (companyList.size() == 1) {
+                        imgLeftArrow.setVisibility(View.GONE);
+                        imgRightArrow.setVisibility(View.GONE);
+                    }
+                    companyDetails = companyList.get(0);
+                    if (!btnProducts.isSelected()) {
+                        btnProducts.setSelected(true);
+                        btnAbout.setSelected(false);
+                        btnReview.setSelected(false);
+                    }
+                    setData();
                 }
-                setData();
                 break;
             case WebServiceConstants.getNotificationCount:
                 NotificationCountEnt obj = (NotificationCountEnt) result;
                 notificationCount = obj.getCount();
                 hitBroadCast(notificationCount);
                 break;
+
+            case WebServiceConstants.getCompanies:
+                companyId = 0;
+                companyEnts = (List<CompanyEnt>) result;
+                break;
+            case WebServiceConstants.changeVendor:
+                UIHelper.showShortToastInCenter(getDockActivity(), message);
+                if (prefHelper.getUser() != null) {
+                    serviceHelper.enqueueCall(webService.getCompanyProductAboutReview(
+                            AppConstants.Normal,
+                            type_select,
+                            prefHelper.getUser().getToken()),
+                            WebServiceConstants.getCompanyProductAboutReview);
+
+                }
+                break;
+//                openDialog();
         }
+
     }
 
     private void hitBroadCast(int count) {
@@ -154,6 +205,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             /*For notification notificationCount*/
             serviceHelper.enqueueCall(webService.getUnreadNotificationsCount(prefHelper.getUser().getToken()),
                     WebServiceConstants.getNotificationCount);
+
+            /*For vendor */
+            serviceHelper.enqueueCall(webService.getCompany(),
+                    WebServiceConstants.getCompanies);
         } else {
 
             serviceHelper.enqueueCall(webService.getCompanyProductAboutReview(
@@ -186,6 +241,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        /*check wheater profile and vendor is selected or not */
+        if (prefHelper.getUser() != null)
+            if ((prefHelper.getUser().getLocation() != null && prefHelper.getUser().getLocation().isEmpty()) ||
+                    (prefHelper.getUser().getMobileNo() != null && prefHelper.getUser().getMobileNo().isEmpty())) {
+                openProfileDialog();
+
+            } else if (prefHelper.getUser().getCompanyId() != null && prefHelper.getUser().getCompanyId().isEmpty()) {
+                openVenderDialog();
+            }
     }
 
 
@@ -198,12 +262,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         titleBar.setCartCount(cartCount);
 
         titleBar.clearHeaderBackround();
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
     @Override
@@ -311,6 +369,145 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
+    }
+
+    @OnClick({R.id.img_home_leftArrow, R.id.img_home_rightArrow})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_home_leftArrow:
+                if (index > 0) {
+                    index--;
+                    companyDetails = companyList.get(index);
+                    if (!btnProducts.isSelected()) {
+                        btnProducts.setSelected(true);
+                        btnAbout.setSelected(false);
+                        btnReview.setSelected(false);
+                    }
+                    setData();
+                }
+                break;
+            case R.id.img_home_rightArrow:
+                if (companyList.size() - 1 > index) {
+                    index++;
+                    companyDetails = companyList.get(index);
+                    if (!btnProducts.isSelected()) {
+                        btnProducts.setSelected(true);
+                        btnAbout.setSelected(false);
+                        btnReview.setSelected(false);
+                    }
+                    setData();
+                }
+                break;
+        }
+    }
+
+    public void openProfileDialog() {
+
+        final DialogHelper dialog = new DialogHelper(getDockActivity());
+        dialog.initProfile(R.layout.dialog_alert,
+                getResources().getString(R.string.message_profile),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) { //right click //proceed
+                        dialog.hideDialogProfile();
+                        getDockActivity().replaceDockableFragment(MyProfileFragment.newInstance(SideMenuFragment.newInstance()),
+                                MyProfileFragment.class.getSimpleName());
+
+                    }
+                }, new View.OnClickListener() {
+                    //left click // close
+                    @Override
+                    public void onClick(View v) {
+                        dialog.hideDialogProfile();
+                    }
+                });
+        dialog.setCancelableProfile(false);
+        dialog.showDialogProfile();
+
+
+       /* final Dialog dialog = DialogFactory.createCustomDialog(getDockActivity(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                finalDialog.dismiss();
+                getDockActivity().replaceDockableFragment(MyProfileFragment.newInstance(SideMenuFragment.newInstance()),
+                        MyProfileFragment.class.getSimpleName());
+
+            }
+        }, getResources().getString(R.string.message_profile));
+
+        dialog.show();*/
+    }
+
+    public void openVenderDialog() {
+
+        final DialogHelper dialog = new DialogHelper(getDockActivity());
+        dialog.initProfile(R.layout.dialog_alert,
+                getResources().getString(R.string.message_vendor),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) { //right click //proceed
+                        dialog.hideDialogProfile();
+                        openDialog(); // Change vendor
+
+                    }
+                }, new View.OnClickListener() {
+                    //left click // close
+                    @Override
+                    public void onClick(View v) {
+                        dialog.hideDialogProfile();
+                    }
+                });
+        dialog.setCancelableProfile(false);
+        dialog.showDialogProfile();
+
+       /* final Dialog dialog = DialogFactory.createCustomDialog(getDockActivity(), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog(); // Change vendor
+            }
+        }, getResources().getString(R.string.message_vendor));
+
+        dialog.show();*/
+
+    }
+
+    private void openDialog() {
+        if (companyEnts != null) {
+            final String[] items = new String[companyEnts.size()];
+            for (int i = 0; i < companyEnts.size(); i++) {
+                items[i] = companyEnts.get(i).getFullName();
+            }
+            selectVendorActionSheetDialog(items);
+        } else {
+            serviceHelper.enqueueCall(webService.getCompany(),
+                    WebServiceConstants.getCompanies);
+        }
+    }
+
+    private void selectVendorActionSheetDialog(final String[] stringItems) {
+//        final String[] stringItems = {getResources().getString(R.string.morning),
+//                getResources().getString(R.string.afternoon)};
+        final ActionSheetDialog dialog1 = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog1.title(getResources().getString(R.string.select_supplier))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(android.R.string.cancel))
+                .show();
+
+        dialog1.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                companyId = companyEnts.get(position).getId();
+                companyName = stringItems[position];
+//                TextViewHelper.setText(tvSelectSupplier, stringItems[position]);
+                callService(companyId);
+                dialog1.dismiss();
+            }
+
+            private void callService(int companyId) {
+                serviceHelper.enqueueCall(webService.changeVendor(companyId, prefHelper.getUser().getToken()),
+                        WebServiceConstants.changeVendor);
+            }
+        });
     }
 }
 

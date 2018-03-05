@@ -19,7 +19,6 @@ import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
-import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.SideMenuUpdate;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
@@ -51,7 +50,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     Button btnSignUp;
 
     List<CompanyEnt> companyEnts;
-    int companyId = -1;
+    int companyId = 0;
+//    int companyId = -1;
 
     SideMenuUpdate sideMenuUpdate;
     private String refreshToken;
@@ -145,7 +145,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 break;
 
             case WebServiceConstants.getCompanies:
-                companyId = -1;
+                companyId = 0;
+//                companyId = -1;
                 companyEnts = (List<CompanyEnt>) result;
 
                 break;
@@ -179,6 +180,20 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     private boolean isValidate() {
         if (etName.testValidity() && etEmail.testValidity() && etPassword.testValidity()) {
             if (checkPassword()) {
+                return true;
+//                if (companyId != -1)
+//                    return true;
+//                else
+//                    UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
+            }
+        }
+        return false;
+    }
+    /*
+    *
+    private boolean isValidate() {
+        if (etName.testValidity() && etEmail.testValidity() && etPassword.testValidity()) {
+            if (checkPassword()) {
                 if (companyId != -1)
                     return true;
                 else
@@ -187,6 +202,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         }
         return false;
     }
+    * */
 
     private void launchHomeFragment(int type) {
         prefHelper.setLoginStatus(true);

@@ -94,6 +94,9 @@ public class UserEnt {
     @SerializedName("admin_email")
     @Expose
     private String adminEmail;
+    @SerializedName("makani_number")
+    @Expose
+    private String makaniNumber;
 
     public int getId() {
         return id;
@@ -326,5 +329,13 @@ public class UserEnt {
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
+    }
+
+    public String getMakaniNumber() {
+        return makaniNumber;
+    }
+
+    public void setMakaniNumber(String makaniNumber) {
+        this.makaniNumber = makaniNumber;
     }
 }

@@ -154,7 +154,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                 googleHelper.intentGoogleSign();
                 break;
             case R.id.tv_login_forgotPassword:
-                getDockActivity().replaceDockableFragment(EmailForgotPasswordFragment.newInstance(), EmailForgotPasswordFragment.class.getSimpleName());
+                getDockActivity().replaceDockableFragment(EmailForgotPasswordFragment.newInstance(),
+                        EmailForgotPasswordFragment.class.getSimpleName());
                 break;
             case R.id.btn_login_signup:
                 getDockActivity().replaceDockableFragment(SignUpFragment.newInstance(), SignUpFragment.class.getSimpleName());

@@ -115,6 +115,7 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="push_notifications">Push Notifications</string>
     <string name="select_supplier">Select Supplier</string>
+    <string name="please_select_supplier">Please Select Supplier</string>
     <string name="update">Update</string>
     <string name="my_profile">My Profile</string>
     <string name="will_be_implemented_in_beta">Will be implemented in beta</string>
@@ -144,7 +145,7 @@
     <!--Exit-->
     <string name="attention">Attention</string>
     <string name="message_exit">Are you sure you want to exit?</string>
-<!-- <<<<<<< HEAD -->
+    <!-- <<<<<<< HEAD -->
     <string name="notifications">Notifications</string>
     <string name="companies">Companies</string>
     <string name="service_charges">Service Charges</string>
@@ -203,5 +204,11 @@
     <string name="add_quantity">Please add quantity!</string>
     <string name="code_expires">Code expire in :</string>
     <string name="alert">Are you sure you want to cancel?</string>
+    <string name="makani_number_optional">Makani Number (Optional)</string>
+    <string name="select_city">Select City</string>
+    <string name="message_profile">Kindly go to my profile to fill\ncomplete profile details</string>
+    <string name="message_vendor">Kindly go to menu, click on change\nvendor to select vendor.</string>
+    <string name="close">Close</string>
+    <string name="proceed">Proceed</string>
 
 </resources>

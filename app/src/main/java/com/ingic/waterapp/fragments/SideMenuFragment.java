@@ -8,11 +8,16 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
+import com.ingic.waterapp.entities.CompanyEnt;
+import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.WebServiceConstants;
@@ -51,9 +56,13 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
     private RecyclerViewListAdapter adapter;
     private List<String> sideMenuList = new ArrayList<>();
 
-    private String[] userMenuList = {"Home", "Order History", "Company List", "About", "Contact us", "Logout"};
+    private String[] userMenuList = {"Home", "Order History", "Company List", "Change Vendor", "About", "Contact us", "Logout"};
     private String[] guestMenuList = {"Home", "Company List", "About", "Contact us", "Login"};
     private int loginType;
+
+    List<CompanyEnt> companyEnts;
+    int companyId = 0;
+    String companyName;
 
     public SideMenuFragment() {
         // Required empty public constructor
@@ -199,12 +208,15 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
                         getDockActivity().replaceDockableFragment(CompaniesListFragment.newInstance(), CompaniesListFragment.class.getSimpleName());
                         break;
                     case 3:
-                        getDockActivity().replaceDockableFragment(AboutFragment.newInstance(), AboutFragment.class.getSimpleName());
+                        openDialog();
                         break;
                     case 4:
-                        getDockActivity().replaceDockableFragment(ContactUsFragment.newInstance(), ContactUsFragment.class.getSimpleName());
+                        getDockActivity().replaceDockableFragment(AboutFragment.newInstance(), AboutFragment.class.getSimpleName());
                         break;
                     case 5:
+                        getDockActivity().replaceDockableFragment(ContactUsFragment.newInstance(), ContactUsFragment.class.getSimpleName());
+                        break;
+                    case 6:
 
                     /*final Dialog dialog = DialogFactory.createCustomDialog(getDockActivity(), new View.OnClickListener() {
                         @Override
@@ -222,23 +234,28 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
                     dialog.show();*/
 
                         final DialogHelper logoutdialog = new DialogHelper(getDockActivity());
-                        logoutdialog.initlogout(R.layout.logout_dialog, getResources().getString(R.string.logout), getResources().getString(R.string.message_logout), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                        logoutdialog.initlogout(R.layout.logout_dialog,
+                                getResources().getString(R.string.logout),
+                                getResources().getString(R.string.message_logout),
+                                getResources().getColor(R.color.login_email_grey),
+                                getResources().getColor(R.color.blue_theme),
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) { //left click
 
-                                logoutdialog.hideDialog();
+                                        logoutdialog.hideDialog();
 
-                                serviceHelper.enqueueCall(webService.logout(prefHelper.getUser().getToken()),
-                                        WebServiceConstants.logOut);
+                                        serviceHelper.enqueueCall(webService.logout(prefHelper.getUser().getToken()),
+                                                WebServiceConstants.logOut);
 
-                            }
-                        }, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getMainActivity().getResideMenu().closeMenu();
-                                logoutdialog.hideDialog();
-                            }
-                        });
+                                    }
+                                }, new View.OnClickListener() { //right click
+                                    @Override
+                                    public void onClick(View v) {
+                                        getMainActivity().getResideMenu().closeMenu();
+                                        logoutdialog.hideDialog();
+                                    }
+                                });
                         logoutdialog.setCancelable(false);
                         logoutdialog.showDialog();
 
@@ -303,13 +320,71 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
                 getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 break;
+
+            case WebServiceConstants.getCompanies:
+                companyId = 0;
+                companyEnts = (List<CompanyEnt>) result;
+                openDialog();
+                break;
+
+            case WebServiceConstants.changeVendor:
+                UserEnt login = (UserEnt) result;
+                //Empty card
+                if (Util.getParsedInteger(login.getCompanyId())
+                        != Util.getParsedInteger(prefHelper.getUser().getCompanyId())) {
+                    DataHelper.deleteRealmData();
+                }
+                prefHelper.putUser(login);
+                UIHelper.showShortToastInCenter(getDockActivity(), message);
+                getDockActivity().replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+
+                break;
         }
 
     }
 
+    private void openDialog() {
+        if (companyEnts != null) {
+            final String[] items = new String[companyEnts.size()];
+            for (int i = 0; i < companyEnts.size(); i++) {
+                items[i] = companyEnts.get(i).getFullName();
+            }
+            selectVendorActionSheetDialog(items);
+        } else {
+            serviceHelper.enqueueCall(webService.getCompany(),
+                    WebServiceConstants.getCompanies);
+        }
+    }
+
+    private void selectVendorActionSheetDialog(final String[] stringItems) {
+//        final String[] stringItems = {getResources().getString(R.string.morning),
+//                getResources().getString(R.string.afternoon)};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog.title(getResources().getString(R.string.select_supplier))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(android.R.string.cancel))
+                .show();
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                companyId = companyEnts.get(position).getId();
+                companyName = stringItems[position];
+//                TextViewHelper.setText(tvSelectSupplier, stringItems[position]);
+                callService(companyId);
+                dialog.dismiss();
+            }
+
+            private void callService(int companyId) {
+                serviceHelper.enqueueCall(webService.changeVendor(companyId, prefHelper.getUser().getToken()),
+                        WebServiceConstants.changeVendor);
+            }
+        });
+    }
+
     @Override
     public void profileUpdate() {
-        if (prefHelper.getUser() != null) {
+        if (prefHelper != null && prefHelper.getUser() != null) {
             tvProfileName.setText(prefHelper.getUser().getFullName());
             if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
                 Picasso.with(getDockActivity())

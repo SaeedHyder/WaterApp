@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/top"
@@ -28,11 +28,11 @@
             android:layout_marginLeft="@dimen/_30sdp"
             android:layout_marginTop="@dimen/_16sdp"
             android:background="@color/transparent"
-            tools:text="Aquafina"
             android:textColor="@color/rating_grey"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:typeface="@string/typeface_bold" />
+            app:typeface="@string/typeface_bold"
+            tools:text="Aquafina" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_home_productCount"
@@ -41,10 +41,10 @@
             android:layout_alignStart="@+id/tv_home_productName"
             android:layout_below="@+id/tv_home_productName"
             android:background="@color/transparent"
-            tools:text="50 Products"
             android:textColor="@color/login_text_grey"
             android:textSize="14sp"
-            app:typeface="@string/typeface_regular" />
+            app:typeface="@string/typeface_regular"
+            tools:text="50 Products" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_home_viewAll"
@@ -58,7 +58,37 @@
             android:text="@string/view_all"
             android:textColor="@color/home_dark_blue"
             android:textSize="14sp"
+            android:visibility="visible"
             app:typeface="@string/typeface_regular" />
+
+        <LinearLayout
+            android:id="@+id/ll_arrows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/_14sdp"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_home_leftArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:src="@drawable/ic_leftarrow" />
+
+            <ImageView
+                android:id="@+id/img_home_rightArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:src="@drawable/ic_right" />
+
+        </LinearLayout>
 
         <View
             android:id="@+id/seperator1"

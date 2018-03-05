@@ -84,6 +84,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     AnyEditTextView etAddress;
     @BindView(R.id.et_profile_phone)
     AnyEditTextView etPhoneNumber;
+    @BindView(R.id.et_profile_makaniNumber)
+    AnyEditTextView etMakaniNumber;
 
     @BindView(R.id.img_profile)
     ImageView imgProfile;
@@ -162,6 +164,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             TextViewHelper.setText(etName, prefHelper.getUser().getFullName());
             TextViewHelper.setText(etEmail, prefHelper.getUser().getEmail());
             TextViewHelper.setText(etAddress, prefHelper.getUser().getLocation());
+            TextViewHelper.setText(etMakaniNumber, prefHelper.getUser().getMakaniNumber());
             TextViewHelper.setText(etPhoneNumber, prefHelper.getUser().getMobileNo());
             TextViewHelper.setText(tvSelectSupplier, prefHelper.getUser().getCompanyName());
             int push = prefHelper.getUser().getPushNotification();
@@ -170,6 +173,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             } else
                 btnNotification.setSelected(false);
 
+            companyId = Integer.parseInt(prefHelper.getUser().getCompanyId());
 
             if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
                 Picasso.with(getDockActivity())
@@ -261,8 +265,9 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                     String phoneNo = etPhoneNumber.getText().toString();
                     int mCompanyId = (companyId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCompanyId()) : companyId;
                     String location = etAddress.getText().toString();
+                    String makaniNumber = etMakaniNumber.getText().toString();
                     int push = btnNotification.isSelected() ? 1 : 0;
-                    callService(fullName, email, phoneNo, location, mCompanyId, push, prefHelper.getUser().getToken());
+                    callService(fullName, email, phoneNo, location, makaniNumber, mCompanyId, push, prefHelper.getUser().getToken());
                 }
                 break;
             default:
@@ -271,7 +276,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void callService(String _fullName, String _email, String _mobileNo,
-                             String _location, int _companyId, int _pushNotification, String _token) {
+                             String _location, String _makaniNumber, int _companyId, int _pushNotification, String _token) {
         MultipartBody.Part body = null;
         if (fileUrl != null) {
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), fileUrl);
@@ -282,12 +287,13 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         RequestBody email = RequestBody.create(MediaType.parse("text/plain"), _email);
         RequestBody mobile_no = RequestBody.create(MediaType.parse("text/plain"), _mobileNo);
         RequestBody location = RequestBody.create(MediaType.parse("text/plain"), _location);
+        RequestBody makaniNumber = RequestBody.create(MediaType.parse("text/plain"), _makaniNumber);
         RequestBody company_id = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(_companyId));
         RequestBody push_notification = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(_pushNotification));
 //        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), _token);
 
         serviceHelper.enqueueCall(webService.updateProfile(body, full_name, email,
-                mobile_no, location, company_id, push_notification, _token), WebServiceConstants.updateProfile);
+                mobile_no, location, makaniNumber, company_id, push_notification, _token), WebServiceConstants.updateProfile);
     }
 
     @Override
@@ -303,14 +309,19 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 }
 
                 prefHelper.putUser(login);
-                mListener.profileUpdate();
+                if (mListener != null)
+                    mListener.profileUpdate();
 
                 UIHelper.showShortToastInCenter(getDockActivity(), message);
                 getDockActivity().popFragment();
                 break;
+
             case WebServiceConstants.getCompanies:
                 companyId = -1;
                 companyEnts = (List<CompanyEnt>) result;
+                if (prefHelper != null && prefHelper.getUser().getCompanyId() != null && !prefHelper.getUser().getCompanyId().isEmpty()) {
+                    companyId = Integer.parseInt(prefHelper.getUser().getCompanyId());
+                }
 
                 break;
         }
@@ -318,9 +329,13 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private boolean isValidate() {
-        if (etName.testValidity() && etAddress.testValidity()) {
+        if (etName.testValidity() && etAddress.testValidity() && etPhoneNumber.testValidity()) {
             if (checkPhoneLength()) {
-                return true;
+                if (companyId != -1)
+                    return true;
+                else
+                    UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
+//                return true;
             } else
                 etPhoneNumber.setError("Please Enter valid phone number");
 

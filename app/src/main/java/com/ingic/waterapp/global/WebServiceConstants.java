@@ -27,10 +27,12 @@ public class WebServiceConstants {
     public static final String getNotificationCount = "getNotificationCount";
     public static final String addToCart = "createCart";
     public static final String getMyOrders = "getMyOrders";
-    public static final String getSetting ="getSettings";
-    public static final String createOrder ="createOrder";
-    public static final String reorder ="createReorder";
-    public static final String cancelOrder ="cancelorder";
-    public static final String rating ="rating";
-    public static final String feedback ="feedback";
+    public static final String getSetting = "getSettings";
+    public static final String createOrder = "createOrder";
+    public static final String reorder = "createReorder";
+    public static final String cancelOrder = "cancelorder";
+    public static final String rating = "rating";
+    public static final String feedback = "feedback";
+    public static final String changeVendor = "changeVendor";
+    public static final String getCities = "getCities";
 }

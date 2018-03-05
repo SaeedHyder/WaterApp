@@ -10,8 +10,8 @@
         android:id="@+id/rl_bottle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="@dimen/_18sdp">
@@ -29,10 +29,10 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:background="@color/transparent"
             android:lineSpacingExtra="@dimen/_20sdp"
-            android:text="Aquafina"
             android:textColor="@color/rating_grey"
             android:textSize="22sp"
-            app:typeface="@string/typeface_bold" />
+            app:typeface="@string/typeface_bold"
+            tools:text="Aquafina" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_rating_serviceRatingText"
@@ -54,12 +54,11 @@
             android:clickable="false"
             android:padding="@dimen/_2sdp"
             app:maxStars="5"
+            app:onlyForDisplay="true"
             app:starOff="@drawable/star_unselected"
             app:starOn="@drawable/star_selected"
             app:starPadding="4dp"
-            app:stars="3"
-            app:onlyForDisplay="true"
-            />
+            tools:stars="3" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_rating_companyRatingText"
@@ -80,12 +79,11 @@
             android:clickable="false"
             android:padding="@dimen/_2sdp"
             app:maxStars="5"
+            app:onlyForDisplay="true"
             app:starOff="@drawable/star_unselected"
             app:starOn="@drawable/star_selected"
             app:starPadding="4dp"
-            app:stars="3"
-            app:onlyForDisplay="true"
-            />
+            tools:stars="3" />
 
     </LinearLayout>
 
