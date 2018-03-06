@@ -49,7 +49,8 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
     private List<InProgressOrderEnt> myOrderList;
     private int mChildPosition;
 
-    public static final java.lang.String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final java.lang.String DATE_TIME_FORMAT = "yyyy-MM-dd";
+//    public static final java.lang.String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static MyOrderInProgressFragment newInstance() {
         return new MyOrderInProgressFragment();
@@ -129,9 +130,9 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
                 childList.add(childObj);
             }
             //For Date
-            Date date = DateHelper.stringToDate(myOrderList.get(i).getUpdatedAt(), DATE_TIME_FORMAT);
-            Date dateFormatGMT = DateHelper.getDateInGMT(date);
-            String getFormattedDate = DateHelper.getFormattedDate(dateFormatGMT);
+            Date date = DateHelper.stringToDate(myOrderList.get(i).getDate(), DATE_TIME_FORMAT);
+//            Date dateFormatGMT = DateHelper.getDateInGMT(date);
+            String getFormattedDate = DateHelper.getFormattedDate(date);
 //            String getFormattedTime = DateHelper.getFormattedTime(dateFormatGMT);
             //================================//
             MyOrdersChildEntity entity1 =

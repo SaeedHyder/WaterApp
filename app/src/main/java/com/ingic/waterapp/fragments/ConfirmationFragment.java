@@ -248,12 +248,12 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        date = String.format("%02d", dayOfMonth) + "-"
-                                + String.format("%02d", monthOfYear + 1) +
-                                "-" + year;
-                        tvDate.setText(String.format("%02d", dayOfMonth) + "-"
-                                + String.format("%02d", monthOfYear + 1) +
-                                "-" + year);
+                        date = year+ "-"
+                                + String.format("%02d", monthOfYear + 1) + "-"
+                                +String.format("%02d", dayOfMonth);
+                        tvDate.setText(year+ "/"
+                                + String.format("%02d", monthOfYear + 1) + "/"
+                                +String.format("%02d", dayOfMonth));
 
                     }
                 }, mYear, mMonth, mDay);
