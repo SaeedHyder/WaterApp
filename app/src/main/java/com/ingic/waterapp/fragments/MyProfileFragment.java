@@ -27,6 +27,7 @@ import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.ingic.waterapp.BuildConfig;
 import com.ingic.waterapp.R;
+import com.ingic.waterapp.entities.CityEnt;
 import com.ingic.waterapp.entities.CompanyEnt;
 import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.entities.cart.DataHelper;
@@ -97,12 +98,20 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     AnyTextView tvChangePassword;
     @BindView(R.id.tv_profile_selectSupplier)
     AnyTextView tvSelectSupplier;
+    @BindView(R.id.tv_profile_selectCity)
+    AnyTextView tvSelectCity;
     @BindView(R.id.btn_profile_update)
     Button btnUpdate;
 
 
     List<CompanyEnt> companyEnts;
     int companyId = -1;
+    //FOr cities
+    //FOr cities
+    private List<CityEnt> cityList; //todo change its type
+    int cityId = -1;
+    String cityName;
+
 
     //FOr Camera
     private static final int CAMERA_REQUEST = 1001;
@@ -134,6 +143,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         btnNotification.setOnClickListener(this);
         tvChangePassword.setOnClickListener(this);
         tvSelectSupplier.setOnClickListener(this);
+        tvSelectCity.setOnClickListener(this);
         btnUpdate.setOnClickListener(this);
     }
 
@@ -153,6 +163,10 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         unbinder = ButterKnife.bind(this, view);
         serviceHelper.enqueueCall(webService.getCompany(),
                 WebServiceConstants.getCompanies);
+
+
+        serviceHelper.enqueueCall(webService.getCities(),
+                WebServiceConstants.getCities);
         setListeners();
         setData();
 
@@ -167,6 +181,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             TextViewHelper.setText(etMakaniNumber, prefHelper.getUser().getMakaniNumber());
             TextViewHelper.setText(etPhoneNumber, prefHelper.getUser().getMobileNo());
             TextViewHelper.setText(tvSelectSupplier, prefHelper.getUser().getCompanyName());
+            TextViewHelper.setText(tvSelectCity, prefHelper.getUser().getCityName());
             int push = prefHelper.getUser().getPushNotification();
             if (push == TRUE) {
                 btnNotification.setSelected(true);
@@ -252,6 +267,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 openDialog();
                 break;
 
+            case R.id.tv_profile_selectCity:
+                if (Util.doubleClickCheck2Seconds())
+                    openCityDialog();
+                break;
+
             case R.id.img_profile_camera:
                 if (Util.doubleClickCheck())
                     MyProfileFragmentPermissionsDispatcher.getStoragePermissionWithPermissionCheck(MyProfileFragment.this);
@@ -264,10 +284,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                     String email = etEmail.getText().toString();
                     String phoneNo = etPhoneNumber.getText().toString();
                     int mCompanyId = (companyId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCompanyId()) : companyId;
+                    int mCityId = (cityId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCityId()) : cityId;
                     String location = etAddress.getText().toString();
                     String makaniNumber = etMakaniNumber.getText().toString();
                     int push = btnNotification.isSelected() ? 1 : 0;
-                    callService(fullName, email, phoneNo, location, makaniNumber, mCompanyId, push, prefHelper.getUser().getToken());
+                    callService(fullName, email, phoneNo, location, makaniNumber, mCompanyId, mCityId, push, prefHelper.getUser().getToken());
                 }
                 break;
             default:
@@ -275,8 +296,42 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
+    private void openCityDialog() {
+
+        if (cityList != null) {
+            final String[] items = new String[cityList.size()];
+            for (int i = 0; i < cityList.size(); i++) {
+                items[i] = cityList.get(i).getCityName();
+            }
+            SelectCityActionSheetDialog(items);
+        } else {
+            serviceHelper.enqueueCall(webService.getCities(),
+                    WebServiceConstants.getCities);
+        }
+    }
+
+    private void SelectCityActionSheetDialog(final String[] stringItems) {
+//        final String[] stringItems = {getResources().getString(R.string.morning),
+//                getResources().getString(R.string.afternoon)};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog.title(getResources().getString(R.string.select_city))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(android.R.string.cancel))
+                .show();
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                cityId = cityList.get(position).getId();
+                cityName = stringItems[position];
+                TextViewHelper.setText(tvSelectCity, stringItems[position]);
+                dialog.dismiss();
+            }
+        });
+    }
+
     private void callService(String _fullName, String _email, String _mobileNo,
-                             String _location, String _makaniNumber, int _companyId, int _pushNotification, String _token) {
+                             String _location, String _makaniNumber, int _companyId, int _cityId, int _pushNotification, String _token) {
         MultipartBody.Part body = null;
         if (fileUrl != null) {
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), fileUrl);
@@ -289,11 +344,12 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         RequestBody location = RequestBody.create(MediaType.parse("text/plain"), _location);
         RequestBody makaniNumber = RequestBody.create(MediaType.parse("text/plain"), _makaniNumber);
         RequestBody company_id = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(_companyId));
+        RequestBody city_id = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(_cityId));
         RequestBody push_notification = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(_pushNotification));
 //        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), _token);
 
         serviceHelper.enqueueCall(webService.updateProfile(body, full_name, email,
-                mobile_no, location, makaniNumber, company_id, push_notification, _token), WebServiceConstants.updateProfile);
+                mobile_no, location, makaniNumber, company_id, city_id, push_notification, _token), WebServiceConstants.updateProfile);
     }
 
     @Override
@@ -324,6 +380,10 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 }
 
                 break;
+
+            case WebServiceConstants.getCities:
+                cityList = (List<CityEnt>) result;
+                break;
         }
 
     }
@@ -331,9 +391,12 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private boolean isValidate() {
         if (etName.testValidity() && etAddress.testValidity() && etPhoneNumber.testValidity()) {
             if (checkPhoneLength()) {
-                if (companyId != -1)
-                    return true;
-                else
+                if (!tvSelectSupplier.getText().toString().isEmpty()) {
+                    if (!tvSelectCity.getText().toString().isEmpty()) {
+                        return true;
+                    } else
+                        UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_select_city));
+                } else
                     UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
 //                return true;
             } else
@@ -344,7 +407,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private boolean checkPhoneLength() {
-        return (etPhoneNumber.length() > 9 || etPhoneNumber.length() < 1);
+        return (etPhoneNumber.length() > 7 || etPhoneNumber.length() < 1);
     }
 
     //Camera Integration

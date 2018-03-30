@@ -49,8 +49,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String type = msgData.get("type");
             String company_name = msgData.get("company_name");
             String company_id = msgData.get("company_id");
-//            String badge = msgData.get("badge");
-//            String totalCount = msgData.get("total_count");
             Log.e(TAG, "onMessageReceived: msg->" + msg + " title->" + title);
             sendDefaultNotification(title, msg, company_name, company_id, type);
 /*
@@ -83,8 +81,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendDefaultNotification(String title, String msg, String bottle_name, String company_id, String type) {
         if (TextUtils.isEmpty(title)) title = getResources().getString(R.string.app_name);
         PendingIntent pendingIntent = null;
+        Intent intent = null;
         if (!type.isEmpty() && type.equalsIgnoreCase(AppConstants.RATING)) {
-            Intent intent = new Intent(this, MainActivity.class);
+            intent = new Intent(this, MainActivity.class);
             intent.putExtra(AppConstants.RATING_BOTTLE, bottle_name);
             intent.putExtra(AppConstants.RATING_COMPANY_ID, company_id);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -92,8 +91,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     PendingIntent.FLAG_ONE_SHOT);
 
         }
+//        NotificationHelper.getInstance().showNotification(this, R.mipmap.ic_launcher, title, msg,
+//                String.valueOf(System.currentTimeMillis()), intent);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,
+//                this.getResources().getString(R.string.default_notification_channel_id))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setStyle(new NotificationCompat.BigTextStyle())
@@ -101,7 +104,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setDefaults(Notification.DEFAULT_ALL)  //to show alert notification
-                .setPriority(Notification.PRIORITY_MAX)  //on top of app
+                .setPriority(Notification.PRIORITY_HIGH)  //on top of app
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
@@ -111,7 +114,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         int range = 10000 - 1 + 1;
         int randomNum = rn.nextInt(range) + 1;
 
-        notificationManager.notify(randomNum /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify((int) System.currentTimeMillis(), notificationBuilder.build());
     }
 /*
     //broadcasting

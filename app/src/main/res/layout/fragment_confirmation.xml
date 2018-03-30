@@ -44,21 +44,22 @@
             android:layout_below="@id/tv_confirmation_city"
             android:background="@color/color_seperator_forgot" />
 
-        <com.ingic.waterapp.ui.views.AnyEditTextView
-            android:id="@+id/tv_confirmation_address"
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_confirmation_deliveryLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/seperator"
-            android:layout_marginBottom="@dimen/_4sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="24dp"
             android:background="@color/transparent"
             android:cursorVisible="true"
             android:drawablePadding="@dimen/_8sdp"
             android:drawableRight="@drawable/ic_address_blue"
             android:gravity="start"
-            android:hint="@string/enter_address"
+            android:hint="@string/select_delivery_location"
             android:imeOptions="actionDone"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:paddingBottom="@dimen/_6sdp"
             android:paddingLeft="@dimen/_6sdp"
             android:paddingRight="@dimen/_4sdp"
@@ -67,8 +68,38 @@
             android:textColor="@color/login_email_grey"
             android:textColorHint="@color/login_email_grey"
             android:textSize="14sp"
-            app:typeface="@string/typeface_light"
-            />
+            app:typeface="@string/typeface_light" />
+
+        <View
+            android:id="@+id/seperator0"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_confirmation_deliveryLocation"
+            android:background="@color/color_seperator_forgot" />
+
+        <com.ingic.waterapp.ui.views.AnyEditTextView
+            android:id="@+id/tv_confirmation_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/seperator0"
+            android:layout_marginTop="24dp"
+            android:background="@color/transparent"
+            android:cursorVisible="true"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start"
+            android:hint="@string/enter_location"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingBottom="@dimen/_6sdp"
+            android:paddingLeft="@dimen/_6sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:singleLine="true"
+            android:textColor="@color/login_email_grey"
+            android:textColorHint="@color/login_email_grey"
+            android:textSize="14sp"
+            app:typeface="@string/typeface_light" />
 
         <View
             android:id="@+id/seperator1"
@@ -76,6 +107,7 @@
             android:layout_height="0.5dp"
             android:layout_below="@id/tv_confirmation_address"
             android:background="@color/color_seperator_forgot" />
+
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_confirmation_date"

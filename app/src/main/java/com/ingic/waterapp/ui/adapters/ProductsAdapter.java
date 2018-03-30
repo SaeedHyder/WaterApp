@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.DockActivity;
 import com.ingic.waterapp.entities.Product;
+import com.ingic.waterapp.entities.cart.DataHelper;
+import com.ingic.waterapp.entities.cart.MyCartModel;
 import com.ingic.waterapp.fragments.WaterBottleFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.helpers.UIHelper;
@@ -48,6 +51,7 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
             final TextView tvCurrentAmount = (TextView) viewHolder.getView(R.id.tv_waterBottle_currentAmount);
             TextView tv_waterBottle_name = (TextView) viewHolder.getView(R.id.tv_waterBottle_name);
             final TextView tvQuantity = (TextView) viewHolder.getView(R.id.tv_waterBottle_quantity);
+            final RelativeLayout rlTop = (RelativeLayout) viewHolder.getView(R.id.top);
 
 
             tv_waterBottle_name.setSelected(true);
@@ -75,7 +79,8 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
             tvCurrentAmount.setText(String.valueOf(currentValue)); //our save
 
 
-            viewHolder.getView().setOnClickListener(new View.OnClickListener() {
+//            viewHolder.getView().setOnClickListener(new View.OnClickListener() {
+            rlTop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (Util.doubleClickCheck()) {
@@ -116,17 +121,17 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
             btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    if (Util.doubleClickCheck())
-                    if (context.getPrefHelper() != null && context.getPrefHelper().getUser() != null) {
-                        if (context.getPrefHelper().getUser().getCompanyId() != null &&
-                                !context.getPrefHelper().getUser().getCompanyId().isEmpty() &&
-                                !context.getPrefHelper().getUser().getCompanyId().equalsIgnoreCase("0")
-                                ) {
+                    if (Util.doubleClickCheck())
+                        if (context.getPrefHelper() != null && context.getPrefHelper().getUser() != null) {
+                            if (context.getPrefHelper().getUser().getCompanyId() != null &&
+                                    !context.getPrefHelper().getUser().getCompanyId().isEmpty() &&
+                                    !context.getPrefHelper().getUser().getCompanyId().equalsIgnoreCase("0")
+                                    ) {
 
-                            updateCount(AppConstants.ADD, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
-                        } else
-                            UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_select_supplier));
-                    }
+                                updateCount(AppConstants.ADD, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
+                            } else
+                                UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_select_supplier));
+                        }
 
 //                    UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.will_be_implemented_in_beta));
                 }
@@ -134,17 +139,17 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
             btnMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    if (Util.doubleClickCheck())
-                    if (context.getPrefHelper() != null && context.getPrefHelper().getUser() != null) {
-                        if (context.getPrefHelper().getUser().getCompanyId() != null &&
-                                !context.getPrefHelper().getUser().getCompanyId().isEmpty() &&
-                                !context.getPrefHelper().getUser().getCompanyId().equalsIgnoreCase("0")
-                                ) {
+                    if (Util.doubleClickCheck())
+                        if (context.getPrefHelper() != null && context.getPrefHelper().getUser() != null) {
+                            if (context.getPrefHelper().getUser().getCompanyId() != null &&
+                                    !context.getPrefHelper().getUser().getCompanyId().isEmpty() &&
+                                    !context.getPrefHelper().getUser().getCompanyId().equalsIgnoreCase("0")
+                                    ) {
 
-                            updateCount(AppConstants.MINUS, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
-                        } else
-                            UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_select_supplier));
-                    }
+                                updateCount(AppConstants.MINUS, item, tvOriginalAmount, tvCurrentAmount, tvQuantity);
+                            } else
+                                UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.please_select_supplier));
+                        }
 
 //                    UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.will_be_implemented_in_beta));
                 }
@@ -207,12 +212,11 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
         tvQuantity.setText("" + count);
 
         //Direct added to cart has been removed
-/*
+        //Direct added to cart has been revert
         count = Util.getParsedInteger(tvQuantity.getText().toString());
         DataHelper.addToRealm(context, new MyCartModel(
                 item.getId(), item.getProductName(), item.getProductImage(), item.getLiter(),
                 count,
-                currentValue));*/
-
+                currentValue));
     }
 }

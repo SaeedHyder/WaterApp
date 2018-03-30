@@ -72,7 +72,8 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
 
     private void initRecyclerView() {
         adapter = new NotificationsListAdapter(getDockActivity(), this);
-        rvNotifcations.setLayoutManager(new LinearLayoutManager(getDockActivity(), LinearLayoutManager.VERTICAL, false));
+        rvNotifcations.setLayoutManager(new LinearLayoutManager(getDockActivity(),
+                LinearLayoutManager.VERTICAL, false));
         rvNotifcations.addItemDecoration(new SimpleDividerItemDecoration(getDockActivity()));
         rvNotifcations.setAdapter(adapter);
 //        ArrayList<String> list = new ArrayList<>();

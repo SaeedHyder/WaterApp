@@ -63,6 +63,8 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     Unbinder unbinder;
     @BindView(R.id.tv_confirmation_address)
     AnyEditTextView tvAddress;
+    @BindView(R.id.tv_confirmation_deliveryLocation)
+    AnyTextView tvDeliveryLocation;
     @BindView(R.id.tv_confirmation_date)
     AnyTextView tvDate;
     @BindView(R.id.tv_confirmation_timeSlot)
@@ -85,10 +87,10 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     private int mYear, mMonth, mDay, mHour, mMinute;
     private CreateOrder cartObj;
     List<MyCartModel> cartList = new ArrayList<>();
-    private String timeSlot, date, address;
-    private double lat=0.0, lng=0.0;
+    private String timeSlot, date, address, deliveryLocation;
+    private double lat = 0.0, lng = 0.0;
     private String companyTerms;
-    private List<CityEnt> cityList; //todo change its type
+    private List<CityEnt> cityList;
     int cityId = -1;
     String cityName;
 
@@ -147,6 +149,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 
     private void setListener() {
         tvSelectCity.setOnClickListener(this);
+        tvDeliveryLocation.setOnClickListener(this);
         tvAddress.setOnClickListener(this);
         tvDate.setOnClickListener(this);
         tvTimeSlot.setOnClickListener(this);
@@ -176,9 +179,9 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                 if (Util.doubleClickCheck2Seconds())
                     openDialog();
                 break;
-            case R.id.tv_confirmation_address:
-//                if (Util.doubleClickCheck2Seconds())
-//                    openPlacesPicker();
+            case R.id.tv_confirmation_deliveryLocation:
+                if (Util.doubleClickCheck2Seconds())
+                    openPlacesPicker();
                 break;
             case R.id.tv_confirmation_date:
                 if (Util.doubleClickCheck())
@@ -190,8 +193,9 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 //                    openTimePicker();
                 break;
             case R.id.btn_confirmation_continue:
-                if (Util.doubleClickCheck())
+                if (Util.doubleClickCheck2Seconds())
                     if (!(tvSelectCity.getText().toString().isEmpty()
+                            || tvDeliveryLocation.getText().toString().isEmpty()
                             || tvAddress.getText().toString().isEmpty()
                             || tvDate.getText().toString().isEmpty()
                             || tvTimeSlot.getText().toString().isEmpty())) {
@@ -202,7 +206,8 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                             Log.d("GSON", "onClick: orderListjson" + orderList);
                             serviceHelper.enqueueCall(webService.createOrder(cartObj.getCompany_id(),
                                     cityId
-                                    , address,
+                                    , deliveryLocation
+                                    , tvAddress.getText().toString(),
                                     String.valueOf(lat), String.valueOf(lng),
                                     date, timeSlot, cartObj.getCost(),
                                     cartObj.getService_charge(), cartObj.getVat_tax()
@@ -248,12 +253,12 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        date = year+ "-"
+                        date = year + "-"
                                 + String.format("%02d", monthOfYear + 1) + "-"
-                                +String.format("%02d", dayOfMonth);
-                        tvDate.setText(year+ "/"
+                                + String.format("%02d", dayOfMonth);
+                        tvDate.setText(year + "/"
                                 + String.format("%02d", monthOfYear + 1) + "/"
-                                +String.format("%02d", dayOfMonth));
+                                + String.format("%02d", dayOfMonth));
 
                     }
                 }, mYear, mMonth, mDay);
@@ -300,11 +305,11 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, getDockActivity());
                 String placeName = String.format("%s", place.getName());
-                address = String.format("%s", place.getAddress());
+                deliveryLocation = String.format("%s", place.getAddress());
                 lat = place.getLatLng().latitude;
                 lng = place.getLatLng().longitude;
 
-                TextViewHelper.setText(tvAddress, address);
+                TextViewHelper.setText(tvDeliveryLocation, deliveryLocation);
             }
         }
     }

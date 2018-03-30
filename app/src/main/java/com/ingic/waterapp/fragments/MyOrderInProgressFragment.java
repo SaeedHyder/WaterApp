@@ -130,9 +130,13 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
                 childList.add(childObj);
             }
             //For Date
-            Date date = DateHelper.stringToDate(myOrderList.get(i).getDate(), DATE_TIME_FORMAT);
+            Date date;
+            String getFormattedDate = null;
+            if (myOrderList.get(i).getDate() != null) {
+                date = DateHelper.stringToDate(myOrderList.get(i).getDate(), DATE_TIME_FORMAT);
 //            Date dateFormatGMT = DateHelper.getDateInGMT(date);
-            String getFormattedDate = DateHelper.getFormattedDate(date);
+                getFormattedDate = DateHelper.getFormattedDate(date);
+            }
 //            String getFormattedTime = DateHelper.getFormattedTime(dateFormatGMT);
             //================================//
             MyOrdersChildEntity entity1 =

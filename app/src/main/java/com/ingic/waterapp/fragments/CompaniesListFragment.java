@@ -112,7 +112,8 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
 
     @Override
     public void onItemClick(View view, int position) {
-        notImplemented();
+
+//        notImplemented();
     }
 
     @Override

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+    <!-- For FireBase -->
+    <string name="default_notification_channel_id">default</string>
+
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
 
@@ -153,7 +158,7 @@
     <string name="proceed_to_checkout">Proceed to checkout</string>
     <string name="cart">Cart</string>
     <string name="date">Date</string>
-    <string name="enter_address">Enter Address</string>
+    <string name="enter_location">Enter Location</string>
     <string name="time_slot">Time Slot</string>
     <string name="comfirmation_delivery_text">Al Ain 5 Gallon as your first delivery would reach you within 2 working days</string>
     <string name="aquafina"><b>Aquafina</b> (x5)</string>
@@ -210,5 +215,7 @@
     <string name="message_vendor">Kindly go to menu, click on change\nvendor to select vendor.</string>
     <string name="close">Close</string>
     <string name="proceed">Proceed</string>
+    <string name="select_delivery_location">Select Delivery Location</string>
+    <string name="please_select_city">Please select city!</string>
 
 </resources>

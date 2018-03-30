@@ -34,6 +34,8 @@ public interface WebService {
             @Field("email") String email,
             @Field("password") String password,
             @Field("password_confirmation") String password_confirmation,
+            @Field("mobile_no") String mobile_no,
+            @Field("city_id") int city_id,
             @Field("company_id") String company_id,
             @Field("device_token") String device_token,
             @Field("device_type") String device_type
@@ -58,6 +60,7 @@ public interface WebService {
             @Part("location") RequestBody location,
             @Part("makani_number") RequestBody makani_number,
             @Part("company_id") RequestBody company_id,
+            @Part("city_id") RequestBody city_id,
             @Part("push_notification") RequestBody push_notification,
             @Header("token") String token
     );
@@ -176,6 +179,7 @@ public interface WebService {
     Call<ResponseWrapper> createOrder(
             @Field("company_id") int company_id,
             @Field("city_id") int city_id,
+            @Field("delivery_location") String delivery_location,
             @Field("address") String address,
             @Field("latitude") String latitude,
             @Field("longitude") String longitude,

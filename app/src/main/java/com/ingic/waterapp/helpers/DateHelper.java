@@ -666,6 +666,7 @@ public class DateHelper {
 
 	public static String getFormattedDate(Date mDate) {
 
+		if(mDate==null) return "";
 		SimpleDateFormat daysFormat = new SimpleDateFormat("dd MMM, yyyy", Locale.US);
 		return daysFormat.format(mDate);
 	}

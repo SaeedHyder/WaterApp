@@ -279,6 +279,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
     }
 
     private void socialMediaSignIn(final String SocialMediaId, final String SocialMediaPlatform, final String Name, final String Email, final String Image) {
+        refreshToken = FirebaseInstanceId.getInstance().getToken();
 
         serviceHelper.enqueueCall(webService.userFacebookLogin(
                 mSocialMediaID,

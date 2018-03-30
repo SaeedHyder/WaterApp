@@ -9,20 +9,27 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.activities.MainActivity;
+import com.ingic.waterapp.entities.CityEnt;
 import com.ingic.waterapp.entities.CompanyEnt;
 import com.ingic.waterapp.entities.UserEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
+import com.ingic.waterapp.helpers.TextViewHelper;
+import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.SideMenuUpdate;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
+import com.ingic.waterapp.ui.views.Util;
 
 import java.util.List;
 
@@ -44,14 +51,23 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     AnyEditTextView etPassword;
     @BindView(R.id.et_signup_confirmPassword)
     AnyEditTextView etConfirmPassword;
+    @BindView(R.id.et_signUp_phone)
+    AnyEditTextView etPhoneNumber;
     @BindView(R.id.tv_signup_selectSupplier)
     AnyTextView tvSelectSupplier;
+    @BindView(R.id.tv_signup_selectCity)
+    AnyTextView tvSelectCity;
     @BindView(R.id.btn_signup)
     Button btnSignUp;
 
     List<CompanyEnt> companyEnts;
     int companyId = 0;
 //    int companyId = -1;
+
+    //FOr cities
+    private List<CityEnt> cityList; //todo change its type
+    int cityId = -1;
+    String cityName;
 
     SideMenuUpdate sideMenuUpdate;
     private String refreshToken;
@@ -76,6 +92,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     private void setListeners() {
         tvSelectSupplier.setOnClickListener(this);
+        tvSelectCity.setOnClickListener(this);
         btnSignUp.setOnClickListener(this);
     }
 
@@ -98,6 +115,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         serviceHelper.enqueueCall(webService.getCompany(),
                 WebServiceConstants.getCompanies);
 
+        serviceHelper.enqueueCall(webService.getCities(),
+                WebServiceConstants.getCities);
+
     }
 
     @Override
@@ -117,6 +137,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                             etEmail.getText().toString(),
                             etPassword.getText().toString(),
                             etConfirmPassword.getText().toString(),
+                            etPhoneNumber.getText().toString(),
+                            cityId,
                             companyId + "",
                             refreshToken,
                             AppConstants.Device_Type),
@@ -125,12 +147,52 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 }
                 break;
 
+            case R.id.tv_signup_selectCity:
+                if (Util.doubleClickCheck2Seconds())
+                    openCityDialog();
+                break;
+
             case R.id.tv_signup_selectSupplier:
                 openDialog();
                 break;
+
             default:
                 break;
         }
+    }
+
+    private void openCityDialog() {
+
+        if (cityList != null) {
+            final String[] items = new String[cityList.size()];
+            for (int i = 0; i < cityList.size(); i++) {
+                items[i] = cityList.get(i).getCityName();
+            }
+            SelectCityActionSheetDialog(items);
+        } else {
+            serviceHelper.enqueueCall(webService.getCities(),
+                    WebServiceConstants.getCities);
+        }
+    }
+
+    private void SelectCityActionSheetDialog(final String[] stringItems) {
+//        final String[] stringItems = {getResources().getString(R.string.morning),
+//                getResources().getString(R.string.afternoon)};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog.title(getResources().getString(R.string.select_city))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(android.R.string.cancel))
+                .show();
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                cityId = cityList.get(position).getId();
+                cityName = stringItems[position];
+                TextViewHelper.setText(tvSelectCity, stringItems[position]);
+                dialog.dismiss();
+            }
+        });
     }
 
     @Override
@@ -148,7 +210,10 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 companyId = 0;
 //                companyId = -1;
                 companyEnts = (List<CompanyEnt>) result;
+                break;
 
+            case WebServiceConstants.getCities:
+                cityList = (List<CityEnt>) result;
                 break;
         }
     }
@@ -178,16 +243,29 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     }
 
     private boolean isValidate() {
-        if (etName.testValidity() && etEmail.testValidity() && etPassword.testValidity()) {
+        if (etName.testValidity() && etEmail.testValidity() && etPassword.testValidity() && etPhoneNumber.testValidity()) {
             if (checkPassword()) {
-                return true;
+                if (checkPhoneLength()) {
+                    if (!tvSelectCity.getText().toString().isEmpty()) {
+                        return true;
+                    } else
+                        UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_select_city));
+                } else
+                    etPhoneNumber.setError("Please Enter valid phone number");
+
+            }
+
 //                if (companyId != -1)
 //                    return true;
 //                else
 //                    UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
-            }
+
         }
         return false;
+    }
+
+    private boolean checkPhoneLength() {
+        return (etPhoneNumber.length() > 7 || etPhoneNumber.length() < 1);
     }
     /*
     *
