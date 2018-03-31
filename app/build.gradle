@@ -26,8 +26,8 @@ android {
         applicationId "com.ingic.waterapp"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 9
-        versionName "0.1.66"
+        versionCode 10
+        versionName "0.1.67"
 
         multiDexEnabled true
     }

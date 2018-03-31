@@ -148,6 +148,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
                 break;
             case R.id.btn_login_fb:
+                LoginManager.getInstance().logOut(); //this is for when mobile have already facebook app
                 LoginManager.getInstance().logInWithReadPermissions(LoginFragment.this, facebookLoginHelper.getPermissionNeeds());
                 break;
             case R.id.btn_login_google:
