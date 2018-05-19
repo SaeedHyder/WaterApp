@@ -26,8 +26,8 @@ android {
         applicationId "com.ingic.waterapp"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 10
-        versionName "0.1.67"
+        versionCode 11
+        versionName "0.1.68"
 
         multiDexEnabled true
     }
@@ -115,10 +115,6 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'realm-android'
-
-
-
-
 
 /*
 Error:Execution failed for task ':app:javaPreCompileDebug'.

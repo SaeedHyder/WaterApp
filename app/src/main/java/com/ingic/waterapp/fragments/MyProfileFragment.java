@@ -175,6 +175,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private void setData() {
         if (prefHelper.getUser() != null) {
 
+            if (prefHelper.getUser().getEmail() != null && !prefHelper.getUser().getEmail().isEmpty())
+                etEmail.setEnabled(false);
+            else
+                etEmail.setEnabled(true);
+
             TextViewHelper.setText(etName, prefHelper.getUser().getFullName());
             TextViewHelper.setText(etEmail, prefHelper.getUser().getEmail());
             TextViewHelper.setText(etAddress, prefHelper.getUser().getLocation());
@@ -389,7 +394,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private boolean isValidate() {
-        if (etName.testValidity() && etAddress.testValidity() && etPhoneNumber.testValidity()) {
+        if (etEmail.testValidity() && etName.testValidity() && etAddress.testValidity() && etPhoneNumber.testValidity()) {
             if (checkPhoneLength()) {
                 if (!tvSelectSupplier.getText().toString().isEmpty()) {
                     if (!tvSelectCity.getText().toString().isEmpty()) {
