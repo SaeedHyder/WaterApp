@@ -284,17 +284,20 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 break;
 
             case R.id.btn_profile_update:
-                if (isValidate()) {
-                    String fullName = etName.getText().toString();
-                    String email = etEmail.getText().toString();
-                    String phoneNo = etPhoneNumber.getText().toString();
-                    int mCompanyId = (companyId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCompanyId()) : companyId;
-                    int mCityId = (cityId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCityId()) : cityId;
-                    String location = etAddress.getText().toString();
-                    String makaniNumber = etMakaniNumber.getText().toString();
-                    int push = btnNotification.isSelected() ? 1 : 0;
-                    callService(fullName, email, phoneNo, location, makaniNumber, mCompanyId, mCityId, push, prefHelper.getUser().getToken());
-                }
+                if (Util.doubleClickCheck2Seconds())
+
+                    if (isValidate()) {
+                        String fullName = etName.getText().toString();
+                        String email = etEmail.getText().toString();
+                        String phoneNo = etPhoneNumber.getText().toString();
+                        int mCompanyId = (companyId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCompanyId()) : companyId;
+                        int mCityId = (cityId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCityId()) : cityId;
+                        String location = etAddress.getText().toString();
+                        String makaniNumber = etMakaniNumber.getText().toString();
+                        int push = btnNotification.isSelected() ? 1 : 0;
+
+                        callService(fullName, email, phoneNo, location, makaniNumber, mCompanyId, mCityId, push, prefHelper.getUser().getToken());
+                    }
                 break;
             default:
                 break;

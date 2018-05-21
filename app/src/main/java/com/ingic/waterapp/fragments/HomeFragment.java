@@ -121,6 +121,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.getCompanyProductAboutReview:
+                if (!HomeFragment.this.isVisible()) return;
                 companyList = (List<CompanyDetails>) result;
                 if (companyList != null && companyList.size() > 0 && companyList.get(0) != null) {
                     index = 0;
@@ -367,8 +368,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onDestroy() {
-        unbinder.unbind();
         super.onDestroy();
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @OnClick({R.id.img_home_leftArrow, R.id.img_home_rightArrow})

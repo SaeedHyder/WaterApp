@@ -17,6 +17,7 @@ import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
+import com.ingic.waterapp.ui.views.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,17 +97,18 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_submit:
-                if (etFeedback.testValidity()) {
-                    if (prefHelper.getUser() != null) {
-                        type = AppConstants.Normal;
-                        token = prefHelper.getUser().getToken();
-                    } else {
-                        type = AppConstants.Guest;
-                        token = prefHelper.getGuestTOKEN();
+                if (Util.doubleClickCheck2Seconds())
+                    if (etFeedback.testValidity()) {
+                        if (prefHelper.getUser() != null) {
+                            type = AppConstants.Normal;
+                            token = prefHelper.getUser().getToken();
+                        } else {
+                            type = AppConstants.Guest;
+                            token = prefHelper.getGuestTOKEN();
+                        }
+                        serviceHelper.enqueueCall(webService.feedback(type, etFeedback.getText().toString()
+                                , token), WebServiceConstants.feedback);
                     }
-                    serviceHelper.enqueueCall(webService.feedback(type, etFeedback.getText().toString()
-                            , token), WebServiceConstants.feedback);
-                }
                 break;
             default:
                 break;

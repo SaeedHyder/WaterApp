@@ -27,6 +27,7 @@ import com.ingic.waterapp.helpers.DateHelper;
 import com.ingic.waterapp.interfaces.OnChildViewHolderItemClick;
 import com.ingic.waterapp.ui.adapters.MyOrderApdater;
 import com.ingic.waterapp.ui.views.TitleBar;
+import com.ingic.waterapp.ui.views.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -201,15 +202,18 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
 
     @Override
     public void onReorderClick(View view, int position, int orderId) {
-        mChildPosition = 0;
-        mChildPosition = position;
-        serviceHelper.enqueueCall(webService.reorder(orderId, prefHelper.getUser().getToken()),
-                WebServiceConstants.reorder);
+        if (Util.doubleClickCheck2Seconds()) {
+            mChildPosition = 0;
+            mChildPosition = position;
+            serviceHelper.enqueueCall(webService.reorder(orderId, prefHelper.getUser().getToken()),
+                    WebServiceConstants.reorder);
+        }
     }
 
     @Override
     public void onCancelOrderClick(View view, int position, int orderId) {
-        alertActionSheetDialog(position, orderId);
+        if (Util.doubleClickCheck())
+            alertActionSheetDialog(position, orderId);
     }
 
     private void alertActionSheetDialog(final int mPosition, final int orderId) {
@@ -225,13 +229,15 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
         dialog.setOnOperItemClickL(new OnOperItemClickL() {
             @Override
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    mChildPosition = 0;
-                    mChildPosition = mPosition;
-                    serviceHelper.enqueueCall(webService.cancelOrder(orderId, prefHelper.getUser().getToken()),
-                            WebServiceConstants.cancelOrder);
+                if (Util.doubleClickCheck()) {
+                    if (position == 0) {
+                        mChildPosition = 0;
+                        mChildPosition = mPosition;
+                        serviceHelper.enqueueCall(webService.cancelOrder(orderId, prefHelper.getUser().getToken()),
+                                WebServiceConstants.cancelOrder);
+                    }
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
             }
         });
     }
