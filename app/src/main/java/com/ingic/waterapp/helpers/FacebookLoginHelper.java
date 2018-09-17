@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FacebookLoginHelper implements FacebookCallback<LoginResult> {
-    private List<String> permissionNeeds= Arrays.asList( "public_profile", "email", "user_birthday", "user_about_me");
+    private List<String> permissionNeeds= Arrays.asList( "public_profile", "email");
 
     public List<String> getPermissionNeeds() {
         return permissionNeeds;

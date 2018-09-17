@@ -208,7 +208,9 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
                         getDockActivity().replaceDockableFragment(CompaniesListFragment.newInstance(), CompaniesListFragment.class.getSimpleName());
                         break;
                     case 3:
-                        openDialog();
+                        serviceHelper.enqueueCall(webService.getCompany(),
+                                WebServiceConstants.getCompanies);
+                       // openDialog();
                         break;
                     case 4:
                         getDockActivity().replaceDockableFragment(AboutFragment.newInstance(), AboutFragment.class.getSimpleName());

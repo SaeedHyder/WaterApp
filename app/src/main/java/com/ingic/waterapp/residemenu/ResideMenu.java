@@ -455,10 +455,12 @@ public class ResideMenu extends FrameLayout {
             AnimatorSet scaleUp_activity = buildScaleUpAnimation(viewActivity, 1.0f, 1.0f);
             AnimatorSet scaleUp_shadow = buildScaleUpAnimation(imageViewShadow, 1.0f, 1.0f);
             AnimatorSet alpha_menu = buildMenuAnimation(scrollViewMenu, 0.0f);
-            scaleUp_activity.addListener(animationListener);
-            scaleUp_activity.playTogether(scaleUp_shadow);
-            scaleUp_activity.playTogether(alpha_menu);
-            scaleUp_activity.start();
+            if (scaleUp_activity != null) {
+                scaleUp_activity.addListener(animationListener);
+                scaleUp_activity.playTogether(scaleUp_shadow);
+                scaleUp_activity.playTogether(alpha_menu);
+                scaleUp_activity.start();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -526,32 +528,42 @@ public class ResideMenu extends FrameLayout {
     private Animator.AnimatorListener animationListener = new Animator.AnimatorListener() {
         @Override
         public void onAnimationStart(Animator animation) {
-            if (isOpened()) {
-                showScrollViewMenu(scrollViewMenu);
-                if (menuListener != null)
-                    menuListener.openMenu();
+            try {
+                if (isOpened()) {
+                    showScrollViewMenu(scrollViewMenu);
+                    if (menuListener != null)
+                        menuListener.openMenu();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
 
         @Override
         public void onAnimationEnd(Animator animation) {
-            // reset the view;
-            if (isOpened()) {
-                viewActivity.setTouchDisable(true);
-                viewActivity.setOnClickListener(viewActivityOnClickListener);
-            } else {
-                viewActivity.setTouchDisable(false);
-                viewActivity.setOnClickListener(null);
+            try {
+                // reset the view;
+                if (isOpened()) {
+                    viewActivity.setTouchDisable(true);
+                    viewActivity.setOnClickListener(viewActivityOnClickListener);
+                } else {
+                    viewActivity.setTouchDisable(false);
+                    viewActivity.setOnClickListener(null);
 
 
-                //Blurry.delete(context.getMainContentFrame());
+                    //Blurry.delete(context.getMainContentFrame());
 
 
-                //hideScrollViewMenu(leftMenuView);
-                // hideScrollViewMenu(rightMenuView);
-                if (menuListener != null)
-                    menuListener.closeMenu();
+                    //hideScrollViewMenu(leftMenuView);
+                    // hideScrollViewMenu(rightMenuView);
+                    if (menuListener != null)
+                        menuListener.closeMenu();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
 
         @Override

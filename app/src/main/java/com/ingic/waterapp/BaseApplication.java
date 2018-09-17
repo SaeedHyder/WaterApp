@@ -3,6 +3,7 @@ package com.ingic.waterapp;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
@@ -18,7 +19,7 @@ import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
 	
 	@Override
 	public void onCreate() {
@@ -26,8 +27,8 @@ public class BaseApplication extends Application {
 		super.onCreate();
 		realmConfiguration();
 
-		FacebookSdk.sdkInitialize(getApplicationContext());
 		MultiDex.install(this);
+		FacebookSdk.sdkInitialize(getApplicationContext());
 		AppEventsLogger.activateApp(this);
 		Fabric.with(this, new Crashlytics());
 		initImageLoader();

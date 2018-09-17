@@ -179,10 +179,10 @@ public interface WebService {
     Call<ResponseWrapper> createOrder(
             @Field("company_id") int company_id,
             @Field("city_id") int city_id,
-            @Field("delivery_location") String delivery_location,
+            @Field("delivery_address") String delivery_location,
             @Field("address") String address,
-            @Field("latitude") String latitude,
-            @Field("longitude") String longitude,
+            @Field("delivery_latitude") String latitude,
+            @Field("delivery_longitude") String longitude,
             @Field("date") String date,
             @Field("time_slot") String time_slot,
             @Field("cost") String cost,

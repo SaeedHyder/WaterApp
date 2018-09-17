@@ -253,13 +253,14 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        date = year + "-"
-                                + String.format("%02d", monthOfYear + 1) + "-"
-                                + String.format("%02d", dayOfMonth);
-                        tvDate.setText(year + "/"
-                                + String.format("%02d", monthOfYear + 1) + "/"
-                                + String.format("%02d", dayOfMonth));
-
+                        if (tvDate!=null) {
+                            date = year + "-"
+                                    + String.format("%02d", monthOfYear + 1) + "-"
+                                    + String.format("%02d", dayOfMonth);
+                            tvDate.setText(year + "/"
+                                    + String.format("%02d", monthOfYear + 1) + "/"
+                                    + String.format("%02d", dayOfMonth));
+                        }
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -413,10 +414,5 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     }
 
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
 }
 

@@ -67,7 +67,7 @@ public class HomeProductReviewFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_home_product_review, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        if (companyDetails != null && companyDetails.getProduct().size() > 0) {
+        if (companyDetails != null ) {
 
 //            if (companyDetails.getReview().getCompanyDetail().getProfileImage() != null && companyDetails.getReview().getCompanyDetail().getProfileImage().length() > 0) {
 //                Picasso.with(getDockActivity())
@@ -81,7 +81,7 @@ public class HomeProductReviewFragment extends BaseFragment {
 
             rbCompanyRating.setScore(companyDetails.getReview().getCompanyRate());
 
-        }
+    }
 
         return view;
     }

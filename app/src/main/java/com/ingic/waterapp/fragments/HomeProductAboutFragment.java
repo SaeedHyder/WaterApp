@@ -70,7 +70,7 @@ public class HomeProductAboutFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onViewCreated(view, savedInstanceState);
-        if (companyDetails != null && companyDetails.getProduct().size() > 0) {
+        if (companyDetails != null ) {
             tvAboutDescription.setText(Html.fromHtml(companyDetails.getAbout()));
         }
 

@@ -8,13 +8,19 @@
 package com.ingic.waterapp.fcm;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -68,6 +74,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
+    private static final String CHANNEL = "115521";
 
     /**
      * Create and show a simple notification containing the received FCM message.
@@ -93,8 +100,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 //        NotificationHelper.getInstance().showNotification(this, R.mipmap.ic_launcher, title, msg,
 //                String.valueOf(System.currentTimeMillis()), intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL, getResources().getString(R.string.app_name), importance);
+            mChannel.setDescription(msg);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.BLUE);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (manager != null)
+                manager.createNotificationChannel(mChannel);
+        }
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL)
 //        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,
 //                this.getResources().getString(R.string.default_notification_channel_id))
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -103,6 +123,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(msg)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
+                .setChannelId(CHANNEL)
                 .setDefaults(Notification.DEFAULT_ALL)  //to show alert notification
                 .setPriority(Notification.PRIORITY_HIGH)  //on top of app
                 .setContentIntent(pendingIntent);
