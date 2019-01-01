@@ -217,5 +217,6 @@
     <string name="proceed">Proceed</string>
     <string name="select_delivery_location">Select Delivery Location</string>
     <string name="please_select_city">Please select city!</string>
+    <string name="addressError">Please Enter a Valid Address</string>
 
 </resources>

@@ -58,6 +58,8 @@ public interface WebService {
             @Part("email") RequestBody email,
             @Part("mobile_no") RequestBody mobile_no,
             @Part("location") RequestBody location,
+            @Part("latitude") RequestBody latitude,
+            @Part("longitude") RequestBody longitude,
             @Part("makani_number") RequestBody makani_number,
             @Part("company_id") RequestBody company_id,
             @Part("city_id") RequestBody city_id,

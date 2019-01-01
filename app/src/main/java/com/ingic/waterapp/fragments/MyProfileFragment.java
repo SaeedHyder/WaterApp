@@ -25,6 +25,11 @@ import android.widget.ImageView;
 
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.ingic.waterapp.BuildConfig;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.CityEnt;
@@ -64,6 +69,7 @@ import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -74,20 +80,21 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     public static final String TAG = MyProfileFragment.class.getSimpleName();
     public static final int TRUE = 1;
     public static final int FALSE = 0;
-
-
+    //FOr Camera
+    private static final int CAMERA_REQUEST = 1001;
+    static ProfileUpdateListener mListener;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     Unbinder unbinder;
     @BindView(R.id.et_profile_name)
     AnyEditTextView etName;
     @BindView(R.id.et_profile_email)
     AnyEditTextView etEmail;
     @BindView(R.id.et_profile_address)
-    AnyEditTextView etAddress;
+    AnyTextView etAddress;
     @BindView(R.id.et_profile_phone)
     AnyEditTextView etPhoneNumber;
     @BindView(R.id.et_profile_makaniNumber)
     AnyEditTextView etMakaniNumber;
-
     @BindView(R.id.img_profile)
     ImageView imgProfile;
     @BindView(R.id.img_profile_camera)
@@ -102,24 +109,18 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     AnyTextView tvSelectCity;
     @BindView(R.id.btn_profile_update)
     Button btnUpdate;
-
-
     List<CompanyEnt> companyEnts;
     int companyId = -1;
+    int cityId = -1;
+    String cityName;
+    private LatLng addressLatLng = null;
     //FOr cities
     //FOr cities
     private List<CityEnt> cityList; //todo change its type
-    int cityId = -1;
-    String cityName;
-
-
-    //FOr Camera
-    private static final int CAMERA_REQUEST = 1001;
     private String mCurrentPhotoPath;
     private File fileUrl;
     private Snackbar snackbar;
     private View rootView;
-    static ProfileUpdateListener mListener;
 
     public MyProfileFragment() {
         // Required empty public constructor
@@ -145,6 +146,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         tvSelectSupplier.setOnClickListener(this);
         tvSelectCity.setOnClickListener(this);
         btnUpdate.setOnClickListener(this);
+        etAddress.setOnClickListener(this);
     }
 
     @Override
@@ -187,6 +189,12 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             TextViewHelper.setText(etPhoneNumber, prefHelper.getUser().getMobileNo());
             TextViewHelper.setText(tvSelectSupplier, prefHelper.getUser().getCompanyName());
             TextViewHelper.setText(tvSelectCity, prefHelper.getUser().getCityName());
+            try {
+                addressLatLng = new LatLng(Double.parseDouble(prefHelper.getUser().getLatitude()), Double.parseDouble(prefHelper.getUser().getLongitude()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                addressLatLng = null;
+            }
             int push = prefHelper.getUser().getPushNotification();
             if (push == TRUE) {
                 btnNotification.setSelected(true);
@@ -276,7 +284,10 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                 if (Util.doubleClickCheck2Seconds())
                     openCityDialog();
                 break;
-
+            case R.id.et_profile_address:
+                if (Util.doubleClickCheck2Seconds())
+                    openLocationSelector();
+                break;
             case R.id.img_profile_camera:
                 if (Util.doubleClickCheck())
                     MyProfileFragmentPermissionsDispatcher.getStoragePermissionWithPermissionCheck(MyProfileFragment.this);
@@ -296,7 +307,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                         String makaniNumber = etMakaniNumber.getText().toString();
                         int push = btnNotification.isSelected() ? 1 : 0;
 
-                        callService(fullName, email, phoneNo, location, makaniNumber, mCompanyId, mCityId, push, prefHelper.getUser().getToken());
+                        callService(fullName, email, phoneNo, location, addressLatLng, makaniNumber, mCompanyId, mCityId, push, prefHelper.getUser().getToken());
                     }
                 break;
             default:
@@ -339,7 +350,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void callService(String _fullName, String _email, String _mobileNo,
-                             String _location, String _makaniNumber, int _companyId, int _cityId, int _pushNotification, String _token) {
+                             String _location, LatLng _latLng, String _makaniNumber, int _companyId, int _cityId, int _pushNotification, String _token) {
         MultipartBody.Part body = null;
         if (fileUrl != null) {
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), fileUrl);
@@ -350,6 +361,8 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         RequestBody email = RequestBody.create(MediaType.parse("text/plain"), _email);
         RequestBody mobile_no = RequestBody.create(MediaType.parse("text/plain"), _mobileNo);
         RequestBody location = RequestBody.create(MediaType.parse("text/plain"), _location);
+        RequestBody latitude = RequestBody.create(MediaType.parse("text/plain"), _latLng.latitude + "");
+        RequestBody longitude = RequestBody.create(MediaType.parse("text/plain"), _latLng.longitude + "");
         RequestBody makaniNumber = RequestBody.create(MediaType.parse("text/plain"), _makaniNumber);
         RequestBody company_id = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(_companyId));
         RequestBody city_id = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(_cityId));
@@ -357,7 +370,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 //        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), _token);
 
         serviceHelper.enqueueCall(webService.updateProfile(body, full_name, email,
-                mobile_no, location, makaniNumber, company_id, city_id, push_notification, _token), WebServiceConstants.updateProfile);
+                mobile_no, location, latitude, longitude, makaniNumber, company_id, city_id, push_notification, _token), WebServiceConstants.updateProfile);
     }
 
     @Override
@@ -397,18 +410,22 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private boolean isValidate() {
-        if (etEmail.testValidity() && etName.testValidity() && etAddress.testValidity() && etPhoneNumber.testValidity()) {
-            if (checkPhoneLength()) {
-                if (!tvSelectSupplier.getText().toString().isEmpty()) {
-                    if (!tvSelectCity.getText().toString().isEmpty()) {
-                        return true;
+        if (etEmail.testValidity() && etName.testValidity() && etPhoneNumber.testValidity()) {
+            if (!(etAddress.getText().toString().trim().equals("")) && addressLatLng != null) {
+                if (checkPhoneLength()) {
+                    if (!tvSelectSupplier.getText().toString().isEmpty()) {
+                        if (!tvSelectCity.getText().toString().isEmpty()) {
+                            return true;
+                        } else
+                            UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_select_city));
                     } else
-                        UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_select_city));
-                } else
-                    UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
+                        UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
 //                return true;
-            } else
-                etPhoneNumber.setError("Please Enter valid phone number");
+                } else
+                    etPhoneNumber.setError("Please Enter valid phone number");
+            } else {
+                UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.addressError));
+            }
 
         }// && checkPhoneLength());
         return false;
@@ -469,6 +486,26 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Log.e(TAG, "onActivityResult: " + error.getLocalizedMessage());
+            }
+        }
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                Place place = PlaceAutocomplete.getPlace(getDockActivity(), data);
+                if (place != null) {
+                    etAddress.setError(null);
+                    etAddress.setText(place.getAddress().toString());
+                    addressLatLng = place.getLatLng();
+                    Log.i(TAG, "Place: " + place.getName());
+                }
+
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(getDockActivity(), data);
+                // TODO: Handle the error.
+                Log.i(TAG, status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
             }
         }
 //        fileUrl = CameraHelper.retrieveAndDisplayPicture(requestCode, resultCode, data, getDockActivity(),
@@ -553,4 +590,22 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         unbinder.unbind();
         super.onDestroy();
     }
+
+    private void openLocationSelector() {
+
+        try {
+           /* Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(getDockActivity());*/
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            startActivityForResult(builder.build(getDockActivity()), PLACE_AUTOCOMPLETE_REQUEST_CODE);
+            //this.startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
