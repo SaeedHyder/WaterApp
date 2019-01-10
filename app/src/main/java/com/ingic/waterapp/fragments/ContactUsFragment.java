@@ -3,6 +3,7 @@ package com.ingic.waterapp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +31,9 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
 
     Unbinder unbinder;
     @BindView(R.id.tv_contactUs_phone)
-    AnyTextView tvPhone;
+    AnyEditTextView tvPhone;
     @BindView(R.id.tv_contactUs_email)
-    AnyTextView tvEmail;
+    AnyEditTextView tvEmail;
     @BindView(R.id.et_contactUs_feedback)
     AnyEditTextView etFeedback;
     @BindView(R.id.btn_submit)
@@ -80,7 +81,10 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void setData() {
-        if (prefHelper.getUser() != null) {
+
+        if (prefHelper.getUser() != null && prefHelper.getLoginTYpe() == AppConstants.REGISTERED_USER) {
+            tvPhone.setEnabled(false);
+            tvEmail.setEnabled(false);
             TextViewHelper.setText(tvPhone, prefHelper.getUser().getAdminMobile());
             TextViewHelper.setText(tvEmail, prefHelper.getUser().getAdminEmail());
         }
@@ -97,21 +101,55 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_submit:
-                if (Util.doubleClickCheck2Seconds())
-                    if (etFeedback.testValidity()) {
+                if (Util.doubleClickCheck2Seconds()) {
+                    if (isValidate()) {
                         if (prefHelper.getUser() != null) {
                             type = AppConstants.Normal;
                             token = prefHelper.getUser().getToken();
+
+                            serviceHelper.enqueueCall(webService.feedback(type, etFeedback.getText().toString()
+                                    , token), WebServiceConstants.feedback);
                         } else {
                             type = AppConstants.Guest;
                             token = prefHelper.getGuestTOKEN();
+
+                            serviceHelper.enqueueCall(webService.feedback(type, etFeedback.getText().toString(),tvEmail.getText().toString(),
+                                    tvPhone.getText().toString(), token), WebServiceConstants.feedback);
                         }
-                        serviceHelper.enqueueCall(webService.feedback(type, etFeedback.getText().toString()
-                                , token), WebServiceConstants.feedback);
+
                     }
+                }
+               /* if (etFeedback.testValidity()) {
+
+                }*/
                 break;
             default:
                 break;
+        }
+    }
+
+    private boolean isValidate() {
+        if (tvPhone.getText() == null || (tvPhone.getText().toString().isEmpty())) {
+            if (tvPhone.requestFocus()) {
+                setEditTextFocus(tvPhone);
+            }
+            tvPhone.setError(getString(R.string.error));
+            return false;
+        } else if (tvEmail.getText() == null || (tvEmail.getText().toString().isEmpty()) ||
+                (!Patterns.EMAIL_ADDRESS.matcher(tvEmail.getText().toString()).matches())) {
+            if (tvEmail.requestFocus()) {
+                setEditTextFocus(tvEmail);
+            }
+            tvEmail.setError(getString(R.string.enter_email));
+            return false;
+        } else if (etFeedback.getText() == null || (etFeedback.getText().toString().isEmpty())) {
+            if (etFeedback.requestFocus()) {
+                setEditTextFocus(etFeedback);
+            }
+            etFeedback.setError(getString(R.string.error));
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -125,9 +163,5 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

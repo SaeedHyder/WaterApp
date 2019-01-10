@@ -58,12 +58,30 @@ public class CartFragment extends BaseFragment {
     @BindView(R.id.btn_cart_proceed)
     Button btnProceed;
     Unbinder unbinder;
+    @BindView(R.id.tv_cart_emptyCart)
+    AnyTextView tvCartEmptyCart;
+    @BindView(R.id.seperator)
+    View seperator;
+    @BindView(R.id.seperator1)
+    View seperator1;
+    @BindView(R.id.txt_service_charges)
+    AnyTextView txtServiceCharges;
+    @BindView(R.id.seperator2)
+    View seperator2;
+    @BindView(R.id.txt_vat_tax)
+    AnyTextView txtVatTax;
+    @BindView(R.id.seperator3)
+    View seperator3;
+    @BindView(R.id.seperator4)
+    View seperator4;
+    @BindView(R.id.rl_cart_parent)
+    RelativeLayout rlCartParent;
     private Realm realm;
     private MyRecyclerViewAdapter adapter;
 
     List<MyCartModel> selectedListData = new ArrayList<>();
     private SettingsEnt settings;
-    float cost = 0, total = 0;
+    float cost = 0, total = 0, vatTax = 0;
 
     public CartFragment() {
         // Required empty public constructor
@@ -91,6 +109,7 @@ public class CartFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        rlCartParent.setVisibility(View.GONE);
         initRecyclerView();
         serviceHelper.enqueueCall(webService.settings(prefHelper.getUser().getToken())
                 , WebServiceConstants.getSetting);
@@ -105,7 +124,7 @@ public class CartFragment extends BaseFragment {
                     if (settings != null) {
                         CreateOrder order = new CreateOrder(settings.getCompany_id(), settings.getCompany_name(),
                                 String.valueOf(cost),
-                                settings.getServiceCharges(), settings.getVatTax(), String.valueOf(total));
+                                settings.getServiceCharges(), String.valueOf(vatTax), String.valueOf(total));
                         Bundle bundle = new Bundle();
                         bundle.putSerializable(AppConstants.CART_OBJ, order);
                         bundle.putString(AppConstants.COMPANY_TERMS, settings.getCompanyTerm());
@@ -188,16 +207,55 @@ public class CartFragment extends BaseFragment {
 
             total = 0;
             cost = 0;
+            vatTax = 0;
             List<MyCartModel> mlist = selectedListData;
             for (MyCartModel model : mlist) {
                 cost = cost + (model.getProductQuantity() * model.getProductAmount());
             }
-            total = cost + Util.getParsedFloat(settings.getVatTax()) + Util.getParsedFloat(settings.getServiceCharges());
+            vatTax = cost * (Util.getParsedFloat(settings.getVatTax()) / 100);
 
+            if (settings.getVatTaxStatus() == 1 && settings.getServiceChargesStatus() == 1) {
+                txtVatTax.setVisibility(View.VISIBLE);
+                tvTax.setVisibility(View.VISIBLE);
+                seperator3.setVisibility(View.VISIBLE);
+                txtServiceCharges.setVisibility(View.VISIBLE);
+                tvServiceCharges.setVisibility(View.VISIBLE);
+                seperator2.setVisibility(View.VISIBLE);
+
+                total = cost + vatTax + Util.getParsedFloat(settings.getServiceCharges());
+            } else if (settings.getVatTaxStatus() == 0 && settings.getServiceChargesStatus() == 0) {
+                txtVatTax.setVisibility(View.GONE);
+                tvTax.setVisibility(View.GONE);
+                seperator3.setVisibility(View.GONE);
+                txtServiceCharges.setVisibility(View.GONE);
+                tvServiceCharges.setVisibility(View.GONE);
+                seperator2.setVisibility(View.GONE);
+
+                total = cost;
+            } else if (settings.getVatTaxStatus() == 1 && settings.getServiceChargesStatus() == 0) {
+                txtVatTax.setVisibility(View.VISIBLE);
+                tvTax.setVisibility(View.VISIBLE);
+                seperator3.setVisibility(View.VISIBLE);
+                txtServiceCharges.setVisibility(View.GONE);
+                tvServiceCharges.setVisibility(View.GONE);
+                seperator2.setVisibility(View.GONE);
+
+                total = cost + vatTax;
+            } else if (settings.getVatTaxStatus() == 0 && settings.getServiceChargesStatus() == 1) {
+                txtVatTax.setVisibility(View.GONE);
+                tvTax.setVisibility(View.GONE);
+                seperator3.setVisibility(View.GONE);
+                txtServiceCharges.setVisibility(View.VISIBLE);
+                tvServiceCharges.setVisibility(View.VISIBLE);
+                seperator2.setVisibility(View.VISIBLE);
+
+                total = cost + Util.getParsedFloat(settings.getServiceCharges());
+            }
+
+
+            TextViewHelper.setText(tvTax, "AED " + vatTax);
             TextViewHelper.setText(tvCost, "AED " + String.valueOf(cost));
             TextViewHelper.setText(tvTotal, "AED " + String.valueOf(total));
-
-            TextViewHelper.setText(tvTax, "AED " + settings.getVatTax());
             TextViewHelper.setText(tvServiceCharges, "AED " + settings.getServiceCharges());
             TextViewHelper.setHtmlText(tvDeliveryText, settings.getCompanyTerm());
         }/* else
@@ -209,18 +267,16 @@ public class CartFragment extends BaseFragment {
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.getSetting:
+                rlCartParent.setVisibility(View.VISIBLE);
                 settings = (SettingsEnt) result;
+                txtVatTax.setText("Vat Tax (%" + settings.getVatTax() + ")");
                 setData();
                 break;
             default:
                 break;
         }
     }
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 
 }
 

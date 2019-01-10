@@ -112,6 +112,9 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="contact_us_text">Please feel free to Contact Us for\nany enquiries on the options below:</string>
     <string name="phone">(123) 456-7890</string>
+    <string name="phone_hint">Phone Number</string>
+    <string name="enter_email">Email Address is not valid</string>
+    <string name="error">This field must not be empty</string>
     <string name="feedback_and_suggestions">Feedback and Suggestions</string>
     <string name="enter_your_message">Enter Your Message...</string>
     <string name="dummy_email">info@example.com</string>

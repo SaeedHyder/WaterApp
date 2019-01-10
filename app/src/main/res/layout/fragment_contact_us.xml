@@ -41,21 +41,25 @@
             app:typeface="@string/typeface_light" />
 
 
-        <com.ingic.waterapp.ui.views.AnyTextView
+        <com.ingic.waterapp.ui.views.AnyEditTextView
             android:id="@+id/tv_contactUs_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_contactUs_text"
             android:background="@color/transparent"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
+            android:maxLength="18"
+            android:digits="0123456789+"
+            android:hint="@string/phone_hint"
             android:cursorVisible="true"
             android:drawableLeft="@drawable/ic_contact"
             android:drawablePadding="@dimen/_10sdp"
             android:gravity="start"
             android:paddingLeft="@dimen/_20sdp"
             android:singleLine="true"
-            android:text="@string/phone"
             android:textColor="@color/login_email_grey"
-            android:textColorHint="@color/login_email_grey"
+
             android:textSize="16sp"
             app:typeface="@string/typeface_light" />
 
@@ -68,24 +72,25 @@
             android:layout_below="@id/tv_contactUs_phone"
             android:background="@color/color_seperator_forgot" />
 
-        <com.ingic.waterapp.ui.views.AnyTextView
+        <com.ingic.waterapp.ui.views.AnyEditTextView
             android:id="@+id/tv_contactUs_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/seperator1"
             android:background="@color/transparent"
+            android:maxLines="40"
             android:cursorVisible="true"
             android:drawableLeft="@drawable/ic_email"
             android:drawablePadding="@dimen/_10sdp"
             android:gravity="start"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:paddingLeft="@dimen/_20sdp"
             android:singleLine="true"
-            android:text="@string/dummy_email"
+            android:hint="@string/email"
             android:textColor="@color/login_email_grey"
-            android:textColorHint="@color/login_email_grey"
+
             android:textSize="16sp"
             app:typeface="@string/typeface_light" />
 

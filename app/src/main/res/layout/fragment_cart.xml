@@ -61,10 +61,11 @@
                 android:id="@+id/tv_cart_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/tv_cart_serviceCharges"
+                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/seperator"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:gravity="left"
+                android:layout_marginRight="@dimen/_12sdp"
                 android:paddingLeft="@dimen/_4sdp"
                 android:paddingRight="@dimen/_4sdp"
                 android:text="-"
@@ -82,6 +83,7 @@
                 android:background="@color/color_seperator2" />
 
             <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/txt_service_charges"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/seperator1"
@@ -93,6 +95,7 @@
                 android:paddingLeft="@dimen/_4sdp"
                 android:paddingRight="@dimen/_4sdp"
                 android:text="@string/service_charges"
+
                 android:textColor="@color/login_email_grey"
                 android:textSize="16sp"
                 app:typeface="@string/typeface_regular" />
@@ -104,6 +107,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/seperator1"
                 android:layout_centerVertical="true"
+
                 android:layout_marginRight="@dimen/_12sdp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:gravity="left"
@@ -123,7 +127,10 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@color/color_seperator2" />
 
+
+
             <com.ingic.waterapp.ui.views.AnyTextView
+                android:id="@+id/txt_vat_tax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/seperator2"
@@ -135,6 +142,7 @@
                 android:paddingRight="@dimen/_4sdp"
                 android:text="Vat Tax (%5)"
                 android:textColor="@color/login_email_grey"
+
                 android:textSize="16sp"
                 app:typeface="@string/typeface_regular" />
 

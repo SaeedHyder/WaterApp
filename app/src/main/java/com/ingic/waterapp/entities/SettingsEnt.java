@@ -17,9 +17,15 @@ public class SettingsEnt {
     @SerializedName("vat_tax")
     @Expose
     private String vatTax;
+    @SerializedName("vat_tax_status")
+    @Expose
+    private Integer vatTaxStatus;
     @SerializedName("service_charges")
     @Expose
     private String serviceCharges;
+    @SerializedName("service_charges_status")
+    @Expose
+    private Integer serviceChargesStatus;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -29,6 +35,22 @@ public class SettingsEnt {
     @SerializedName("company_term")
     @Expose
     private String companyTerm;
+
+    public Integer getVatTaxStatus() {
+        return vatTaxStatus;
+    }
+
+    public void setVatTaxStatus(Integer vatTaxStatus) {
+        this.vatTaxStatus = vatTaxStatus;
+    }
+
+    public Integer getServiceChargesStatus() {
+        return serviceChargesStatus;
+    }
+
+    public void setServiceChargesStatus(Integer serviceChargesStatus) {
+        this.serviceChargesStatus = serviceChargesStatus;
+    }
 
     public int getId() {
         return id;

@@ -218,6 +218,16 @@ public interface WebService {
     );
 
     @FormUrlEncoded
+    @POST("cms/contactus")
+    Call<ResponseWrapper> feedback(
+            @Field("user_type") String user_type,
+            @Field("feedback") String feedback,
+            @Field("email") String email,
+            @Field("mobile_no") String mobile_no,
+            @Header("token") String token
+    );
+
+    @FormUrlEncoded
     @POST("user/updateDeviceToken")
     Call<ResponseWrapper> updateToken(
             @Field("device_token") String device_token,

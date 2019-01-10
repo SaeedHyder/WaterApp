@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.andreabaccega.formedittextvalidator.Validator;
@@ -316,5 +317,11 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
 		}
 		
 	}
-	
+	protected void setEditTextFocus(AnyEditTextView textFocus) {
+		InputMethodManager imm = (InputMethodManager) getDockActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm != null)
+			imm.showSoftInput(textFocus, InputMethodManager.SHOW_IMPLICIT);
+	}
+
+
 }
