@@ -11,8 +11,8 @@
         android:id="@+id/rl_bottle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_18sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -39,8 +39,8 @@
             android:id="@+id/tv_rating_serviceRatingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_14sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+
+            android:layout_marginTop="@dimen/_15sdp"
             android:background="@color/transparent"
             android:text="@string/service_rating"
             android:textColor="@color/forgot_grey"
@@ -49,22 +49,22 @@
 
         <com.ingic.waterapp.ui.views.CustomRatingBar
             android:id="@+id/rb_serviceRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_50sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="@dimen/_2sdp"
+            android:padding="@dimen/_3sdp"
             app:maxStars="5"
             app:starOff="@drawable/star_unselected"
             app:starOn="@drawable/star_selected"
-            app:starPadding="4dp"
-            app:stars="0" />
+            app:starPadding="7dp"
+            app:stars="1" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_rating_companyRatingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_14sdp"
-            android:layout_marginTop="@dimen/_24sdp"
+
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/company_rating"
             android:textColor="@color/forgot_grey"
             android:textSize="20sp"
@@ -72,22 +72,23 @@
 
         <com.ingic.waterapp.ui.views.CustomRatingBar
             android:id="@+id/rb_companyRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_50sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="@dimen/_2sdp"
+            android:padding="@dimen/_3sdp"
             app:maxStars="5"
             app:starOff="@drawable/star_unselected"
             app:starOn="@drawable/star_selected"
-            app:starPadding="4dp"
-            app:stars="0" />
+            app:starPadding="7dp"
+            app:stars="1"
+            />
 
         <Button
             android:id="@+id/btn_submit"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"
             android:layout_marginBottom="@dimen/_36sdp"
-            android:layout_marginTop="@dimen/_36sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/login_btn"
             android:gravity="center"
             android:text="@string/submit"

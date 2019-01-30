@@ -114,6 +114,20 @@ public class TitleBar extends RelativeLayout {
         btnLeft.setImageResource(R.drawable.ic_back);
         layoutHeader.setBackgroundResource(R.drawable.header);
     }
+    public void hideBackButton() {
+        btnLeft.setVisibility(View.GONE);
+
+    }
+
+    public void showEditButton(OnClickListener listener) {
+        btnRight.setVisibility(View.VISIBLE);
+        btnRight.setOnClickListener(backButtonListener);
+        btnRight.setImageResource(R.drawable.ic_edit);
+        btnRight.setOnClickListener(listener);
+    }
+    public void hideEditButton() {
+        btnRight.setVisibility(View.GONE);
+    }
 
     public void showMenuButton() {
         btnLeft.setVisibility(View.VISIBLE);
@@ -122,8 +136,10 @@ public class TitleBar extends RelativeLayout {
         btnRight.setVisibility(View.VISIBLE);
         btnCart.setVisibility(View.VISIBLE);
         btnRight.setOnClickListener(notificationButtonListener);
+        btnRight.setImageResource(R.drawable.notification);
         btnCart.setOnClickListener(cartButtonListener);
     }
+
 
     public void setSubHeading(String heading) {
         txtTitle.setVisibility(View.VISIBLE);

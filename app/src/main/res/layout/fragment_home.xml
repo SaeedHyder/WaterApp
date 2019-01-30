@@ -44,7 +44,7 @@
             android:textColor="@color/login_text_grey"
             android:textSize="14sp"
             app:typeface="@string/typeface_regular"
-            tools:text="50 Products" />
+            tools:text="Products" />
 
         <com.ingic.waterapp.ui.views.AnyTextView
             android:id="@+id/tv_home_viewAll"
@@ -66,9 +66,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:layout_marginRight="@dimen/_30sdp"
             android:layout_marginTop="@dimen/_20sdp"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <ImageView
@@ -152,10 +153,14 @@
 
     </RelativeLayout>
 
+
+
+
     <FrameLayout
         android:id="@+id/home_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/middle"></FrameLayout>
+
 
 </RelativeLayout>

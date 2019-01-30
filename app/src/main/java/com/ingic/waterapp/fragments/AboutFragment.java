@@ -57,9 +57,15 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
         btnTermsCondition.setOnClickListener(this);
         btnPrivacyPolicy.setOnClickListener(this);
 
-        btnAbout.setSelected(true);
-        btnTermsCondition.setSelected(false);
-        btnPrivacyPolicy.setSelected(false);
+        btnAbout.setBackgroundColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+        btnAbout.setTextColor(getDockActivity().getResources().getColor(R.color.white));
+
+        btnTermsCondition.setBackgroundColor(getDockActivity().getResources().getColor(R.color.transparent));
+        btnTermsCondition.setTextColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+
+        btnPrivacyPolicy.setBackgroundColor(getDockActivity().getResources().getColor(R.color.transparent));
+        btnPrivacyPolicy.setTextColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+
     }
 
     @Override
@@ -94,9 +100,15 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
             case R.id.btn_about:
                 if (Util.doubleClickCheck())
                     if (!btnAbout.isSelected()) {
-                        btnAbout.setSelected(true);
-                        btnTermsCondition.setSelected(false);
-                        btnPrivacyPolicy.setSelected(false);
+
+                        btnAbout.setBackgroundColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+                        btnAbout.setTextColor(getDockActivity().getResources().getColor(R.color.white));
+
+                        btnTermsCondition.setBackgroundColor(getDockActivity().getResources().getColor(R.color.transparent));
+                        btnTermsCondition.setTextColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+
+                        btnPrivacyPolicy.setBackgroundColor(getDockActivity().getResources().getColor(R.color.transparent));
+                        btnPrivacyPolicy.setTextColor(getDockActivity().getResources().getColor(R.color.blue_theme));
 
                         callService(WebServiceConstants.about);
 //                        if (response != null)
@@ -107,9 +119,15 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
             case R.id.btn_about_terms:
                 if (Util.doubleClickCheck())
                     if (!btnTermsCondition.isSelected()) {
-                        btnAbout.setSelected(false);
-                        btnTermsCondition.setSelected(true);
-                        btnPrivacyPolicy.setSelected(false);
+
+                        btnAbout.setBackgroundColor(getDockActivity().getResources().getColor(R.color.transparent));
+                        btnAbout.setTextColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+
+                        btnTermsCondition.setBackgroundColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+                        btnTermsCondition.setTextColor(getDockActivity().getResources().getColor(R.color.white));
+
+                        btnPrivacyPolicy.setBackgroundColor(getDockActivity().getResources().getColor(R.color.transparent));
+                        btnPrivacyPolicy.setTextColor(getDockActivity().getResources().getColor(R.color.blue_theme));
 
                         callService(WebServiceConstants.term);
 //                        if (response != null)
@@ -121,9 +139,15 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
             case R.id.btn_about_privacyPolicy:
                 if (Util.doubleClickCheck())
                     if (!btnPrivacyPolicy.isSelected()) {
-                        btnAbout.setSelected(false);
-                        btnTermsCondition.setSelected(false);
-                        btnPrivacyPolicy.setSelected(true);
+
+                        btnAbout.setBackgroundColor(getDockActivity().getResources().getColor(R.color.transparent));
+                        btnAbout.setTextColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+
+                        btnTermsCondition.setBackgroundColor(getDockActivity().getResources().getColor(R.color.transparent));
+                        btnTermsCondition.setTextColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+
+                        btnPrivacyPolicy.setBackgroundColor(getDockActivity().getResources().getColor(R.color.blue_theme));
+                        btnPrivacyPolicy.setTextColor(getDockActivity().getResources().getColor(R.color.white));
 
                         callService(WebServiceConstants.privacy);
 //                        if (response != null)
@@ -155,11 +179,7 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
         }
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 
 }
 /*

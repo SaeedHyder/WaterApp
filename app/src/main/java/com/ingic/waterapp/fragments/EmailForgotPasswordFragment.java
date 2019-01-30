@@ -97,9 +97,5 @@ public class EmailForgotPasswordFragment extends BaseFragment {
             getDockActivity().lockDrawer();
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

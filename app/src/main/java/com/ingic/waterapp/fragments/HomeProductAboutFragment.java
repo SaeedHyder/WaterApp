@@ -84,9 +84,5 @@ public class HomeProductAboutFragment extends BaseFragment {
             getDockActivity().lockDrawer();
     }
 
-    @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
-    }
+
 }

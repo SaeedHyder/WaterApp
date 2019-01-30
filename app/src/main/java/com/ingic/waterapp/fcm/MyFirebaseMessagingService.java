@@ -21,6 +21,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -37,9 +38,11 @@ import java.util.Random;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     //    OnBadgeCountChange onBadgeCountChange;
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
+    private BasePreferenceHelper preferenceHelper;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        preferenceHelper = new BasePreferenceHelper(getApplicationContext());
         BasePreferenceHelper prefHelper = new BasePreferenceHelper(this);
         if (prefHelper.getUser() == null || !prefHelper.isLogin()) {
             Log.d(TAG, "prefHelper data null: ");
@@ -55,8 +58,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String type = msgData.get("type");
             String company_name = msgData.get("company_name");
             String company_id = msgData.get("company_id");
+            String order_id = msgData.get("order_id");
             Log.e(TAG, "onMessageReceived: msg->" + msg + " title->" + title);
-            sendDefaultNotification(title, msg, company_name, company_id, type);
+
+            if (type != null && type.equals("deleted")) {
+                preferenceHelper.setLoginStatus(false);
+
+                Intent pushNotification = new Intent(AppConstants.PUSH_NOTIFICATION);
+                pushNotification.putExtra(AppConstants.RATING_BOTTLE, company_name);
+                pushNotification.putExtra(AppConstants.RATING_COMPANY_ID, company_id);
+                pushNotification.putExtra(AppConstants.ACTIONID, order_id);
+                pushNotification.putExtra(AppConstants.TYPE, type);
+
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(pushNotification);
+
+            } else {
+                sendDefaultNotification(title, msg, company_name, company_id, type, order_id);
+            }
+
+
+
 /*
             //for blocking user
             if (type.equalsIgnoreCase(AppConstant.ADMIN_BLOCKED)) {
@@ -70,7 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             String msg = remoteMessage.getNotification().getBody();
             String title = remoteMessage.getNotification().getTitle();
-            sendDefaultNotification(title, msg, "", "", "");
+            sendDefaultNotification(title, msg, "", "", "", "");
         }
     }
 
@@ -85,21 +106,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param company_id
      * @param type
      */
-    private void sendDefaultNotification(String title, String msg, String bottle_name, String company_id, String type) {
+    private void sendDefaultNotification(String title, String msg, String bottle_name, String company_id, String type, String order_id) {
         if (TextUtils.isEmpty(title)) title = getResources().getString(R.string.app_name);
         PendingIntent pendingIntent = null;
         Intent intent = null;
-        if (!type.isEmpty() && type.equalsIgnoreCase(AppConstants.RATING)) {
-            intent = new Intent(this, MainActivity.class);
-            intent.putExtra(AppConstants.RATING_BOTTLE, bottle_name);
-            intent.putExtra(AppConstants.RATING_COMPANY_ID, company_id);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
 
-        }
-//        NotificationHelper.getInstance().showNotification(this, R.mipmap.ic_launcher, title, msg,
-//                String.valueOf(System.currentTimeMillis()), intent);
+        intent = new Intent(this, MainActivity.class);
+        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(AppConstants.RATING_BOTTLE, bottle_name);
+        intent.putExtra(AppConstants.RATING_COMPANY_ID, company_id);
+        intent.putExtra(AppConstants.ACTIONID, order_id);
+        intent.putExtra(AppConstants.TYPE, type);
+
+        pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Intent pushNotification = new Intent(AppConstants.PUSH_NOTIFICATION);
+        pushNotification.putExtra(AppConstants.RATING_BOTTLE, bottle_name);
+        pushNotification.putExtra(AppConstants.RATING_COMPANY_ID, company_id);
+        pushNotification.putExtra(AppConstants.ACTIONID, order_id);
+        pushNotification.putExtra(AppConstants.TYPE, type);
+
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(pushNotification);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
 
@@ -114,7 +142,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 manager.createNotificationChannel(mChannel);
         }
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL)
 //        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,
 //                this.getResources().getString(R.string.default_notification_channel_id))
                 .setSmallIcon(R.mipmap.ic_launcher)

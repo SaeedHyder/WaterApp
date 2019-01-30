@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.entities.cart.MyCartModel;
+import com.ingic.waterapp.helpers.DialogHelper;
 import com.ingic.waterapp.helpers.ImageLoaderHelper;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.ui.views.Util;
@@ -69,22 +70,34 @@ public class MyRecyclerViewAdapter extends RealmRecyclerViewAdapter<MyCartModel,
         TextViewHelper.setText(holder.tvBottleName, obj.getProductName());
         TextViewHelper.setText(holder.tvBottleQuantity, "QTY : " + obj.getProductQuantity());
 //        TextViewHelper.setText(holder.tvBottleLtr, obj.getProductLtr());
-        TextViewHelper.setText(holder.tvBottleAmount, "AED " + amount);
-        TextViewHelper.setText(holder.tvBottleUnitAmount, "Unit Price : " + obj.getProductAmount() + " AED");
+        TextViewHelper.setText(holder.tvBottleAmount, "AED " + String.format ("%,.2f", amount));
+        TextViewHelper.setText(holder.tvBottleUnitAmount, "Unit Price : " + String.format ("%,.2f",obj.getProductAmount()) + " AED");
 
         obj.removeAllChangeListeners();
         holder.imgDlt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Util.doubleClickCheck()) {
-                    DataHelper.deleteItemAsync(obj.getId());
-                    size--;
-                    notifyItemRemoved(position);
+
+                    final DialogHelper dialogHelper=new DialogHelper(context);
+                    dialogHelper.initDeleteItem(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            DataHelper.deleteItemAsync(obj.getId());
+                            size--;
+                            notifyItemRemoved(position);
 
 
 //                    removeAt(position);
-                    notifyDataSetChanged();
-                    onItemClick.onItemUncheck(obj);
+                            notifyDataSetChanged();
+                            onItemClick.onItemUncheck(obj);
+
+                            dialogHelper.hideDialog();
+                        }
+                    });
+                    dialogHelper.showDialog();
+
+
                 }
                /* if (holder.checkBox.isChecked()) {
                     onItemClick.onItemUncheck(obj);

@@ -12,13 +12,14 @@ import android.widget.TextView;
 import com.ingic.waterapp.R;
 
 public class DialogHelper {
-    private Dialog dialogLogout ,dialogProfile ;
+    private Dialog dialog,dialogProfile,dialogeDelete ;
     private Context context;
 
     public DialogHelper(Context context) {
         this.context = context;
-        this.dialogLogout = new Dialog(context);
+        this.dialog = new Dialog(context);
         this.dialogProfile = new Dialog(context);
+        this.dialogeDelete = new Dialog(context);
     }
 
 
@@ -29,14 +30,14 @@ public class DialogHelper {
                              int leftBtnColor,
                              View.OnClickListener onokclicklistener,
                              View.OnClickListener oncancelclicklistener) {
-        dialogLogout.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogLogout.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        this.dialogLogout.setContentView(layoutID);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        this.dialog.setContentView(layoutID);
 
-        TextView tvMessage = (TextView) dialogLogout.findViewById(R.id.txt_message);
-        TextView tvTitle = (TextView) dialogLogout.findViewById(R.id.txt_title);
-        Button btnYes = (Button) dialogLogout.findViewById(R.id.dialog_yes);
-        Button btnNo = (Button) dialogLogout.findViewById(R.id.dialog_no);
+        TextView tvMessage = (TextView) dialog.findViewById(R.id.txt_message);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.txt_title);
+        Button btnYes = (Button) dialog.findViewById(R.id.dialog_yes);
+        Button btnNo = (Button) dialog.findViewById(R.id.dialog_no);
 
         btnYes.setTextColor(leftBtnColor);
         btnNo.setTextColor(rightBtnColor);
@@ -49,23 +50,44 @@ public class DialogHelper {
             tvTitle.setText(title);
         tvMessage.setText(message);
 
-        return this.dialogLogout;
+        return this.dialog;
+    }
+
+    public Dialog initDeleteItem(View.OnClickListener onokclicklistener) {
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        this.dialog.setContentView(R.layout.dialoge_delete);
+
+        TextView tvMessage = (TextView) dialog.findViewById(R.id.txt_message);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.txt_title);
+        Button btnYes = (Button) dialog.findViewById(R.id.dialog_yes);
+        Button btnNo = (Button) dialog.findViewById(R.id.dialog_no);
+
+        btnYes.setOnClickListener(onokclicklistener);
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        return this.dialog;
     }
 
 
     public void showDialog() {
-        dialogLogout.setCancelable(false);
-        dialogLogout.setCanceledOnTouchOutside(false);
-        dialogLogout.show();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     public void setCancelable(boolean isCancelable) {
-        dialogLogout.setCancelable(isCancelable);
-        dialogLogout.setCanceledOnTouchOutside(isCancelable);
+        dialog.setCancelable(isCancelable);
+        dialog.setCanceledOnTouchOutside(isCancelable);
     }
 
     public void hideDialog() {
-        dialogLogout.dismiss();
+        dialog.dismiss();
     }
 
     public Dialog initProfile(int layoutID,

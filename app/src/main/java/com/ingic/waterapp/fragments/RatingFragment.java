@@ -1,18 +1,21 @@
 package com.ingic.waterapp.fragments;
 
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
-import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.CustomRatingBar;
@@ -27,22 +30,34 @@ import butterknife.Unbinder;
  */
 public class RatingFragment extends BaseFragment implements View.OnClickListener {
 
-    Unbinder unbinder;
+
     @BindView(R.id.rb_serviceRating)
     CustomRatingBar rbService;
     @BindView(R.id.rb_companyRating)
     CustomRatingBar rbCompany;
-
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    @BindView(R.id.img_bottle)
+    ImageView imgBottle;
     @BindView(R.id.tv_rating_title)
-    AnyTextView tvName;
+    AnyTextView tvRatingTitle;
+    @BindView(R.id.tv_rating_serviceRatingText)
+    AnyTextView tvRatingServiceRatingText;
+    @BindView(R.id.tv_rating_companyRatingText)
+    AnyTextView tvRatingCompanyRatingText;
+    @BindView(R.id.rl_bottle)
+    LinearLayout rlBottle;
+    Unbinder unbinder;
+
+
     private int companyId = 0;
-    private String name;
+    private String name, orderId;
+    private boolean isNotification = false;
 
     public RatingFragment() {
         // Required empty public constructor
     }
+
 
     public static RatingFragment newInstance() {
         return new RatingFragment();
@@ -56,13 +71,32 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
         if (getArguments() != null) {
             companyId = Integer.parseInt(getArguments().getString(AppConstants.COMPANY_ID));
             name = getArguments().getString(AppConstants.BOTTLE_NAME);
+            orderId = getArguments().getString(AppConstants.ORDER_ID);
+            isNotification = getArguments().getBoolean(AppConstants.IS_NOTIFICATION);
         }
-        TextViewHelper.setText(tvName, name);
+
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     private void setListeners() {
         btnSubmit.setOnClickListener(this);
+
+        rbService.setOnScoreChanged(new CustomRatingBar.IRatingBarCallbacks() {
+            @Override
+            public void scoreChanged(float score) {
+                if (score < 1.0f)
+                    rbService.setScore(1.0f);
+            }
+        });
+
+        rbCompany.setOnScoreChanged(new CustomRatingBar.IRatingBarCallbacks() {
+            @Override
+            public void scoreChanged(float score) {
+                if (score < 1.0f)
+                    rbCompany.setScore(1.0f);
+            }
+        });
     }
 
     @Override
@@ -70,7 +104,9 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
         // TODO Auto-generated method stub
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
-//        titleBar.showBackButton();
+        if (isNotification) {
+            titleBar.showBackButton();
+        }
         titleBar.setSubHeading(getDockActivity().getResources().getString(R.string.ratings));
     }
 
@@ -78,7 +114,13 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, view);
+
+        if(!isNotification){
+            NotificationManager notificationManager = (NotificationManager) getDockActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
+        }
+
+        tvRatingTitle.setText(name != null ? name : "");
         setListeners();
     }
 
@@ -93,9 +135,9 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_submit:
-                int serviceRating = (int) Math.ceil(rbService.getScore());
-                int companyRating = (int) Math.ceil(rbCompany.getScore());
-                serviceHelper.enqueueCall(webService.rating(companyId, serviceRating, companyRating, prefHelper.getUser().getToken()),
+                int serviceRating = (int) Math.round(rbService.getScore());
+                int companyRating = (int) Math.round(rbCompany.getScore());
+                serviceHelper.enqueueCall(webService.rating(companyId, serviceRating, companyRating, orderId, prefHelper.getUser().getToken()),
                         WebServiceConstants.rating);
 
                 break;
@@ -108,7 +150,7 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.rating:
-                UIHelper.showShortToastInCenter(getDockActivity(), message);
+                UIHelper.showShortToastInCenter(getDockActivity(), getDockActivity().getResources().getString(R.string.rating_submitted));
                 getDockActivity().popFragment();
                 break;
             default:
@@ -116,9 +158,5 @@ public class RatingFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

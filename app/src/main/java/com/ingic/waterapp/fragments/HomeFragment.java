@@ -70,6 +70,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     AnyTextView tvHomeViewAll;
 
     String type_select = AppConstants.select_product;
+    //String type_select = AppConstants.all_product;
 
     CompanyDetails companyDetails;
     @BindView(R.id.img_home_leftArrow)
@@ -126,8 +127,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 if (companyList != null && companyList.size() > 0 && companyList.get(0) != null) {
                     index = 0;
                     if (companyList.size() == 1) {
+                        llArrows.setVisibility(View.GONE);
                         imgLeftArrow.setVisibility(View.GONE);
                         imgRightArrow.setVisibility(View.GONE);
+                    }else{
+                        llArrows.setVisibility(View.VISIBLE);
                     }
                     companyDetails = companyList.get(0);
                     if (!btnProducts.isSelected()) {
@@ -259,9 +263,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showMenuButton();
-        titleBar.showMenuButton();
         titleBar.setCartCount(cartCount);
-
         titleBar.clearHeaderBackround();
     }
 
@@ -282,6 +284,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
             case R.id.btn_about:
                 if (Util.doubleClickCheck()) {
+
                     if (!btnAbout.isSelected()) {
                         btnProducts.setSelected(false);
                         btnAbout.setSelected(true);
@@ -320,6 +323,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     if (isViewAll) {
                         //isViewAll = false;
                         type_select = AppConstants.select_product;
+                        //type_select = AppConstants.all_product;
                     } else {
                         //isViewAll = true;
                         type_select = AppConstants.all_product;
@@ -372,11 +376,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @OnClick({R.id.img_home_leftArrow, R.id.img_home_rightArrow})
     public void onViewClicked(View view) {
@@ -394,7 +393,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.img_home_rightArrow:
-                if (companyList.size() - 1 > index) {
+                if (companyList!=null && companyList.size() - 1 > index) {
                     index++;
                     companyDetails = companyList.get(index);
                     if (!btnProducts.isSelected()) {

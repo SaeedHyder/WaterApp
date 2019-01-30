@@ -190,5 +190,3 @@ public class GoogleHelper implements GoogleApiClient.OnConnectionFailedListener 
         void onGoogleSignInResult(GoogleSignInAccount result);
     }
 }
-
-

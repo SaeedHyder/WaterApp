@@ -22,6 +22,7 @@ import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.retrofit.GsonFactory;
 import com.ingic.waterapp.ui.adapters.ProductsAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
+import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
 import java.util.List;
@@ -39,8 +40,9 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
     @BindView(R.id.rv_homeProducts)
     RecyclerView rvProducts;
     RecyclerViewListAdapter adapter;
-
     CompanyDetails companyDetails;
+    @BindView(R.id.txt_no_data)
+    AnyTextView txtNoData;
 
 
     //Realm
@@ -78,8 +80,16 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
                     }
                     companyDetails.setProduct(products);
                 }
-                if (companyDetails != null && companyDetails.getProduct().size() > 0) {
+                if (companyDetails != null && companyDetails.getProduct() != null && companyDetails.getProduct().size() > 0) {
+                    rvProducts.setVisibility(View.VISIBLE);
+                    txtNoData.setVisibility(View.GONE);
+
                     initRecyclerView(companyDetails.getProduct());
+                } else {
+                    if (rvProducts != null) {
+                        rvProducts.setVisibility(View.GONE);
+                    }
+                    txtNoData.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -133,6 +143,7 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
         list.add(new projects(R.drawable.bottle, "Water Bottle"));*/
 
         adapter.addAll(products);
+
     }
 
     @Override
@@ -198,9 +209,4 @@ public class HomeProductsFragment extends BaseFragment implements OnViewHolderCl
         }
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
 }

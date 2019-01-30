@@ -60,6 +60,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         titleBar.hideButtons();
         titleBar.setSubHeading(getDockActivity().getResources().getString(R.string.change_password));
         titleBar.showBackButton();
+        titleBar.hideEditButton();
     }
 
     @Override
@@ -137,9 +138,5 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         return (pwd.length() > 5);
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

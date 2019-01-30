@@ -25,6 +25,7 @@ public class MyProjectsChildVH extends ChildViewHolder {
 
     private TextView mDeliveryDate;
     private TextView mDeliveryPeriod;
+    private TextView tvStatus;
     private Button mbtnCancel, mbtnReorder;
     private Context mContext;
     private MyOrdersChildEntity mEntity;
@@ -42,6 +43,7 @@ public class MyProjectsChildVH extends ChildViewHolder {
         mDeliveryPeriod = itemView.findViewById(R.id.tv_itemChild_deliveryPeriod);
         mbtnCancel = itemView.findViewById(R.id.btn_itemChild_cancel);
         mbtnReorder = itemView.findViewById(R.id.btn_itemChild_reorder);
+        tvStatus = itemView.findViewById(R.id.tv_status);
 
         mRecyclerView = itemView.findViewById(R.id.rv_itemChild_bottles);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
@@ -59,6 +61,20 @@ public class MyProjectsChildVH extends ChildViewHolder {
             mbtnReorder.setVisibility(View.VISIBLE);
             mbtnCancel.setVisibility(View.GONE);
         }
+
+        if (entity.getStatus().equals("2")) {
+            mbtnReorder.setVisibility(View.GONE);
+            tvStatus.setText(mContext.getResources().getString(R.string.cancelled));
+        } else if (entity.getStatus().equals("0")) {
+            mbtnCancel.setVisibility(View.VISIBLE);
+            mbtnReorder.setVisibility(View.GONE);
+            tvStatus.setText(mContext.getResources().getString(R.string.inProgress));
+        } else {
+            mbtnReorder.setVisibility(View.VISIBLE);
+            mbtnCancel.setVisibility(View.GONE);
+            tvStatus.setText(mContext.getResources().getString(R.string.delivered));
+        }
+
 
         mbtnReorder.setOnClickListener(new View.OnClickListener() {
             @Override

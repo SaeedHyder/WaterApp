@@ -18,7 +18,7 @@
             android:id="@+id/img_sideMenu_profileImage"
             android:layout_width="@dimen/_110sdp"
             android:layout_height="@dimen/_110sdp"
-            android:src="@drawable/dummy_image" />
+            android:src="@drawable/placeholder" />
 
         <ImageView
             android:layout_width="@dimen/_110sdp"

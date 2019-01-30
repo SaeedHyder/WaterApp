@@ -136,7 +136,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 
     private void setData() {
         TextViewHelper.setText(tvBottleName, prefHelper.getUser().getCompanyName() + " (x" + DataHelper.getTotalQuantities() + ")");
-        TextViewHelper.setText(tvTotalAmount, "AED " + cartObj.getTotal());
+        TextViewHelper.setText(tvTotalAmount, "AED " + String.format("%,.2f", Util.getParsedFloat(cartObj.getTotal())));
         TextViewHelper.setHtmlText(tvDeliveryText, companyTerms);
     }
 
@@ -253,7 +253,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        if (tvDate!=null) {
+                        if (tvDate != null) {
                             date = year + "-"
                                     + String.format("%02d", monthOfYear + 1) + "-"
                                     + String.format("%02d", dayOfMonth);

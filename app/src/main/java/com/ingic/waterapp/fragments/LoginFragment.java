@@ -108,6 +108,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         setupFacebookLogin();
     }
 
+
     private void setupGoogleSignup() {
         googleHelper = GoogleHelper.getInstance();
         googleHelper.setGoogleHelperInterface(this);
@@ -173,6 +174,12 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
             case WebServiceConstants.signIn:
                 UserEnt userEnt = (UserEnt) result;
                 prefHelper.putUser(userEnt);
+                launchMainActivity(AppConstants.REGISTERED_USER);
+                break;
+            case WebServiceConstants.socialSignIn:
+                UserEnt userData = (UserEnt) result;
+                prefHelper.setSocailLoginStatus(true);
+                prefHelper.putUser(userData);
                 launchMainActivity(AppConstants.REGISTERED_USER);
                 break;
 
@@ -251,8 +258,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         String Email = result.getEmail();
 
         String Image = "";
-        if (result.getPhotoUrl() != null)
+        if (result.getPhotoUrl() != null) {
             Image = result.getPhotoUrl().toString();
+        }
 
         mSocialMediaPlatform = WebServiceConstants.PLATFORM_GOOGLE;
         mSocialMediaID = result.getId();
@@ -282,6 +290,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
     private void socialMediaSignIn(final String SocialMediaId, final String SocialMediaPlatform, final String Name, final String Email, final String Image) {
         refreshToken = FirebaseInstanceId.getInstance().getToken();
 
+
+
         serviceHelper.enqueueCall(webService.userFacebookLogin(
                 mSocialMediaID,
                 mSocialMediaPlatform,
@@ -289,12 +299,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                 Email,
                 refreshToken,
                 AppConstants.Device_Type),
-                WebServiceConstants.signIn);
+                WebServiceConstants.socialSignIn);
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

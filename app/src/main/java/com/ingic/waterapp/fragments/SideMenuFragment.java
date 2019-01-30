@@ -1,5 +1,7 @@
 package com.ingic.waterapp.fragments;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.ingic.waterapp.R;
@@ -31,7 +35,8 @@ import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +64,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
     private String[] userMenuList = {"Home", "Order History", "Company List", "Change Vendor", "About", "Contact us", "Logout"};
     private String[] guestMenuList = {"Home", "Company List", "About", "Contact us", "Login"};
     private int loginType;
+    private ImageLoader imageLoader;
 
     List<CompanyEnt> companyEnts;
     int companyId = 0;
@@ -72,6 +78,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        imageLoader=ImageLoader.getInstance();
         adapter = new SideMenuAdapter(getDockActivity(), this);
     }
 
@@ -151,9 +158,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
             tvProfileName.setText(prefHelper.getUser().getFullName());
 
             if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
-                Picasso.with(getDockActivity())
-                        .load(prefHelper.getUser().getProfileImage())
-                        .into(imgProfile);
+                imageLoader.displayImage(prefHelper.getUser().getProfileImage(),imgProfile);
             }
             Collections.addAll(sideMenuList, userMenuList);
         } else if (prefHelper.getGuestTOKEN() != null) {
@@ -174,9 +179,10 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
             tvProfileName.setText(prefHelper.getUser().getFullName());
 
             if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
-                Picasso.with(getDockActivity())
+                imageLoader.displayImage(prefHelper.getUser().getProfileImage(),imgProfile);
+              /*  Picasso.with(getDockActivity())
                         .load(prefHelper.getUser().getProfileImage())
-                        .into(imgProfile);
+                        .into(imgProfile);*/
             }
             Collections.addAll(sideMenuList, userMenuList);
         } else if (prefHelper.getGuestTOKEN() != null) {
@@ -292,7 +298,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
 
 
 //                        getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
-
+                        prefHelper.setSocailLoginStatus(false);
                         prefHelper.setLoginStatus(false);
                         getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
                                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
@@ -318,7 +324,13 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
 //                getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
 
                 prefHelper.setLoginStatus(false);
+                prefHelper.setSocailLoginStatus(false);
                 DataHelper.deleteRealmData();
+                if (AccessToken.getCurrentAccessToken() != null) {
+                    LoginManager.getInstance().logOut();
+                }
+                NotificationManager notificationManager = (NotificationManager) getDockActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancelAll();
                 getDockActivity().startActivity(new Intent(getDockActivity(), MainActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 break;
@@ -389,9 +401,7 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
         if (prefHelper != null && prefHelper.getUser() != null) {
             tvProfileName.setText(prefHelper.getUser().getFullName());
             if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
-                Picasso.with(getDockActivity())
-                        .load(prefHelper.getUser().getProfileImage())
-                        .into(imgProfile);
+                imageLoader.displayImage(prefHelper.getUser().getProfileImage(),imgProfile);
             }
         }
     }
@@ -423,9 +433,5 @@ public class SideMenuFragment extends BaseFragment implements OnViewHolderClick,
         }
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

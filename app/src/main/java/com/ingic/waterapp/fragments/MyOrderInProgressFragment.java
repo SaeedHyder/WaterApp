@@ -1,6 +1,8 @@
 package com.ingic.waterapp.fragments;
 
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +28,7 @@ import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.DateHelper;
 import com.ingic.waterapp.interfaces.OnChildViewHolderItemClick;
 import com.ingic.waterapp.ui.adapters.MyOrderApdater;
+import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
 
@@ -44,6 +47,8 @@ import butterknife.Unbinder;
 public class MyOrderInProgressFragment extends BaseFragment implements OnChildViewHolderItemClick {
     @BindView(R.id.rv_expandable_inProgress)
     RecyclerView recyclerViewExpendable;
+    @BindView(R.id.txt_no_data)
+    AnyTextView txtNoData;
     Unbinder unbinder;
     private MyOrderApdater mAdapter;
     private String whichFragment;
@@ -142,7 +147,7 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
             //================================//
             MyOrdersChildEntity entity1 =
                     new MyOrdersChildEntity(whichFragment, myOrderList.get(i).getId(),
-                            getFormattedDate, myOrderList.get(i).getTimeSlot(), childList);
+                            getFormattedDate, myOrderList.get(i).getTimeSlot(), childList, myOrderList.get(i).getStatus() + "");
             MyOrdersParentEntity parentEntity1 =
                     new MyOrdersParentEntity(String.valueOf(myOrderList.get(i).getId()),
                             "AED " + String.valueOf(myOrderList.get(i).getTotal()), Arrays.asList(entity1));
@@ -175,24 +180,31 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
         titleBar.showBackButton();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.getMyOrders:
                 myOrderList = (List<InProgressOrderEnt>) result;
-                mAdapter.setParentList(getdata(), false);
+                if (myOrderList.size() > 0) {
+                    txtNoData.setVisibility(View.GONE);
+                    recyclerViewExpendable.setVisibility(View.VISIBLE);
+                    mAdapter.setParentList(getdata(), false);
+                } else {
+                    recyclerViewExpendable.setVisibility(View.GONE);
+                    txtNoData.setVisibility(View.VISIBLE);
+
+                }
 //                UIHelper.showShortToastInCenter(getDockActivity(), message);
                 break;
 
             case WebServiceConstants.cancelOrder:
 //                adapter= new
                 mAdapter.notifyParentRemoved(mChildPosition);
+
+                NotificationManager notificationManager = (NotificationManager) getDockActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancelAll();
+
 //                UIHelper.showShortToastInCenter(getDockActivity(), message);
 
                 break;
@@ -202,12 +214,8 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
 
     @Override
     public void onReorderClick(View view, int position, int orderId) {
-        if (Util.doubleClickCheck2Seconds()) {
-            mChildPosition = 0;
-            mChildPosition = position;
-            serviceHelper.enqueueCall(webService.reorder(orderId, prefHelper.getUser().getToken()),
-                    WebServiceConstants.reorder);
-        }
+        if (Util.doubleClickCheck())
+            alertActionSheetReOrderDialog(position, orderId);
     }
 
     @Override
@@ -235,6 +243,33 @@ public class MyOrderInProgressFragment extends BaseFragment implements OnChildVi
                         mChildPosition = mPosition;
                         serviceHelper.enqueueCall(webService.cancelOrder(orderId, prefHelper.getUser().getToken()),
                                 WebServiceConstants.cancelOrder);
+                    }
+                    dialog.dismiss();
+                }
+            }
+        });
+    }
+
+    private void alertActionSheetReOrderDialog(final int mPosition, final int orderId) {
+        final String[] stringItems = {getResources().getString(R.string.yes),
+                getResources().getString(R.string.no)};
+        final ActionSheetDialog dialog = new ActionSheetDialog(getDockActivity(), stringItems, null);
+        dialog.title(getResources().getString(R.string.alertReorder))
+                .titleTextSize_SP(14.5f)
+                .cancelText(getResources().getString(R.string.reorder))
+                .show();
+        dialog.titleTextColor(getResources().getColor(R.color.red));
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (Util.doubleClickCheck()) {
+                    if (position == 0) {
+                        mChildPosition = 0;
+                        mChildPosition = mPosition;
+                        serviceHelper.enqueueCall(webService.reorder(orderId, prefHelper.getUser().getToken()),
+                                WebServiceConstants.reorder);
+
                     }
                     dialog.dismiss();
                 }

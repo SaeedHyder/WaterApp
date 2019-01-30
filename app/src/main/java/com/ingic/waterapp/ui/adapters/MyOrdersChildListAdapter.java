@@ -13,6 +13,7 @@ import com.ingic.waterapp.helpers.ImageLoaderHelper;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
+import com.ingic.waterapp.ui.views.Util;
 
 
 public class MyOrdersChildListAdapter extends RecyclerViewListAdapter<MyOrdersChildListEntity> {
@@ -41,7 +42,7 @@ public class MyOrdersChildListAdapter extends RecyclerViewListAdapter<MyOrdersCh
             TextView textUnitAmount = (TextView) viewHolder.getView(R.id.tv_itemChidRv_ltr);
 
             TextViewHelper.setText(textTitle, item.getName());
-            TextViewHelper.setText(textAmount, item.getPrice());
+            TextViewHelper.setText(textAmount, String.format ("%,.2f", Util.getParsedFloat(item.getPrice())));
             TextViewHelper.setText(textQuantity, item.getQuantity());
             TextViewHelper.setText(textUnitAmount, item.getLiter() + " " + item.getUnit());
             ImageLoaderHelper.loadImageWithPicasso(context, item.getImgUrl(), textImg);

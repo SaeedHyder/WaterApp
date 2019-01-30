@@ -124,9 +124,5 @@ public class SetNewPasswordFragment extends BaseFragment {
         if (getDockActivity().getDrawerLayout() != null)
             getDockActivity().lockDrawer();
     }
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

@@ -13,15 +13,19 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
@@ -39,6 +43,7 @@ import com.ingic.waterapp.entities.cart.DataHelper;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.ImageLoaderHelper;
+import com.ingic.waterapp.helpers.InternetHelper;
 import com.ingic.waterapp.helpers.TextViewHelper;
 import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.ProfileUpdateListener;
@@ -46,7 +51,8 @@ import com.ingic.waterapp.ui.views.AnyEditTextView;
 import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
-import com.squareup.picasso.Picasso;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -88,7 +94,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     @BindView(R.id.et_profile_name)
     AnyEditTextView etName;
     @BindView(R.id.et_profile_email)
-    AnyEditTextView etEmail;
+    AnyTextView etEmail;
     @BindView(R.id.et_profile_address)
     AnyTextView etAddress;
     @BindView(R.id.et_profile_phone)
@@ -109,6 +115,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     AnyTextView tvSelectCity;
     @BindView(R.id.btn_profile_update)
     Button btnUpdate;
+    @BindView(R.id.mainFrameLayout)
+    RelativeLayout mainFrameLayout;
+    @BindView(R.id.seperator6)
+    View seperator6;
+
     List<CompanyEnt> companyEnts;
     int companyId = -1;
     int cityId = -1;
@@ -122,6 +133,10 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     private Snackbar snackbar;
     private View rootView;
 
+
+    private boolean isEdit = false;
+    private ImageLoader imageLoader;
+
     public MyProfileFragment() {
         // Required empty public constructor
     }
@@ -131,10 +146,12 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         return new MyProfileFragment();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        imageLoader=ImageLoader.getInstance();
         rootView = inflater.inflate(R.layout.fragment_my_profile, container, false);
         return rootView;
     }
@@ -155,6 +172,19 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showBackButton();
+        titleBar.showEditButton(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enableDisableViewGroup(mainFrameLayout, true);
+                btnCamera.setVisibility(View.VISIBLE);
+                btnUpdate.setVisibility(View.VISIBLE);
+
+                isEdit=true;
+                if (getTitleBar() != null) {
+                    getTitleBar().hideEditButton();
+                }
+            }
+        });
         titleBar.setSubHeading(getResources().getString(R.string.my_profile));
     }
 
@@ -169,13 +199,64 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
         serviceHelper.enqueueCall(webService.getCities(),
                 WebServiceConstants.getCities);
+
+        serviceHelper.enqueueCall(webService.getProfile(prefHelper.getUser().getToken())
+                ,WebServiceConstants.getProfile);
         setListeners();
-        setData();
+
+
+        if (!isEdit) {
+            enableDisableViewGroup(mainFrameLayout, false);
+            btnCamera.setVisibility(View.GONE);
+            btnUpdate.setVisibility(View.GONE);
+        }
+
+        getDockActivity().getSupportFragmentManager().addOnBackStackChangedListener(getListener());
 
     }
 
+    private FragmentManager.OnBackStackChangedListener getListener() {
+        FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
+            public void onBackStackChanged() {
+                FragmentManager manager = getDockActivity().getSupportFragmentManager();
+
+                if (manager != null) {
+                    BaseFragment currFrag = (BaseFragment) manager.findFragmentById(getDockActivity().getDockFrameLayoutId());
+                    if (currFrag != null) {
+                        if (currFrag instanceof MyProfileFragment) {
+                            if(isEdit){
+                                if (getTitleBar() != null) {
+                                    getTitleBar().hideEditButton();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return result;
+    }
+
+    public static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = viewGroup.getChildAt(i);
+            view.setEnabled(enabled);
+            if (view instanceof ViewGroup) {
+                enableDisableViewGroup((ViewGroup) view, enabled);
+            }
+        }
+    }
+
     private void setData() {
+
         if (prefHelper.getUser() != null) {
+
+            if(prefHelper.isSocialLogin()){
+                tvChangePassword.setVisibility(View.GONE);
+                seperator6.setVisibility(View.GONE);
+            }
 
             if (prefHelper.getUser().getEmail() != null && !prefHelper.getUser().getEmail().isEmpty())
                 etEmail.setEnabled(false);
@@ -204,9 +285,11 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             companyId = Integer.parseInt(prefHelper.getUser().getCompanyId());
 
             if (prefHelper.getUser().getProfileImage() != null && prefHelper.getUser().getProfileImage().length() > 0) {
-                Picasso.with(getDockActivity())
+                imageLoader.displayImage(prefHelper.getUser().getProfileImage(),imgProfile);
+                /*Picasso.with(getDockActivity())
                         .load(prefHelper.getUser().getProfileImage())
-                        .into(imgProfile);
+                        .placeholder(R.drawable.placeholder)
+                        .into(imgProfile);*/
             }
         } else if (prefHelper.getGuestTOKEN() != null) {
             imgProfile.setImageResource(R.drawable.user);
@@ -216,8 +299,9 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        if (getDockActivity().getDrawerLayout() != null)
+        if (getDockActivity().getDrawerLayout() != null) {
             getDockActivity().lockDrawer();
+        }
     }
 
     private void openDialog() {
@@ -274,7 +358,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
 
                 break;
             case R.id.tv_profile_changePassword:
-                getDockActivity().replaceDockableFragment(ChangePasswordFragment.newInstance(), ChangePasswordFragment.class.getSimpleName());
+                getDockActivity().addDockableFragment(ChangePasswordFragment.newInstance(), ChangePasswordFragment.class.getSimpleName());
                 break;
             case R.id.tv_profile_selectSupplier:
                 openDialog();
@@ -297,17 +381,19 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
             case R.id.btn_profile_update:
                 if (Util.doubleClickCheck2Seconds())
 
-                    if (isValidate()) {
-                        String fullName = etName.getText().toString();
-                        String email = etEmail.getText().toString();
-                        String phoneNo = etPhoneNumber.getText().toString();
-                        int mCompanyId = (companyId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCompanyId()) : companyId;
-                        int mCityId = (cityId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCityId()) : cityId;
-                        String location = etAddress.getText().toString();
-                        String makaniNumber = etMakaniNumber.getText().toString();
-                        int push = btnNotification.isSelected() ? 1 : 0;
+                    if (InternetHelper.CheckInternetConectivityandShowToast(getDockActivity())) {
+                        if (isValidate()) {
+                            String fullName = etName.getText().toString();
+                            String email = etEmail.getText().toString();
+                            String phoneNo = etPhoneNumber.getText().toString();
+                            int mCompanyId = (companyId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCompanyId()) : companyId;
+                            int mCityId = (cityId == -1) ? Util.getParsedInteger(prefHelper.getUser().getCityId()) : cityId;
+                            String location = etAddress.getText().toString();
+                            String makaniNumber = etMakaniNumber.getText().toString();
+                            int push = btnNotification.isSelected() ? 1 : 0;
 
-                        callService(fullName, email, phoneNo, location, addressLatLng, makaniNumber, mCompanyId, mCityId, push, prefHelper.getUser().getToken());
+                            callService(fullName, email, phoneNo, location, addressLatLng, makaniNumber, mCompanyId, mCityId, push, prefHelper.getUser().getToken());
+                        }
                     }
                 break;
             default:
@@ -376,6 +462,29 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
+
+            case WebServiceConstants.getProfile:
+                UserEnt profile = (UserEnt) result;
+                UserEnt previousProfile=prefHelper.getUser();
+                previousProfile.setEmail(profile.getEmail());
+                previousProfile.setFullName(profile.getFullName());
+                previousProfile.setLocation(profile.getLocation());
+                previousProfile.setMakaniNumber(profile.getMakaniNumber());
+                previousProfile.setMobileNo(profile.getMobileNo());
+                previousProfile.setCompanyName(profile.getCompanyName());
+                previousProfile.setCityName(profile.getCityName());
+                previousProfile.setLatitude(profile.getLatitude());
+                previousProfile.setLongitude(profile.getLongitude());
+                previousProfile.setPushNotification(profile.getPushNotification());
+                previousProfile.setCompanyId(profile.getCompanyId());
+                previousProfile.setProfileImage(profile.getProfileImage());
+
+                prefHelper.putUser(previousProfile);
+                if (mListener != null)
+                    mListener.profileUpdate();
+                setData();
+
+                break;
             case WebServiceConstants.updateProfile:
                 UserEnt login = (UserEnt) result;
 
@@ -390,6 +499,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
                     mListener.profileUpdate();
 
                 UIHelper.showShortToastInCenter(getDockActivity(), message);
+                isEdit = false;
                 getDockActivity().popFragment();
                 break;
 
@@ -410,25 +520,36 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
     }
 
     private boolean isValidate() {
-        if (etEmail.testValidity() && etName.testValidity() && etPhoneNumber.testValidity()) {
-            if (!(etAddress.getText().toString().trim().equals("")) && addressLatLng != null) {
-                if (checkPhoneLength()) {
-                    if (!tvSelectSupplier.getText().toString().isEmpty()) {
-                        if (!tvSelectCity.getText().toString().isEmpty()) {
-                            return true;
-                        } else
-                            UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_select_city));
-                    } else
-                        UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
-//                return true;
-                } else
-                    etPhoneNumber.setError("Please Enter valid phone number");
-            } else {
-                UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.addressError));
+        if (etName.getText() == null || (etName.getText().toString().isEmpty())) {
+            if (etName.requestFocus()) {
+                setEditTextFocus(etName);
             }
-
-        }// && checkPhoneLength());
-        return false;
+            etName.setError(getString(R.string.error));
+            return false;
+        } /*else if (etEmail.getText() == null || (etEmail.getText().toString().isEmpty()) || (!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches())) {
+            if (etEmail.requestFocus()) {
+                setEditTextFocus(etEmail);
+            }
+            etEmail.setError(getString(R.string.enter_email));
+            return false;
+        }*/ else if (etPhoneNumber.getText() == null || (etPhoneNumber.getText().toString().isEmpty())) {
+            if (etPhoneNumber.requestFocus()) {
+                setEditTextFocus(etPhoneNumber);
+            }
+            etPhoneNumber.setError(getString(R.string.error));
+            return false;
+        } else if (etAddress.getText() == null || (etAddress.getText().toString().isEmpty()) || addressLatLng == null) {
+            UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.locationError));
+            return false;
+        } else if (tvSelectSupplier.getText() == null || (tvSelectSupplier.getText().toString().isEmpty())) {
+            UIHelper.showLongToastInCenter(getDockActivity(), getString(R.string.please_select_company));
+            return false;
+        } else if (tvSelectCity.getText() == null || (tvSelectCity.getText().toString().isEmpty())) {
+            UIHelper.showShortToastInCenter(getDockActivity(), getResources().getString(R.string.please_select_city));
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private boolean checkPhoneLength() {
@@ -585,11 +706,7 @@ public class MyProfileFragment extends BaseFragment implements View.OnClickListe
         context.startActivity(i);
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 
     private void openLocationSelector() {
 

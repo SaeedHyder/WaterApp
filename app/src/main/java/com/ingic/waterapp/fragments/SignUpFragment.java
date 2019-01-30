@@ -327,9 +327,5 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         return (pwd.length() > 5);
     }
 
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

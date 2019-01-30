@@ -67,6 +67,12 @@ public interface WebService {
             @Header("token") String token
     );
 
+
+    @GET("user/getUserProfile")
+    Call<ResponseWrapper<UserEnt>> getProfile(
+            @Header("token") String token
+    );
+
     @FormUrlEncoded
     @POST("user/changeVendor")
     Call<ResponseWrapper<UserEnt>> changeVendor(
@@ -241,6 +247,7 @@ public interface WebService {
             @Field("company_id") int companyId,
             @Field("service_rate") int serviceRating,
             @Field("company_rate") int companyRating,
+            @Field("order_id") String order_id,
             @Header("token") String token
     );
 }

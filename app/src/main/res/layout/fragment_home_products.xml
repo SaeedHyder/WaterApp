@@ -2,13 +2,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.ingic.waterapp.fragments.HomeProductsFragment"
     android:background="@color/white">
+
+    <com.ingic.waterapp.ui.views.AnyTextView
+        android:id="@+id/txt_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/no_product_found"
+        android:textColor="@color/login_email_grey"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:typeface="@string/typeface_regular" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_homeProducts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

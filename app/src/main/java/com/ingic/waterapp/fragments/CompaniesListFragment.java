@@ -127,9 +127,5 @@ public class CompaniesListFragment extends BaseFragment implements OnViewHolderC
                 break;
         }
     }
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
 }

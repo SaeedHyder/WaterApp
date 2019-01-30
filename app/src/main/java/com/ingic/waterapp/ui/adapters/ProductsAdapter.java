@@ -21,14 +21,16 @@ import com.ingic.waterapp.helpers.UIHelper;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
 import com.ingic.waterapp.ui.views.Util;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
     private DockActivity context;
+    private ImageLoader imageLoader;
 
     public ProductsAdapter(DockActivity context, OnViewHolderClick listener) {
         super(context, listener);
         this.context = context;
+        imageLoader = ImageLoader.getInstance();
     }
 
     @Override
@@ -61,7 +63,8 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
                 textDiscountTag.setVisibility(View.VISIBLE);
                 tvOriginalAmount.setVisibility(View.VISIBLE);
                 textDiscountTag.setText(item.getCouponName());
-                tvOriginalAmount.setText(item.getProductAmount());
+                tvOriginalAmount.setText(String.format ("%,.2f",Util.getParsedFloat(item.getProductAmount())));
+                //tvOriginalAmount.setText(item.getProductAmount());
                 tvOriginalAmount.setPaintFlags(tvOriginalAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 imgRibbin.setVisibility(View.GONE);
@@ -70,13 +73,17 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
             }
 
             if (item.getProductImage() != null && item.getProductImage().length() > 0) {
-                Picasso.with(context)
+        /*        Picasso.with(context)
                         .load(item.getProductImage())
-                        .into(img_bottle);
+                        .into(img_bottle);*/
+                imageLoader.displayImage(item.getProductImage(), img_bottle);
+
             }
             float currentValue = Util.getDiscountedValue(Util.getParsedFloat(item.getProductAmount()), //After discount
                     Util.getParsedFloat(item.getPercentage()));
-            tvCurrentAmount.setText(String.valueOf(currentValue)); //our save
+
+            tvCurrentAmount.setText(String.format ("%,.2f", currentValue)); //our save
+            //tvCurrentAmount.setText(String.valueOf(currentValue)); //our save
 
 
 //            viewHolder.getView().setOnClickListener(new View.OnClickListener() {
@@ -198,7 +205,7 @@ public class ProductsAdapter extends RecyclerViewListAdapter<Product> {
                 break;
         }
 
-           /*If count = 0 then total = cost*/
+        /*If count = 0 then total = cost*/
         float productAmount = Util.getParsedFloat(item.getProductAmount());
         float originalAmount = count > 1 ? (count * productAmount) : productAmount;
         float currentValue = Util.getDiscountedValue(productAmount, //After discount

@@ -126,7 +126,6 @@ public class EnterCodeFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         countDown.cancel();
-        unbinder.unbind();
         super.onDestroy();
     }
 }

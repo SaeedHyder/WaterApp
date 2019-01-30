@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import com.facebook.AccessToken;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.ingic.waterapp.entities.FacebookLoginEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
@@ -23,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FacebookLoginHelper implements FacebookCallback<LoginResult> {
+    private static final String TAG = "FacebookLoginHelper";
     private List<String> permissionNeeds= Arrays.asList( "public_profile", "email");
 
     public List<String> getPermissionNeeds() {
@@ -69,6 +72,14 @@ public class FacebookLoginHelper implements FacebookCallback<LoginResult> {
     public void onError(FacebookException e) {
         baseFragment.loadingFinished();
         Toast.makeText(mContext, "Problem connecting to Facebook", Toast.LENGTH_SHORT).show();
+        e.printStackTrace();
+
+        Log.i(TAG,  "facebooklog: " +e.toString());
+        if (e instanceof FacebookAuthorizationException) {
+            if (AccessToken.getCurrentAccessToken() != null) {
+                LoginManager.getInstance().logOut();
+            }
+        }
     }
 
     private void getFacebookData(JSONObject object, AccessToken accessToken) {

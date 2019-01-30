@@ -6,6 +6,7 @@ public class WebServiceConstants {
     public static final String SUCCESS_RESPONSE_CODE = "2000";
 
     public static final String signIn = "SignIn";
+    public static final String socialSignIn = "socialSignIn";
     public static final String forgotPassword = "ForgotPassword";
     public static final String changePassword = "ChangePassword";
     public static final String updateProfile = "Updateprofile";
@@ -35,4 +36,5 @@ public class WebServiceConstants {
     public static final String feedback = "feedback";
     public static final String changeVendor = "changeVendor";
     public static final String getCities = "getCities";
+    public static final String getProfile = "getProfile";
 }

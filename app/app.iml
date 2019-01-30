@@ -288,7 +288,6 @@
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.android:facebook-android-sdk-4.29.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-nearby-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.picasso:picasso:2.5.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:livedata-core-1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks-11.8.0" level="project" />

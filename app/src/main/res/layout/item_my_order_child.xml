@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_12sdp"
         android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginBottom="19dp"
         android:layout_marginTop="@dimen/_18sdp"
         android:background="@drawable/stroke_grey_solid_white"
         android:paddingBottom="@dimen/_16sdp"
@@ -84,6 +85,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/seperator" />
+
+        <com.ingic.waterapp.ui.views.AnyTextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv_itemChild_bottles"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:text="Cancelled"
+            android:textColor="@color/blue_theme"
+            android:textSize="16sp"
+            app:typeface="@string/typeface_bold" />
+
+
     </RelativeLayout>
 
     <Button
@@ -93,7 +109,7 @@
         android:layout_below="@+id/item_top"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="18dp"
-        android:layout_marginTop="19dp"
+
         android:background="@drawable/stroke_blue"
         android:gravity="center"
         android:text="@string/cancel"
@@ -109,7 +125,6 @@
         android:layout_below="@+id/item_top"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="18dp"
-        android:layout_marginTop="19dp"
         android:background="@drawable/solid_blue"
         android:gravity="center"
         android:text="@string/reorder"

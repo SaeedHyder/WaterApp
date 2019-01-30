@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -60,6 +61,20 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
 
     private void setListeners() {
         btnSubmit.setOnClickListener(this);
+
+        etFeedback.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -129,20 +144,20 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     }
 
     private boolean isValidate() {
-        if (tvPhone.getText() == null || (tvPhone.getText().toString().isEmpty())) {
+        if (tvPhone.getText() == null || (tvPhone.getText().toString().trim().isEmpty())) {
             if (tvPhone.requestFocus()) {
                 setEditTextFocus(tvPhone);
             }
             tvPhone.setError(getString(R.string.error));
             return false;
-        } else if (tvEmail.getText() == null || (tvEmail.getText().toString().isEmpty()) ||
+        } else if (tvEmail.getText() == null || (tvEmail.getText().toString().trim().isEmpty()) ||
                 (!Patterns.EMAIL_ADDRESS.matcher(tvEmail.getText().toString()).matches())) {
             if (tvEmail.requestFocus()) {
                 setEditTextFocus(tvEmail);
             }
             tvEmail.setError(getString(R.string.enter_email));
             return false;
-        } else if (etFeedback.getText() == null || (etFeedback.getText().toString().isEmpty())) {
+        } else if (etFeedback.getText() == null || (etFeedback.getText().toString().trim().isEmpty())) {
             if (etFeedback.requestFocus()) {
                 setEditTextFocus(etFeedback);
             }

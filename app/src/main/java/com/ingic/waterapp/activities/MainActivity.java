@@ -1,23 +1,35 @@
 package com.ingic.waterapp.activities;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.fragments.HomeFragment;
 import com.ingic.waterapp.fragments.LoginFragment;
+import com.ingic.waterapp.fragments.MyOrdersFragment;
+import com.ingic.waterapp.fragments.NotificationsFragment;
 import com.ingic.waterapp.fragments.RatingFragment;
 import com.ingic.waterapp.fragments.SideMenuFragment;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
@@ -30,11 +42,18 @@ import com.ingic.waterapp.residemenu.ResideMenu;
 import com.ingic.waterapp.ui.views.TitleBar;
 import com.ingic.waterapp.ui.views.Util;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.ingic.waterapp.global.AppConstants.deletePush;
+import static com.ingic.waterapp.global.AppConstants.inactivePush;
+
 
 public class MainActivity extends DockActivity implements OnClickListener {
+    private static String TAG = "MainActivity";
     public TitleBar titleBar;
     @BindView(R.id.sideMneuFragmentContainer)
     FrameLayout sideMneufragmentContainer;
@@ -44,6 +63,10 @@ public class MainActivity extends DockActivity implements OnClickListener {
     FrameLayout mainFrameLayout;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.content_frame)
+    RelativeLayout contentFrame;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
     private MainActivity mContext;
     private boolean loading;
 
@@ -54,7 +77,8 @@ public class MainActivity extends DockActivity implements OnClickListener {
     //Unread notification count broadcast//
     BroadcastReceiver notificationCountBroadcastReceiver;
     BroadcastReceiver cartCountBroadcastReceiver;
-    private String ratingBottleName, ratingCompanyId;
+    private String ratingBottleName, ratingCompanyId, type, orderId;
+    protected BroadcastReceiver broadcastReceiver;
 
 
     @Override
@@ -71,10 +95,18 @@ public class MainActivity extends DockActivity implements OnClickListener {
         sideMenuDirection = SideMenuDirection.LEFT.getValue();
 
         settingSideMenu(sideMenuType, sideMenuDirection);
-        if (getIntent().getExtras().get(AppConstants.RATING_BOTTLE) != null) {
-            ratingBottleName = getIntent().getExtras().get(AppConstants.RATING_BOTTLE).toString();
-            ratingCompanyId = getIntent().getExtras().get(AppConstants.RATING_COMPANY_ID).toString();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+
+            ratingBottleName = bundle.getString(AppConstants.RATING_BOTTLE);
+            ratingCompanyId = bundle.getString(AppConstants.RATING_COMPANY_ID);
+            type = bundle.getString(AppConstants.TYPE);
+            orderId = bundle.getString(AppConstants.ACTIONID);
+
         }
+
+        onNotificationReceived();
 
         notificationCountBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -146,7 +178,7 @@ public class MainActivity extends DockActivity implements OnClickListener {
             }
         });
 
-        if (savedInstanceState == null)
+       // if (savedInstanceState == null)
             initFragment();
 
     }
@@ -157,6 +189,16 @@ public class MainActivity extends DockActivity implements OnClickListener {
         super.onResume();
         this.registerReceiver(notificationCountBroadcastReceiver, new IntentFilter(AppConstants.UNREAD_NOTICATION_COUNT_BROADCAST));
         this.registerReceiver(cartCountBroadcastReceiver, new IntentFilter(AppConstants.CART_COUNT_BROADCAST));
+
+        LocalBroadcastManager.getInstance(getDockActivity()).registerReceiver(broadcastReceiver,
+                new IntentFilter(AppConstants.REGISTRATION_COMPLETE));
+
+        LocalBroadcastManager.getInstance(getDockActivity()).registerReceiver(broadcastReceiver,
+                new IntentFilter(AppConstants.PUSH_NOTIFICATION));
+
+        if (!prefHelper.isLogin()) {
+            replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
+        }
     }
 
     @Override
@@ -226,20 +268,88 @@ public class MainActivity extends DockActivity implements OnClickListener {
 
     public void initFragment() {
         getSupportFragmentManager().addOnBackStackChangedListener(getListener());
+        lockDrawer();
 //        replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
         if (prefHelper.isLogin()) {
             replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
-            if (ratingBottleName != null && !ratingBottleName.isEmpty()) {
-                RatingFragment fragment = new RatingFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString(AppConstants.BOTTLE_NAME, ratingBottleName);
-                bundle.putString(AppConstants.COMPANY_ID, ratingCompanyId);
-                fragment.setArguments(bundle);
-                replaceDockableFragment(fragment, RatingFragment.class.getSimpleName());
+
+            if (type != null && !type.isEmpty() && type.equals(AppConstants.RATING)) {
+                if (ratingBottleName != null && !ratingBottleName.isEmpty()) {
+                    RatingFragment fragment = new RatingFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(AppConstants.BOTTLE_NAME, ratingBottleName);
+                    bundle.putString(AppConstants.COMPANY_ID, ratingCompanyId);
+                    bundle.putString(AppConstants.ORDER_ID, orderId);
+                    bundle.putBoolean(AppConstants.IS_NOTIFICATION, false);
+                    fragment.setArguments(bundle);
+
+                    replaceDockableFragment(fragment, RatingFragment.class.getSimpleName());
+                }
+            } else if (type != null && !type.isEmpty() && type.equals(AppConstants.CANCELLED)) {
+                replaceDockableFragment(MyOrdersFragment.newInstance(true), MyOrdersFragment.class.getSimpleName());
+            } else if (type != null && !type.isEmpty() && type.equals(AppConstants.ADMIN)) {
+                replaceDockableFragment(NotificationsFragment.newInstance(), NotificationsFragment.class.getSimpleName());
+            } else if (type != null && !type.isEmpty() && !type.equals("")) {
+                replaceDockableFragment(MyOrdersFragment.newInstance(), MyOrdersFragment.class.getSimpleName());
             }
+
         } else {
             replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
         }
+    }
+
+    private void onNotificationReceived() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if (intent.getAction().equals(AppConstants.PUSH_NOTIFICATION)) {
+                    Bundle bundle = intent.getExtras();
+                    if (bundle != null) {
+                        String Type = bundle.getString(AppConstants.TYPE);
+                        String ratingBottleName = bundle.getString(AppConstants.RATING_BOTTLE);
+                        String ratingCompanyId = bundle.getString(AppConstants.RATING_COMPANY_ID);
+                        String orderId = bundle.getString(AppConstants.ACTIONID);
+
+                        if (Type != null && Type.equals(deletePush)) {
+                            UIHelper.showShortToastInCenter(getDockActivity(), getDockActivity().getResources().getString(R.string.deleted_by_admin));
+                            getDockActivity().popBackStackTillEntry(0);
+                            prefHelper.setLoginStatus(false);
+
+                            if (AccessToken.getCurrentAccessToken() != null) {
+                                LoginManager.getInstance().logOut();
+                            }
+                            NotificationManager notificationManager = (NotificationManager) getDockActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                            notificationManager.cancelAll();
+                            getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
+                        } else if (Type != null && Type.equals(inactivePush)) {
+                            UIHelper.showShortToastInCenter(getDockActivity(), getDockActivity().getResources().getString(R.string.blocked_by_admin));
+                            getDockActivity().popBackStackTillEntry(0);
+                            prefHelper.setLoginStatus(false);
+                            if (AccessToken.getCurrentAccessToken() != null) {
+                                LoginManager.getInstance().logOut();
+                            }
+                            NotificationManager notificationManager = (NotificationManager) getDockActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                            notificationManager.cancelAll();
+                            getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
+                        } else if (Type != null && !Type.isEmpty() && Type.equals(AppConstants.RATING)) {
+                            if (ratingBottleName != null && !ratingBottleName.isEmpty()) {
+                                RatingFragment fragment = new RatingFragment();
+                                Bundle bundleRating = new Bundle();
+                                bundleRating.putString(AppConstants.BOTTLE_NAME, ratingBottleName);
+                                bundleRating.putString(AppConstants.COMPANY_ID, ratingCompanyId);
+                                bundleRating.putString(AppConstants.ORDER_ID, orderId);
+                                bundleRating.putBoolean(AppConstants.IS_NOTIFICATION, false);
+
+                                fragment.setArguments(bundleRating);
+                                replaceDockableFragment(fragment, RatingFragment.class.getSimpleName());
+                            }
+                        }
+                    }
+                }
+            }
+
+        };
     }
 
     private FragmentManager.OnBackStackChangedListener getListener() {
@@ -263,9 +373,13 @@ public class MainActivity extends DockActivity implements OnClickListener {
     public void onLoadingStarted() {
 
         if (mainFrameLayout != null) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             mainFrameLayout.setVisibility(View.VISIBLE);
             if (progressBar != null) {
                 progressBar.setVisibility(View.VISIBLE);
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
             loading = true;
         }
@@ -275,12 +389,15 @@ public class MainActivity extends DockActivity implements OnClickListener {
     public void onLoadingFinished() {
         mainFrameLayout.setVisibility(View.VISIBLE);
 
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         if (progressBar != null) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             progressBar.setVisibility(View.INVISIBLE);
         }
         loading = false;
 
     }
+
 
     @Override
     public void onProgressUpdated(int percentLoaded) {
@@ -330,4 +447,35 @@ public class MainActivity extends DockActivity implements OnClickListener {
         UIHelper.showLongToastInCenter(this, "Coming Soon");
     }
 
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(getDockActivity()).unregisterReceiver(broadcastReceiver);
+        super.onPause();
+    }
+
+    public void printHashKey(Context pContext) {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String hashKey = new String(Base64.encode(md.digest(), 0));
+                Log.i(TAG, "printHashKey() Hash Key: " + hashKey);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "printHashKey()", e);
+        } catch (Exception e) {
+            Log.e(TAG, "printHashKey()", e);
+        }
+    }
+
+    public void lockDrawer() {
+        try {
+            if (drawerLayout != null) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

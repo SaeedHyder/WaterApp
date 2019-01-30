@@ -22,6 +22,8 @@ public class TextViewHelper {
                 textView.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT));
             } else
                 textView.setText(Html.fromHtml(text));
+        }else{
+            textView.setText("");
         }
     }
 }

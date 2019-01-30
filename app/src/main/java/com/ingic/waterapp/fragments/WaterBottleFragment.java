@@ -123,10 +123,10 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
             tvBottleCount.setText(String.format("%02d", productQuantity));
         else
             tvBottleCount.setText("" + productQuantity);
-        TextViewHelper.setText(tvCost, String.valueOf(productAmount) + " AED");
+        TextViewHelper.setText(tvCost, String.format ("%,.2f", productAmount) + " AED");
         /*If count = 0 then total = cost*/
         totalAmount = count > 1 ? (count * productAmount) : productAmount;
-        TextViewHelper.setText(tvTotal, String.valueOf(totalAmount) + " AED");
+        TextViewHelper.setText(tvTotal, String.format ("%,.2f", totalAmount) + " AED");
     }
 
     @Override
@@ -184,7 +184,7 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
         tvBottleCount.setText(String.format("%02d", count));
                        /*If count = 0 then total = cost*/
         totalAmount = count > 1 ? (count * productAmount) : productAmount;
-        TextViewHelper.setText(tvTotal, String.valueOf(totalAmount) + "AED");
+        TextViewHelper.setText(tvTotal, String.format ("%,.2f", totalAmount)  + " AED");
 
 
        /* count = Util.getParsedInteger(tvBottleCount.getText().toString());
@@ -317,7 +317,6 @@ public class WaterBottleFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onDestroy() {
-        unbinder.unbind();
         realm.close();
         super.onDestroy();
     }

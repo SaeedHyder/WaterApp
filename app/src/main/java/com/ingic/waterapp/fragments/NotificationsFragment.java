@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import com.ingic.waterapp.R;
 import com.ingic.waterapp.entities.NotificationCountEnt;
 import com.ingic.waterapp.fragments.abstracts.BaseFragment;
+import com.ingic.waterapp.global.AppConstants;
 import com.ingic.waterapp.global.WebServiceConstants;
 import com.ingic.waterapp.helpers.SimpleDividerItemDecoration;
 import com.ingic.waterapp.interfaces.OnViewHolderClick;
 import com.ingic.waterapp.ui.adapters.NotificationsListAdapter;
 import com.ingic.waterapp.ui.adapters.abstracts.RecyclerViewListAdapter;
+import com.ingic.waterapp.ui.views.AnyTextView;
 import com.ingic.waterapp.ui.views.TitleBar;
 
 import java.util.List;
@@ -32,7 +34,9 @@ import butterknife.Unbinder;
 public class NotificationsFragment extends BaseFragment implements OnViewHolderClick {
     @BindView(R.id.rv_notications)
     RecyclerView rvNotifcations;
-//    @BindView(R.id.ll_noNotifications)
+    @BindView(R.id.txt_no_data)
+    AnyTextView txtNoData;
+    //    @BindView(R.id.ll_noNotifications)
 //    LinearLayout llNoNotifications;
     Unbinder unbinder;
     RecyclerViewListAdapter adapter;
@@ -104,21 +108,44 @@ public class NotificationsFragment extends BaseFragment implements OnViewHolderC
 
     @Override
     public void onItemClick(View view, int position) {
+        if (notificationsEnts.get(position).getActionType().equals(AppConstants.RATING)) {
+            RatingFragment fragment = new RatingFragment();
+            Bundle bundle = new Bundle();
+
+            bundle.putString(AppConstants.BOTTLE_NAME, notificationsEnts.get(position).getCompanyName() != null ? notificationsEnts.get(position).getCompanyName() : "");
+            bundle.putString(AppConstants.COMPANY_ID, notificationsEnts.get(position).getSenderId());
+            bundle.putString(AppConstants.ORDER_ID, notificationsEnts.get(position).getActionId());
+            bundle.putBoolean(AppConstants.IS_NOTIFICATION,true);
+            fragment.setArguments(bundle);
+            getDockActivity().replaceDockableFragment(fragment, RatingFragment.class.getSimpleName());
+
+        } else if (notificationsEnts.get(position).getActionType().equals(AppConstants.CANCELLED)) {
+            getDockActivity().replaceDockableFragment(MyOrdersFragment.newInstance(true), MyOrdersFragment.class.getSimpleName());
+        }else if (notificationsEnts.get(position).getActionType().equals(AppConstants.ADMIN)) {
+
+        } else {
+            getDockActivity().replaceDockableFragment(MyOrdersFragment.newInstance(), MyOrdersFragment.class.getSimpleName());
+        }
     }
 
     @Override
     public void ResponseSuccess(Object result, String tag, String message) {
         switch (tag) {
             case WebServiceConstants.getNotifications:
+
                 notificationsEnts = (List<NotificationCountEnt>) result;
-                adapter.addAll(notificationsEnts);
+                if (notificationsEnts.size() > 0) {
+                    txtNoData.setVisibility(View.GONE);
+                    rvNotifcations.setVisibility(View.VISIBLE);
+                    adapter.addAll(notificationsEnts);
+                } else {
+                    txtNoData.setVisibility(View.VISIBLE);
+                    rvNotifcations.setVisibility(View.GONE);
+                }
                 break;
         }
     }
-    @Override
-    public void onDestroy() {
-        unbinder.unbind();
-        super.onDestroy();
-    }
+
+
 
 }

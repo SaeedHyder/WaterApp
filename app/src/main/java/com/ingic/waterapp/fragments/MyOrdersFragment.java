@@ -32,7 +32,15 @@ public class MyOrdersFragment extends BaseFragment implements View.OnClickListen
     @BindView(R.id.myOrder_container)
     FrameLayout frameLayout;
 
+    private static boolean isCancelled = false;
+
     public static MyOrdersFragment newInstance() {
+        isCancelled = false;
+        return new MyOrdersFragment();
+    }
+
+    public static MyOrdersFragment newInstance(boolean isCancelledkey) {
+        isCancelled = isCancelledkey;
         return new MyOrdersFragment();
     }
 
@@ -47,15 +55,29 @@ public class MyOrdersFragment extends BaseFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_my_orders, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        btnInProgress.setSelected(true);
-        btnDelivered.setSelected(false);
 
+        if (isCancelled) {
+            btnInProgress.setSelected(false);
+            btnDelivered.setSelected(true);
+
+            MyOrderInProgressFragment fragment = new MyOrderInProgressFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(AppConstants.fragment, AppConstants.DELIVERED_ORDER);
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
+
+        } else {
+            btnInProgress.setSelected(true);
+            btnDelivered.setSelected(false);
+
+            MyOrderInProgressFragment fragment = new MyOrderInProgressFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(AppConstants.fragment, AppConstants.IN_PROGRESS_ORDER);
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
+
+        }
         setListeners();
-        MyOrderInProgressFragment fragment = new MyOrderInProgressFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(AppConstants.fragment, AppConstants.IN_PROGRESS_ORDER);
-        fragment.setArguments(bundle);
-        loadFragment(fragment);
         return view;
     }
 
@@ -88,11 +110,6 @@ public class MyOrdersFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void onClick(View v) {

@@ -19,10 +19,16 @@ public class AppConstants {
     public static final String CART_OBJ = "cartObj";
     public static final String CART_SELECTED_LIST = "cartSelectedList";
     public static final String RATING_BOTTLE = "ratingBottle";
+    public static final String TYPE = "type";
     public static final String BOTTLE_NAME = "bottleName";
     public static final String COMPANY_ID = "companyId";
+    public static final String ORDER_ID = "orderId";
+    public static final String IS_NOTIFICATION = "isNotification";
     public static final String RATING_COMPANY_ID = "ratingCompanyId";
+    public static final String ACTIONID = "action_id";
     public static final String RATING = "rating";
+    public static final String CANCELLED = "cancelled";
+    public static final String ADMIN = "admin";
     public static final String COMPANY_TERMS = "companyTerms";
     public static String twitter = "twitter";
     public static final String Device_Type = "android";
@@ -54,5 +60,6 @@ public class AppConstants {
     //Count
     public static final String ADD = "add";
     public static final String MINUS = "minus";
-
+    public static String deletePush= "deleted";
+    public static String inactivePush= "USER_STATUS";
 }

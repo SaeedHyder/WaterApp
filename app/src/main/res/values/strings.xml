@@ -8,7 +8,7 @@
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
 
-    <string name="api_key">AIzaSyCDylplefNyWlLDoBL_n2VFjwlMWvq3sBg</string>
+    <string name="api_key">AIzaSyD_mPqpv43RBl7plkEhr49a4DJdtiMOkFw</string>
     <string name="app_name">WaterApp</string>
 
     <string name="hello_world">Hello world!</string>
@@ -146,6 +146,7 @@
 
     <!--Logout-->
     <string name="message_logout">Are you sure you want\nto logout?</string>
+    <string name="message_delete_item">Are you sure you want\nto delete this item from cart?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="logout">Logout</string>
@@ -212,6 +213,7 @@
     <string name="add_quantity">Please add quantity!</string>
     <string name="code_expires">Code expire in :</string>
     <string name="alert">Are you sure you want to cancel?</string>
+    <string name="alertReorder">Are you sure you want to reorder on the today date?</string>
     <string name="makani_number_optional">Makani Number (Optional)</string>
     <string name="select_city">Select City</string>
     <string name="message_profile">Kindly go to my profile to fill\ncomplete profile details</string>
@@ -221,5 +223,14 @@
     <string name="select_delivery_location">Select Delivery Location</string>
     <string name="please_select_city">Please select city!</string>
     <string name="addressError">Please Enter a Valid Address</string>
-
+    <string name="locationError">Address cannot be Empty</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="inProgress">In Progress</string>
+    <string name="history">History</string>
+    <string name="no_record_found">No record found</string>
+    <string name="no_notification_found">No notification found</string>
+    <string name="deleted_by_admin">Account is deleted by admin</string>
+    <string name="blocked_by_admin">Deactivated by admin</string>
+    <string name="no_product_found">No product found</string>
+    <string name="rating_submitted">Ratings have been submitted successfully</string>
 </resources>

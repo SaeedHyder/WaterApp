@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/button_gradient"
                 android:layout_weight="1.5"
-                android:text="@string/delivered"
+                android:text="@string/history"
                 android:textAllCaps="false"
                 android:textSize="12sp"
                 android:textColor="@drawable/selector_blue_white_text"
